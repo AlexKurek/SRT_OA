@@ -9,8 +9,10 @@
 int main(void)
 {
 	char txt[100], fnam[80], datafile[80];
-	// int i, j, jmax, k, np, j1, j2, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2;
-	int i, j, k, np, j1, j2, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2; // jmax
+	// int i, j, jmax, k, j1, j2, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2;
+	int i, j, k, j1, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2; // jmax, j2, np
+	int j2 = 0; // to avoid warnings
+	int np = 0; // to avoid warnings
 	double xx, yy, dmax, ddmax, dmin, slope, dd, ddd, totpp, scale, sigma, freq, freqq, fstart, fstop, vstart, vstop, xoffset;
 	double freqsep, x1, x2, y1, y2, wid, sx, sy, yoffset, x, y, xp, yp, av, avx, avy, avxx, avxy, psx1, psx2, psy1, psy2, yps;
 	double restfreq;
