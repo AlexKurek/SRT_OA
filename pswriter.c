@@ -8,8 +8,9 @@
  
 int main(void)
 {
-	char txt[80], fnam[80], datafile[80];
-	int i, j, jmax, k, np, j1, j2, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2;
+	char txt[100], fnam[80], datafile[80];
+	// int i, j, jmax, k, np, j1, j2, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2;
+	int i, j, k, np, j1, j2, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2; // jmax
 	double xx, yy, dmax, ddmax, dmin, slope, dd, ddd, totpp, scale, sigma, freq, freqq, fstart, fstop, vstart, vstop, xoffset;
 	double freqsep, x1, x2, y1, y2, wid, sx, sy, yoffset, x, y, xp, yp, av, avx, avy, avxx, avxy, psx1, psx2, psy1, psy2, yps;
 	double restfreq;
@@ -24,7 +25,12 @@ int main(void)
 
 //Ask user to enter name of data file to be read
 	printf("Enter name of data file: ");
-	scanf("%s", datafile);
+	if (scanf("%s", datafile) == 1) {
+		printf("%s", datafile);
+    } else {
+        printf("Failed to read input\n");
+		return -1;
+    }
 	if ((dfile = fopen(datafile, "r")) == NULL) {
             printf("cannot read %s\n", datafile);
             return 0;
@@ -32,42 +38,81 @@ int main(void)
 
 //Ask user to enter observation to be read
 	printf("Enter observation number to read: ");
-	scanf("%d", &obsn1);
-
-
+	if (scanf("%d", &obsn1) ==1) {
+		printf("%d", obsn1);
+    } else {
+        printf("Failed to read input\n");
+		return -1;
+    }
 	obsn2=-1; //Initialize obsn2 for first comparison
 	while(obsn1!=obsn2)	//Scan in data file until entered and scanned observation numbers match
 	{
 	//Scan in first two lines of data
-		fscanf(dfile, "%[^\n]\n", buf);
+		if (fscanf(dfile, "%[^\n]\n", buf) == 1) {} 
+		else {
+			printf("Failed to read input\n");
+		return -1;
+		}
 		if (buf[0] == '*')
 		{
-			fscanf(dfile, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
-				&yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack);
+			if (fscanf(dfile, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
+				&yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack) == 1) {}
+			else {
+				printf("Failed to read input\n");
+				return -1;
+			}
 		} else
 		{
 			sscanf(buf, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
         	      	         &yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack);
 		}
-		fscanf(dfile, "Fstart %lf fstop %lf spacing %lf bw %lf fbw %lf MHz nfreq %d nsam %d npoint %d integ %lf sigma %lf bsw %d\n",
-      	                 &fstart, &fstop, &freqsep, &bw, &fbw, &nfreq, &nsam, &npoint, &integ, &sigma, &bsw);
+		if (fscanf(dfile, "Fstart %lf fstop %lf spacing %lf bw %lf fbw %lf MHz nfreq %d nsam %d npoint %d integ %lf sigma %lf bsw %d\n",
+      	                 &fstart, &fstop, &freqsep, &bw, &fbw, &nfreq, &nsam, &npoint, &integ, &sigma, &bsw) == 1) {}
+		else {
+			printf("Failed to read input\n");
+			return -1;
+		}
 	//Calculate a few things that are based on early data in the file and are needed to define later scanning from the file
 		np = npoint;
 		j1 = np * 0;
 		j2 = np * 1;
 	//Scan in spectrum data
-		fscanf(dfile, "Spectrum %2d integration periods\n", &intp);
+		if (fscanf(dfile, "Spectrum %2d integration periods\n", &intp) == 1) {}
+		else {
+			printf("Failed to read input file\n");
+			return -1;
+		}
 	        for (j=0; j<j2; j++)
-			fscanf(dfile, "%lf ", &pp[j]);
-	        fscanf(dfile, "\n");
+			if (fscanf(dfile, "%lf ", &pp[j]) == 1) {}
+			else {
+				printf("Failed to read input file\n");
+				return -1;
+			}
+	        if (fscanf(dfile, "\n") == 1) {}
+			else {
+				printf("Failed to read input file\n");
+				return -1;
+			}
 		if (fabs(pp[0] - pp[1]) > 200)
 		{
 			intp = 1;
 			fseek(dfile, -9 * np, SEEK_CUR);
-			fscanf(dfile, "Spectrum \n");
+			if (fscanf(dfile, "Spectrum \n")== 1) {}
+			else {
+				printf("Failed to read input file\n");
+				return -1;
+			}
 			for (j=0; j<j2; j++)
-				fscanf(dfile, "%lf ", &pp[j]);
-			fscanf(dfile, "\n");
+				if (fscanf(dfile, "%lf ", &pp[j])== 1) {}
+				else {
+					printf("Failed to read input file\n");
+					return -1;
+				}
+			if (fscanf(dfile, "\n")== 1) {}
+			else {
+				printf("Failed to read input file\n");
+				return -1;
+			}
 		}
 	}
 
@@ -83,9 +128,13 @@ int main(void)
 	printf("j=%d\n", j);
 
 //Write postscript set up commands
-
 	printf("\nEnter postscript file name: ");
-	scanf("%s", fnam);
+	if (scanf("%s", fnam) == 1) {
+		printf("%s", fnam);
+	} else {
+        printf("Failed to read input\n");
+		return -1;
+    }
         if ((file1 = fopen(fnam, "wx")) == NULL) {
             printf("cannot write %s\n", fnam);
             return 0;
@@ -104,7 +153,7 @@ int main(void)
         dmax = ddmax = -1.0e99;
         dmin = 1.0e99;
         dd = 0.0;
-        jmax = 0;
+        // jmax = 0;
         av = avx = avy = avxx = avxy = 0.0;
 
 //    for (j = j1; j < j2+1; j++) {
@@ -127,7 +176,7 @@ int main(void)
         dd = pp[j];
         if (dd > dmax) {
             dmax = dd;
-            jmax = j;
+            // jmax = j;
         }
         if (dd < dmin)
             dmin = dd;
