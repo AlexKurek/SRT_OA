@@ -27,9 +27,10 @@ int main(void)
 
 //Ask user to enter name of data file to be read
 	printf("Enter name of data file: ");
-	if (scanf("%s", datafile) == 1) {
+	if (scanf("%s", datafile) == 1)
 		printf("%s", datafile);
-    } else {
+	else
+	{
         printf("Failed to read input\n");
 		return -1;
     }
@@ -40,9 +41,10 @@ int main(void)
 
 //Ask user to enter observation to be read
 	printf("Enter observation number to read: ");
-	if (scanf("%d", &obsn1) ==1) {
+	if (scanf("%d", &obsn1) ==1)
 		printf("%d", obsn1);
-    } else {
+    else
+	{
         printf("Failed to read input\n");
 		return -1;
     }
@@ -59,7 +61,8 @@ int main(void)
 		{
 			if (fscanf(dfile, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
 				&yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack) == 1) {}
-			else {
+			else
+			{
 				printf("Failed to read input\n");
 				return -1;
 			}
@@ -70,7 +73,8 @@ int main(void)
 		}
 		if (fscanf(dfile, "Fstart %lf fstop %lf spacing %lf bw %lf fbw %lf MHz nfreq %d nsam %d npoint %d integ %lf sigma %lf bsw %d\n",
       	                 &fstart, &fstop, &freqsep, &bw, &fbw, &nfreq, &nsam, &npoint, &integ, &sigma, &bsw) == 1) {}
-		else {
+		else
+		{
 			printf("Failed to read input\n");
 			return -1;
 		}
@@ -80,18 +84,21 @@ int main(void)
 		j2 = np * 1;
 	//Scan in spectrum data
 		if (fscanf(dfile, "Spectrum %2d integration periods\n", &intp) == 1) {}
-		else {
+		else
+		{
 			printf("Failed to read input file\n");
 			return -1;
 		}
 	        for (j=0; j<j2; j++)
 			if (fscanf(dfile, "%lf ", &pp[j]) == 1) {}
-			else {
+			else
+			{
 				printf("Failed to read input file\n");
 				return -1;
 			}
 	        if (fscanf(dfile, "\n") == 1) {}
-			else {
+			else
+			{
 				printf("Failed to read input file\n");
 				return -1;
 			}
@@ -100,18 +107,21 @@ int main(void)
 			intp = 1;
 			fseek(dfile, -9 * np, SEEK_CUR);
 			if (fscanf(dfile, "Spectrum \n")== 1) {}
-			else {
+			else
+			{
 				printf("Failed to read input file\n");
 				return -1;
 			}
 			for (j=0; j<j2; j++)
 				if (fscanf(dfile, "%lf ", &pp[j])== 1) {}
-				else {
+				else
+				{
 					printf("Failed to read input file\n");
 					return -1;
 				}
 			if (fscanf(dfile, "\n")== 1) {}
-			else {
+			else
+			{
 				printf("Failed to read input file\n");
 				return -1;
 			}
@@ -131,9 +141,10 @@ int main(void)
 
 //Write postscript set up commands
 	printf("\nEnter postscript file name: ");
-	if (scanf("%s", fnam) == 1) {
+	if (scanf("%s", fnam) == 1)
 		printf("%s", fnam);
-	} else {
+	else
+	{
         printf("Failed to read input\n");
 		return -1;
     }
