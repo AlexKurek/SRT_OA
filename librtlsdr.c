@@ -218,7 +218,7 @@ int rtlsdr_read_array(rtlsdr_dev_t * dev, uint8_t block, uint16_t addr, uint8_t 
     r = libusb_control_transfer(dev->devh, CTRL_IN, 0, addr, index, array, len, CTRL_TIMEOUT);
 #if 0
     if (r < 0)
-        fprintf(stderr, "%s failed with %d\n", __FUNCTION__, r);
+        fprintf(stderr, "%s failed with %d\n", __func__, r);
 #endif
     return r;
 }
@@ -231,7 +231,7 @@ int rtlsdr_write_array(rtlsdr_dev_t * dev, uint8_t block, uint16_t addr, uint8_t
     r = libusb_control_transfer(dev->devh, CTRL_OUT, 0, addr, index, array, len, CTRL_TIMEOUT);
 #if 0
     if (r < 0)
-        fprintf(stderr, "%s failed with %d\n", __FUNCTION__, r);
+        fprintf(stderr, "%s failed with %d\n", __func__, r);
 #endif
     return r;
 }
@@ -287,7 +287,7 @@ uint16_t rtlsdr_read_reg(rtlsdr_dev_t * dev, uint8_t block, uint16_t addr, uint8
     r = libusb_control_transfer(dev->devh, CTRL_IN, 0, addr, index, data, len, CTRL_TIMEOUT);
 
     if (r < 0)
-        fprintf(stderr, "%s failed with %d\n", __FUNCTION__, r);
+        fprintf(stderr, "%s failed with %d\n", __func__, r);
 
     reg = (data[1] << 8) | data[0];
 
@@ -311,7 +311,7 @@ int rtlsdr_write_reg(rtlsdr_dev_t * dev, uint8_t block, uint16_t addr, uint16_t 
     r = libusb_control_transfer(dev->devh, CTRL_OUT, 0, addr, index, data, len, CTRL_TIMEOUT);
 
     if (r < 0)
-        fprintf(stderr, "%s failed with %d\n", __FUNCTION__, r);
+        fprintf(stderr, "%s failed with %d\n", __func__, r);
 
     return r;
 }
@@ -328,7 +328,7 @@ uint16_t rtlsdr_demod_read_reg(rtlsdr_dev_t * dev, uint8_t page, uint16_t addr, 
     r = libusb_control_transfer(dev->devh, CTRL_IN, 0, addr, index, data, len, CTRL_TIMEOUT);
 
     if (r < 0)
-        fprintf(stderr, "%s failed with %d\n", __FUNCTION__, r);
+        fprintf(stderr, "%s failed with %d\n", __func__, r);
 
     reg = (data[1] << 8) | data[0];
 
@@ -352,7 +352,7 @@ int rtlsdr_demod_write_reg(rtlsdr_dev_t * dev, uint8_t page, uint16_t addr, uint
     r = libusb_control_transfer(dev->devh, CTRL_OUT, 0, addr, index, data, len, CTRL_TIMEOUT);
 
     if (r < 0)
-        fprintf(stderr, "%s failed with %d\n", __FUNCTION__, r);
+        fprintf(stderr, "%s failed with %d\n", __func__, r);
 
     rtlsdr_demod_read_reg(dev, 0x0a, 0x01, 1);
 
