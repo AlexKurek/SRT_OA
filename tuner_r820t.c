@@ -2797,9 +2797,9 @@ R828_ErrCode R828_GetRfGain(void *pTuner, R828_RF_Gain_Info * pR828_rf_gain)
  */
 
 #define VGA_BASE_GAIN -47
-static const int r820t_vga_gain_steps[] = {
-    0, 26, 26, 30, 42, 35, 24, 13, 14, 32, 36, 34, 35, 37, 35, 36
-};
+// static const int r820t_vga_gain_steps[] = {
+    // 0, 26, 26, 30, 42, 35, 24, 13, 14, 32, 36, 34, 35, 37, 35, 36
+// };
 
 static const int r820t_lna_gain_steps[] = {
     0, 9, 13, 40, 38, 13, 31, 22, 26, 31, 26, 14, 19, 5, 35, 13
