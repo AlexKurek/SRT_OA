@@ -8,7 +8,7 @@ LIBS=`pkg-config gtk+-2.0 --libs`
 # vspectra_four.c dongle + c-coded FFT (which is slower)
 
 Warning_FLAGS="-Wall -Wextra -Wpedantic -Wformat=2 -Wno-unused-parameter -Wshadow -Wwrite-strings -Wstrict-prototypes -Wold-style-definition -Wredundant-decls -Wnested-externs -Wmissing-include-dirs -Wjump-misses-init -Wlogical-op"
-All_FLAGS="${Warning_FLAGS} -O3 $CFLAGS"
+All_FLAGS="${Warning_FLAGS} -O3 -m64 -march=native $CFLAGS"
 
 # compile for dongle + amd FFT 
 #gcc ${All_FLAGS} main.c vspectra.c disp.c plot.c cat.c geom.c time.c outfile.c sport.c map.c cmdfl.c cal.c srthelp.c velspec.c four.c  amdfft.c librtlsdr.c tuner_r820t.c $LIBS -lm -lacml /usr/lib/libgfortran.a `pkg-config --libs --cflags libusb-1.0` 
