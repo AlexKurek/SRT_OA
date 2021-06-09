@@ -21,12 +21,15 @@ int catfile(void)
     d1.unitid = 0;
     d1.record_spec = 0;
     d1.noisecal = 300.0;
-    if ((file1 = fopen(d1.catnam, "r")) == NULL) {
+    if ((file1 = fopen(d1.catnam, "r")) == NULL)
+	{
         printf(" Unable to open %s\n", d1.catnam);
         return 0;
     }
-    while (fgets(buf, 256, file1) != 0) {
-        if (buf[0] != '*' && buf[0] != '#') {
+    while (fgets(buf, 256, file1) != 0)
+	{
+        if (buf[0] != '*' && buf[0] != '#')
+		{
             if (kmatch(buf, "STATION ")) // space forces exact match
             {
                 sscanf(buf, "%*s %lf %lf %24s %lf", &d1.lat, &d1.lon, d1.statnam, &d1.hgt);
@@ -37,7 +40,8 @@ int catfile(void)
                 sscanf(buf, "%*s %lf %lf", &d1.azlim1, &d1.azlim2);
             if (kmatch(buf, "ELLIMITS "))
                 sscanf(buf, "%*s %lf %lf", &d1.ellim1, &d1.ellim2);
-            if (kmatch(buf, "STOWPOS ")) {
+            if (kmatch(buf, "STOWPOS "))
+			{
                 sscanf(buf, "%*s %lf %lf", &d1.stowaz, &d1.stowel);
                 d1.stowatlim = 0;
             }
@@ -47,7 +51,8 @@ int catfile(void)
                 sscanf(buf, "%*s %lf", &d1.tcal);
             if (kmatch(buf, "CALMODE "))
                 sscanf(buf, "%*s %d", &d1.calmode); // 0-normal
-            if (kmatch(buf, "SIMULATE")) {
+            if (kmatch(buf, "SIMULATE"))
+			{
                 if (strstr(buf, "ANTENNA"))
                     d1.azelsim = 1;
                 if (strstr(buf, "RECEIVER"))
@@ -73,37 +78,42 @@ int catfile(void)
                 sscanf(buf, "%*s %lf", &d1.beamw);
             if (kmatch(buf, "TOLERANCE "))
                 sscanf(buf, "%*s %d", &d1.ptoler);
-            if (kmatch(buf, "CASSIMOUNT")) {
+            if (kmatch(buf, "CASSIMOUNT"))
+			{
                 d1.rod = 1;
                 d1.azcounts_per_deg = 8.0 * 32.0 * 60.0 / (360.0 * 9.0);
                 sscanf(buf, "%*s %lf %lf %lf %lf %lf", &d1.rod1, &d1.rod2, &d1.rod3, &d1.rod4, &d1.rod5);
             }
-            if (kmatch(buf, "H180MOUNT")) {
+            if (kmatch(buf, "H180MOUNT"))
+			{
                 d1.rod = 0;
                 d1.azcounts_per_deg = (52.0 * 27.0 / 120.0); // for H-180
                 d1.elcounts_per_deg = (52.0 * 27.0 / 120.0); // for H-180
                 d1.rot2mode = 10; // for old SRT controller
             }
-            if (kmatch(buf, "ALFASPID")) {
+            if (kmatch(buf, "ALFASPID"))
+			{
                 d1.rod = 0;
                 d1.azcounts_per_deg = 1.0; // for SPID
                 d1.elcounts_per_deg = 1.0; // for SPID
             }
-            if (kmatch(buf, "BIGRAS")) {
+            if (kmatch(buf, "BIGRAS"))
+			{
                 d1.rot2mode = 1; // for BIG RAS
             }
-            if (kmatch(buf, "ROT2SLP")) {
+            if (kmatch(buf, "ROT2SLP"))
                 sscanf(buf, "%*s %d", &d1.rot2slp);   // sleep time in seconds
-            }
             if (kmatch(buf, "AZCOUNTS "))
                 sscanf(buf, "%*s %lf", &d1.azcounts_per_deg);
-            if (kmatch(buf, "ELCOUNTS ")) {
+            if (kmatch(buf, "ELCOUNTS "))
+			{
                 sscanf(buf, "%*s %lf", &d1.elcounts_per_deg);
                 d1.rod = 0;
             }
             if (kmatch(buf, "AZELPORT "))
                 sscanf(buf, "%*s %x", &d1.azelport);
-            if (kmatch(buf, "COMMAND")) {
+            if (kmatch(buf, "COMMAND"))
+			{
                 d1.cmdfl = 1;
                 d1.cmdfline = 0;
                 d1.secstop = d1.secs + 4; // time to get to stow
@@ -121,31 +131,32 @@ int catfile(void)
             if (kmatch(buf, "BANDWIDTH ")) {
                 sscanf(buf, "%*s %lf", &d1.fbw);
             }
-            if (kmatch(buf, "NUMFREQ ")) {
+            if (kmatch(buf, "NUMFREQ "))
+			{
                 sscanf(buf, "%*s %d", &d1.nfreq);
                 if (d1.nfreq > NSPEC || d1.nfreq < 1)
                     d1.nfreq = NSPEC;
             }
-            if (kmatch(buf, "DATADIR")) {
+            if (kmatch(buf, "DATADIR"))
+			{
                 d1.datadir[0] = 0;
                 if (strstr(buf, "DATADIR "))
                     sscanf(buf, "%*s %255s", d1.datadir);
             }
             if (kmatch(buf, "COUNTPERSTEP "))
                 sscanf(buf, "%*s %d", &d1.countperstep);
-            if (kmatch(buf, "RECORD")) {
+            if (kmatch(buf, "RECORD"))
+			{
                 sscanf(buf, "%*s %d", &d1.record_int_sec);
                 if (strstr(buf, "SPEC"))
                     d1.record_spec = 1;
                 if (strstr(buf, "RCLR"))
                     d1.record_clearint = 1; // clears integration each output
             }
-            if (kmatch(buf, "NODISPLAY")) {
+            if (kmatch(buf, "NODISPLAY"))
                 d1.displ = 0;
-            }
-            if (kmatch(buf, "LOCKSRT")) {
+            if (kmatch(buf, "LOCKSRT"))
                 d1.lock = 1;
-            }
             if (kmatch(buf, "NOPRINTOUT"))
                 d1.printout = 0;
             if (kmatch(buf, "DEBUG"))
@@ -156,7 +167,8 @@ int catfile(void)
                 sscanf(buf, "%*s %d:%d:%d:%d:%d", &yr, &dy, &hr, &mn, &sc);
                 d1.start_sec = tosecs(yr, dy, hr, mn, sc);
             }
-            if (kmatch(buf, "SOU ")) {
+            if (kmatch(buf, "SOU "))
+			{
                 epoc[d1.nsou] = 2000.0; // default
                 sscanf(buf, "%*s %lf %lf %lf %lf %lf %lf %24s %lf", &rah, &ram,
                        &rass, &decd, &decm, &decss, sounam[d1.nsou], &epoc[d1.nsou]);
@@ -169,7 +181,8 @@ int catfile(void)
                 if (d1.nsou < NSOU)
                     d1.nsou++;
             }
-            if (kmatch(buf, "GALACTIC ")) {
+            if (kmatch(buf, "GALACTIC "))
+			{
                 epoc[d1.nsou] = 2000.0;
                 sscanf(buf, "%*s %lf %lf %24s", &glon, &glat, sounam[d1.nsou]);
                 GalactictoRadec(glat, glon, &ras[d1.nsou], &decs[d1.nsou]);
@@ -177,16 +190,17 @@ int catfile(void)
                 if (d1.nsou < NSOU)
                     d1.nsou++;
             }
-            if (kmatch(buf, "AZEL ")) {
+            if (kmatch(buf, "AZEL "))
+			{
                 sscanf(buf, "%*s %lf %lf %24s", &ras[d1.nsou], &decs[d1.nsou], sounam[d1.nsou]);
                 soutype[d1.nsou] = 1;
                 if (d1.nsou < NSOU)
                     d1.nsou++;
             }
-            if (kmatch(buf, "RFISIGMA ")) { // level at which to report RFI default = 6 
+            if (kmatch(buf, "RFISIGMA ")) // level at which to report RFI default = 6 
                 sscanf(buf, "%*s %lf", &d1.rfisigma);
-            }
-            if (kmatch(buf, "RFI ")) {
+            if (kmatch(buf, "RFI "))
+			{
                 d1.rfiwid[d1.nrfi] = 0;
                 sscanf(buf, "%*s %lf %lf", &d1.rfi[d1.nrfi], &d1.rfiwid[d1.nrfi]);
                 if (d1.nrfi < NRFI)
@@ -194,9 +208,8 @@ int catfile(void)
             }
         }
     }
-    for (i = 0; i < d1.nsou; i++) {
+    for (i = 0; i < d1.nsou; i++)
         sprintf(sounam[i], "%s", strncat(sounam[i], " ", 1));
-    }
     fclose(file1);
     return 1;
 }
@@ -208,7 +221,8 @@ char *kmatch(char *buf, char *ct)
     char *p, *q;
     i = 0;
     p = 0;
-    while ((unsigned) i <= strlen(buf) && !p) {
+    while ((unsigned) i <= strlen(buf) && !p)
+	{
         if (buf[i] != ' ')
             p = &buf[i];
         i++;
