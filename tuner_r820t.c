@@ -2855,11 +2855,8 @@ R828_ErrCode R828_SetRfGain(void *pTuner, int gain)
 
 R828_ErrCode R828_RfGainMode(void *pTuner, int manual)
 {
-    UINT8 MixerGain;
-    UINT8 LnaGain;
-
-    MixerGain = 0;
-    LnaGain = 0;
+    // UINT8 MixerGain = 0;
+    // UINT8 LnaGain = 0;
 
     if (manual) {
         //LNA auto off

@@ -28,5 +28,10 @@ gcc ${All_FLAGS} main.c vspectra_fftw.c disp.c plot.c cat.c geom.c time.c outfil
 # compile for dongle + c-coded  FFT 
 #gcc ${All_FLAGS} main.c vspectra_four.c disp.c plot.c cat.c geom.c time.c outfile.c sport.c map.c cmdfl.c cal.c srthelp.c velspec.c four.c librtlsdr.c tuner_r820t.c $LIBS-lm `pkg-config --libs --cflags libusb-1.0`
 
-cp a.out srtn
-rm a.out
+if [ -e a.out ]
+then
+	cp a.out srtn
+	rm a.out
+else
+	echo "Something went wrong, 'a.out' not produced"
+fi
