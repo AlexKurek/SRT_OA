@@ -2797,9 +2797,9 @@ R828_ErrCode R828_GetRfGain(void *pTuner, R828_RF_Gain_Info * pR828_rf_gain)
  */
 
 #define VGA_BASE_GAIN -47
-static const int r820t_vga_gain_steps[] = {
-    0, 26, 26, 30, 42, 35, 24, 13, 14, 32, 36, 34, 35, 37, 35, 36
-};
+// static const int r820t_vga_gain_steps[] = {
+    // 0, 26, 26, 30, 42, 35, 24, 13, 14, 32, 36, 34, 35, 37, 35, 36
+// };
 
 static const int r820t_lna_gain_steps[] = {
     0, 9, 13, 40, 38, 13, 31, 22, 26, 31, 26, 14, 19, 5, 35, 13
@@ -2855,11 +2855,8 @@ R828_ErrCode R828_SetRfGain(void *pTuner, int gain)
 
 R828_ErrCode R828_RfGainMode(void *pTuner, int manual)
 {
-    UINT8 MixerGain;
-    UINT8 LnaGain;
-
-    MixerGain = 0;
-    LnaGain = 0;
+    // UINT8 MixerGain = 0;
+    // UINT8 LnaGain = 0;
 
     if (manual) {
         //LNA auto off

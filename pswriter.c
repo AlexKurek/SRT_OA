@@ -34,10 +34,11 @@ int main(void)
         printf("Failed to read input\n");
 		return -1;
     }
-	if ((dfile = fopen(datafile, "r")) == NULL) {
-            printf("cannot read %s\n", datafile);
-            return 0;
-        }
+	if ((dfile = fopen(datafile, "r")) == NULL)
+	{
+		printf("cannot read %s\n", datafile);
+		return 0;
+    }
 
 //Ask user to enter observation to be read
 	printf("Enter observation number to read: ");
@@ -53,9 +54,10 @@ int main(void)
 	{
 	//Scan in first two lines of data
 		if (fscanf(dfile, "%[^\n]\n", buf) == 1) {} 
-		else {
+		else
+		{
 			printf("Failed to read input\n");
-		return -1;
+			return -1;
 		}
 		if (buf[0] == '*')
 		{
@@ -66,7 +68,8 @@ int main(void)
 				printf("Failed to read input\n");
 				return -1;
 			}
-		} else
+		}
+		else
 		{
 			sscanf(buf, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
         	      	         &yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack);
@@ -148,7 +151,8 @@ int main(void)
         printf("Failed to read input\n");
 		return -1;
     }
-        if ((file1 = fopen(fnam, "wx")) == NULL) {
+        if ((file1 = fopen(fnam, "wx")) == NULL)
+		{
             printf("cannot write %s\n", fnam);
             return 0;
         }
@@ -170,9 +174,11 @@ int main(void)
         av = avx = avy = avxx = avxy = 0.0;
 
 //    for (j = j1; j < j2+1; j++) {
-    for (j = 0; j < np; j++) {
+    for (j = 0; j < np; j++)
+	{
         dd = pp[j];
-        if (j >= j1 && j < j2) {
+        if (j >= j1 && j < j2)
+		{
             avx += j;
             avy += dd;
             avxx += j * j;
@@ -183,14 +189,14 @@ int main(void)
         }
     }
     slope = (-avx * avy + av * avxy) / (av * avxx - avx * avx);
-    for (j = j1; j < j2; j++) {
+    for (j = j1; j < j2; j++)
+	{
         if (np > 1)
             pp[j] -= slope * (double) (j - j1) / ((double) (j2 - j1) - 1.0);
         dd = pp[j];
-        if (dd > dmax) {
+        if (dd > dmax)
             dmax = dd;
             // jmax = j;
-        }
         if (dd < dmin)
             dmin = dd;
     }
@@ -206,7 +212,8 @@ int main(void)
     else
         xx = freq;
 
-    if (np > 1) {
+    if (np > 1)
+	{
         sprintf(txt, "%4d:%03d:%02d:%02d:%02d", yr, da, hr, mn, sc);
         x1 = (125 + xoffset) * sx;
         y1 = (yoffset - 20.0) * sy;
@@ -219,14 +226,16 @@ int main(void)
         psx1 = x1 / sx;
         psy1 = yps - y1 / sy;
         fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
-        if (soutrack[0] > 0) {
+        if (soutrack[0] > 0)
+		{
             sprintf(txt, "%s", soutrack);
             x1 = (xoffset + 20.0) * sx;
             y1 = (yoffset + 15.0) * sy;
             psx1 = x1 / sx;
             psy1 = yps - y1 / sy;
             fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
-            if (!strstr(soutrack, "Sun") && !strstr(soutrack, "Moon")) {
+            if (!strstr(soutrack, "Sun") && !strstr(soutrack, "Moon"))
+			{
                 sprintf(txt, "Galactic l = %3.0f b = %3.0f", glon, glat);
                 x1 = (xoffset + 60.0) * sx;
                 y1 = (yoffset + 15.0) * sy;
@@ -235,7 +244,8 @@ int main(void)
                 fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
             }
         }
-        for (y = 0; y < 2; y++) {
+        for (y = 0; y < 2; y++)
+		{
             x1 = xoffset * sx;
             y1 = (yoffset + y * 319) * sy;
             x2 = (xoffset + 320) * sx;
@@ -260,7 +270,8 @@ int main(void)
 
         yp = 0;
         xp = (npoint - 1) * 320.0 / (double) npoint;
-        for (j = 1; j < npoint; j++) {
+        for (j = 1; j < npoint; j++)
+		{
             x = (npoint - j) * 320.0 / (double) npoint;
             xx = j / (double) npoint;
             k = (int) (xx * (double) np + 0.5);
@@ -277,12 +288,14 @@ int main(void)
                 y = 260;
             if (j == 1)
                 yp = y;
-            if (y != yp) {
+            if (y != yp)
+			{
                 if (k >= j1 + 1 && k < j2 - 1)
                     i = 1;
                 else
                     i = 0;
-                if (i) {
+                if (i)
+				{
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + yp) * sy;
                     x2 = (xp + xoffset) * sx;
@@ -294,7 +307,8 @@ int main(void)
                                 psy1, psx2, psy1);
                 }
                 xp = x;
-                if (y > yp && i) {
+                if (y > yp && i)
+				{
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + yp) * sy;
                     y2 = (yoffset + y) * sy;
@@ -305,7 +319,8 @@ int main(void)
                     fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
                                 psy1, psx1, psy2);
                 }
-                if (yp > y && i) {
+                if (yp > y && i)
+				{
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + y) * sy;
                     y2 = (yoffset + yp) * sy;
@@ -320,21 +335,22 @@ int main(void)
             yp = y;
         }
 
-        if (freq > 1500.0)
-        restfreq = 1612.201;    // OH line
+    if (freq > 1500.0)
+		restfreq = 1612.201;    // OH line
 	else
 		restfreq=1420.405752;
-        fstart = freq + (double) (1 - np / 2) * freqsep;
-        fstop = freq + (double) (np - 1 - np / 2) * freqsep;
-        vstart = -vlsr - (fstop - restfreq) * 299790.0 / restfreq;
-        vstop = -vlsr - (fstart - restfreq) * 299790.0 / restfreq;
-        ddd = fstop - fstart;
-        n3 = (int) (ddd) + 1;
-        ddd = 10.0 / n3;
-        j1 = (int) (fstart * ddd);
-        j2 = (int) (fstop * ddd);
+	fstart = freq + (double) (1 - np / 2) * freqsep;
+	fstop = freq + (double) (np - 1 - np / 2) * freqsep;
+	vstart = -vlsr - (fstop - restfreq) * 299790.0 / restfreq;
+	vstop = -vlsr - (fstart - restfreq) * 299790.0 / restfreq;
+	ddd = fstop - fstart;
+	n3 = (int) (ddd) + 1;
+	ddd = 10.0 / n3;
+	j1 = (int) (fstart * ddd);
+	j2 = (int) (fstop * ddd);
 	fprintf(file1, "/Times-Roman findfont\n 10 scalefont\n setfont\n");
-        for (j = j1 + 1; j <= j2; j++) {
+        for (j = j1 + 1; j <= j2; j++)
+		{
             dd = ((double) (j) / ddd - freq + (double) (np / 2) * freqsep)
                 * 320.0 / ((double) (np) * freqsep);
             x1 = (320 - dd + xoffset) * sx;
@@ -364,7 +380,8 @@ int main(void)
         j1 = (int) (vstart / ddd);
         j2 = (int) (vstop / ddd);
 	fprintf(file1, "/Times-Roman findfont\n 8 scalefont\n setfont\n");
-        for (j = j1 + 1; j <= j2 - 1; j++) {
+        for (j = j1 + 1; j <= j2 - 1; j++)
+		{
             freqq = restfreq - ((double) (j) * ddd + vlsr) * restfreq / 299790.0;
             dd = (freqq - freq + (double) (np / 2) * freqsep)
                 * 320.0 / ((double) (np) * freqsep);
@@ -400,9 +417,11 @@ int main(void)
         dd = 0.5 * pow(2.0, (double) j);
         j1 = 0;
         j2 = (int) (scale / dd);
-        for (j = 0; j <= j2; j++) {
+        for (j = 0; j <= j2; j++)
+		{
             y = (int) (260.0 - ((double) j * dd / scale) * 260.0);
-            if (y > 0) {
+            if (y > 0)
+			{
                 x1 = xoffset * sx;
                 y1 = (yoffset + y) * sy;
                 x2 = (10 + xoffset) * sx;
@@ -422,7 +441,8 @@ int main(void)
             }
         }
         yy = ((3.0 * sigma) / scale) * 260.0;
-        if (yy > 0.0) {
+        if (yy > 0.0)
+		{
             x1 = (xoffset + 310) * sx;
             y1 = (yoffset + 10) * sy;
             x2 = (xoffset + 310) * sx;
