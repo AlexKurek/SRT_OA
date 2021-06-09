@@ -34,7 +34,8 @@ void vspectra(void)
 
     int i, j, k, kk, num, numm, i4, maxi, r;
     int m, mm, blsiz, blsiz2, nsam, n_read;
-    double avsig, av, max, min, noise, wid;
+    // double avsig, av, max, min, noise, wid;
+	double av, max, noise, wid;
     uint8_t *bufferRead = malloc((NSAM) * sizeof(uint8_t));
     static double vspec[NSPEC];
     static int wtt[NSPEC];
@@ -62,14 +63,15 @@ void vspectra(void)
     num = d1.nblk;              //was 20   // was 100
     nsam = NSAM;
     d1.nsam = NSAM * num;
-    avsig = 0;
+    // avsig = 0;
     numm = 0;
     smax = 0;
     max = -1e99;
-    min = 1e99;
+    // min = 1e99;
     for (i = 0; i < blsiz2; i++)
         vspec[i] = 0.0;
-    for (k = 0; k < num; k++) {
+    for (k = 0; k < num; k++)
+	{
         if (!d1.radiosim)
 // Read the raw data from the RTL Dongle
             r = rtlsdr_read_sync(dev, bufferRead, nsam, &n_read);
