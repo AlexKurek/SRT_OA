@@ -8,147 +8,151 @@
  
 int main(void)
 {
-	char txt[100], fnam[80], datafile[80];
-	// int i, j, jmax, k, j1, j2, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2;
-	int i, j, k, j1, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2; // jmax, j2, np
-	int j2 = 0; // to avoid warnings
-	int np = 0; // to avoid warnings
-	double xx, yy, dmax, ddmax, dmin, slope, dd, ddd, totpp, scale, sigma, freq, freqq, fstart, fstop, vstart, vstop, xoffset;
-	double freqsep, x1, x2, y1, y2, wid, sx, sy, yoffset, x, y, xp, yp, av, avx, avy, avxx, avxy, psx1, psx2, psy1, psy2, yps;
-	double restfreq;
+    char txt[100], fnam[80], datafile[80];
+    // int i, j, jmax, k, j1, j2, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2;
+    int i, j, k, j1, n3, npoint, yr, da, hr, mn, sc, obsn1, obsn2; // jmax, j2, np
+    int j2 = 0; // to avoid warnings
+    int np = 0; // to avoid warnings
+    double xx, yy, dmax, ddmax, dmin, slope, dd, ddd, totpp, scale, sigma, freq, freqq, fstart, fstop, vstart, vstop, xoffset;
+    double freqsep, x1, x2, y1, y2, wid, sx, sy, yoffset, x, y, xp, yp, av, avx, avy, avxx, avxy, psx1, psx2, psy1, psy2, yps;
+    double restfreq;
 
 //Added variables for data input from file
-	double aznow, elnow, tsys, tant, vlsr, glat, glon, bw, fbw, integ;
-	int nfreq, nsam, bsw, intp;
-	char soutrack[80], buf[80];
-	double pp[512];
-	FILE *file1 = NULL;
-	FILE *dfile=NULL;
+    double aznow, elnow, tsys, tant, vlsr, glat, glon, bw, fbw, integ;
+    int nfreq, nsam, bsw, intp;
+    char soutrack[80], buf[80];
+    double pp[512];
+    FILE *file1 = NULL;
+    FILE *dfile=NULL;
 
 //Ask user to enter name of data file to be read
-	printf("Enter name of data file: ");
-	if (scanf("%s", datafile) == 1)
-		printf("%s", datafile);
-	else
-	{
+    printf("Enter name of data file: ");
+    if (scanf("%s", datafile) == 1)
+        printf("%s", datafile);
+    else
+    {
         printf("Failed to read input\n");
-		return -1;
+        return -1;
     }
-	if ((dfile = fopen(datafile, "r")) == NULL) {
-            printf("cannot read %s\n", datafile);
-            return 0;
-        }
+    if ((dfile = fopen(datafile, "r")) == NULL)
+    {
+        printf("cannot read %s\n", datafile);
+        return 0;
+    }
 
 //Ask user to enter observation to be read
-	printf("Enter observation number to read: ");
-	if (scanf("%d", &obsn1) ==1)
-		printf("%d", obsn1);
+    printf("Enter observation number to read: ");
+    if (scanf("%d", &obsn1) ==1)
+        printf("%d", obsn1);
     else
-	{
+    {
         printf("Failed to read input\n");
-		return -1;
+        return -1;
     }
-	obsn2=-1; //Initialize obsn2 for first comparison
-	while(obsn1!=obsn2)	//Scan in data file until entered and scanned observation numbers match
-	{
-	//Scan in first two lines of data
-		if (fscanf(dfile, "%[^\n]\n", buf) == 1) {} 
-		else {
-			printf("Failed to read input\n");
-		return -1;
-		}
-		if (buf[0] == '*')
-		{
-			if (fscanf(dfile, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
-				&yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack) == 1) {}
-			else
-			{
-				printf("Failed to read input\n");
-				return -1;
-			}
-		} else
-		{
-			sscanf(buf, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
-        	      	         &yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack);
-		}
-		if (fscanf(dfile, "Fstart %lf fstop %lf spacing %lf bw %lf fbw %lf MHz nfreq %d nsam %d npoint %d integ %lf sigma %lf bsw %d\n",
-      	                 &fstart, &fstop, &freqsep, &bw, &fbw, &nfreq, &nsam, &npoint, &integ, &sigma, &bsw) == 1) {}
-		else
-		{
-			printf("Failed to read input\n");
-			return -1;
-		}
-	//Calculate a few things that are based on early data in the file and are needed to define later scanning from the file
-		np = npoint;
-		j1 = np * 0;
-		j2 = np * 1;
-	//Scan in spectrum data
-		if (fscanf(dfile, "Spectrum %2d integration periods\n", &intp) == 1) {}
-		else
-		{
-			printf("Failed to read input file\n");
-			return -1;
-		}
-	        for (j=0; j<j2; j++)
-			if (fscanf(dfile, "%lf ", &pp[j]) == 1) {}
-			else
-			{
-				printf("Failed to read input file\n");
-				return -1;
-			}
-	        if (fscanf(dfile, "\n") == 1) {}
-			else
-			{
-				printf("Failed to read input file\n");
-				return -1;
-			}
-		if (fabs(pp[0] - pp[1]) > 200)
-		{
-			intp = 1;
-			fseek(dfile, -9 * np, SEEK_CUR);
-			if (fscanf(dfile, "Spectrum \n")== 1) {}
-			else
-			{
-				printf("Failed to read input file\n");
-				return -1;
-			}
-			for (j=0; j<j2; j++)
-				if (fscanf(dfile, "%lf ", &pp[j])== 1) {}
-				else
-				{
-					printf("Failed to read input file\n");
-					return -1;
-				}
-			if (fscanf(dfile, "\n")== 1) {}
-			else
-			{
-				printf("Failed to read input file\n");
-				return -1;
-			}
-		}
-	}
+    obsn2=-1; //Initialize obsn2 for first comparison
+    while(obsn1!=obsn2) //Scan in data file until entered and scanned observation numbers match
+    {
+    //Scan in first two lines of data
+        if (fscanf(dfile, "%[^\n]\n", buf) == 1) {} 
+        else
+        {
+            printf("Failed to read input\n");
+            return -1;
+        }
+        if (buf[0] == '*')
+        {
+            if (fscanf(dfile, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
+                &yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack) == 1) {}
+            else
+            {
+                printf("Failed to read input\n");
+                return -1;
+            }
+        }
+        else
+        {
+            sscanf(buf, "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %lf el %lf freq_MHz %lf Tsys %lf Tant %lf vlsr %lf glat %lf glon %lf source %s\n",
+                             &yr, &da, &hr, &mn, &sc, &obsn2, &aznow, &elnow, &freq, &tsys, &tant, &vlsr, &glat, &glon, soutrack);
+        }
+        if (fscanf(dfile, "Fstart %lf fstop %lf spacing %lf bw %lf fbw %lf MHz nfreq %d nsam %d npoint %d integ %lf sigma %lf bsw %d\n",
+                         &fstart, &fstop, &freqsep, &bw, &fbw, &nfreq, &nsam, &npoint, &integ, &sigma, &bsw) == 1) {}
+        else
+        {
+            printf("Failed to read input\n");
+            return -1;
+        }
+    //Calculate a few things that are based on early data in the file and are needed to define later scanning from the file
+        np = npoint;
+        j1 = np * 0;
+        j2 = np * 1;
+    //Scan in spectrum data
+        if (fscanf(dfile, "Spectrum %2d integration periods\n", &intp) == 1) {}
+        else
+        {
+            printf("Failed to read input file\n");
+            return -1;
+        }
+            for (j=0; j<j2; j++)
+            if (fscanf(dfile, "%lf ", &pp[j]) == 1) {}
+            else
+            {
+                printf("Failed to read input file\n");
+                return -1;
+            }
+            if (fscanf(dfile, "\n") == 1) {}
+            else
+            {
+                printf("Failed to read input file\n");
+                return -1;
+            }
+        if (fabs(pp[0] - pp[1]) > 200)
+        {
+            intp = 1;
+            fseek(dfile, -9 * np, SEEK_CUR);
+            if (fscanf(dfile, "Spectrum \n")== 1) {}
+            else
+            {
+                printf("Failed to read input file\n");
+                return -1;
+            }
+            for (j=0; j<j2; j++)
+                if (fscanf(dfile, "%lf ", &pp[j])== 1) {}
+                else
+                {
+                    printf("Failed to read input file\n");
+                    return -1;
+                }
+            if (fscanf(dfile, "\n")== 1) {}
+            else
+            {
+                printf("Failed to read input file\n");
+                return -1;
+            }
+        }
+    }
 
 //Print out scanned data
-	printf("Data scanned from file:\n");
-	printf("DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %3.0f el %2.0f freq_MHz %10.4f Tsys %6.3f Tant %6.3f vlsr %7.2f glat %6.3f glon %6.3f source %s\n",
+    printf("Data scanned from file:\n");
+    printf("DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %3.0f el %2.0f freq_MHz %10.4f Tsys %6.3f Tant %6.3f vlsr %7.2f glat %6.3f glon %6.3f source %s\n",
                         yr, da, hr, mn, sc, obsn2, aznow, elnow, freq, tsys, tant, vlsr, glat, glon, soutrack);
-	printf("Fstart %8.3f fstop %8.3f spacing %8.6f bw %8.3f fbw %8.3f MHz nfreq %d nsam %d npoint %d integ %5.0f sigma %8.3f bsw %d\n",
+    printf("Fstart %8.3f fstop %8.3f spacing %8.6f bw %8.3f fbw %8.3f MHz nfreq %d nsam %d npoint %d integ %5.0f sigma %8.3f bsw %d\n",
                         fstart, fstop, freqsep, bw, fbw, nfreq, nsam, npoint, integ, sigma, bsw);
-	printf("Spectrum     %d integration periods\n", intp);
-	for (j=0; j<j2; j++)
-		printf("%8.3f ", pp[j]);
-	printf("j=%d\n", j);
+    printf("Spectrum     %d integration periods\n", intp);
+    for (j=0; j<j2; j++)
+        printf("%8.3f ", pp[j]);
+    printf("j=%d\n", j);
 
 //Write postscript set up commands
-	printf("\nEnter postscript file name: ");
-	if (scanf("%s", fnam) == 1)
-		printf("%s", fnam);
-	else
-	{
+    printf("\nEnter postscript file name: ");
+    if (scanf("%s", fnam) == 1)
+        printf("%s", fnam);
+    else
+    {
         printf("Failed to read input\n");
-		return -1;
+        return -1;
     }
-        if ((file1 = fopen(fnam, "wx")) == NULL) {
+        if ((file1 = fopen(fnam, "wx")) == NULL)
+        {
             printf("cannot write %s\n", fnam);
             return 0;
         }
@@ -170,9 +174,11 @@ int main(void)
         av = avx = avy = avxx = avxy = 0.0;
 
 //    for (j = j1; j < j2+1; j++) {
-    for (j = 0; j < np; j++) {
+    for (j = 0; j < np; j++)
+    {
         dd = pp[j];
-        if (j >= j1 && j < j2) {
+        if (j >= j1 && j < j2)
+        {
             avx += j;
             avy += dd;
             avxx += j * j;
@@ -183,14 +189,14 @@ int main(void)
         }
     }
     slope = (-avx * avy + av * avxy) / (av * avxx - avx * avx);
-    for (j = j1; j < j2; j++) {
+    for (j = j1; j < j2; j++)
+    {
         if (np > 1)
             pp[j] -= slope * (double) (j - j1) / ((double) (j2 - j1) - 1.0);
         dd = pp[j];
-        if (dd > dmax) {
+        if (dd > dmax)
             dmax = dd;
             // jmax = j;
-        }
         if (dd < dmin)
             dmin = dd;
     }
@@ -206,7 +212,8 @@ int main(void)
     else
         xx = freq;
 
-    if (np > 1) {
+    if (np > 1)
+    {
         sprintf(txt, "%4d:%03d:%02d:%02d:%02d", yr, da, hr, mn, sc);
         x1 = (125 + xoffset) * sx;
         y1 = (yoffset - 20.0) * sy;
@@ -219,14 +226,16 @@ int main(void)
         psx1 = x1 / sx;
         psy1 = yps - y1 / sy;
         fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
-        if (soutrack[0] > 0) {
+        if (soutrack[0] > 0)
+        {
             sprintf(txt, "%s", soutrack);
             x1 = (xoffset + 20.0) * sx;
             y1 = (yoffset + 15.0) * sy;
             psx1 = x1 / sx;
             psy1 = yps - y1 / sy;
             fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
-            if (!strstr(soutrack, "Sun") && !strstr(soutrack, "Moon")) {
+            if (!strstr(soutrack, "Sun") && !strstr(soutrack, "Moon"))
+            {
                 sprintf(txt, "Galactic l = %3.0f b = %3.0f", glon, glat);
                 x1 = (xoffset + 60.0) * sx;
                 y1 = (yoffset + 15.0) * sy;
@@ -235,7 +244,8 @@ int main(void)
                 fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
             }
         }
-        for (y = 0; y < 2; y++) {
+        for (y = 0; y < 2; y++)
+        {
             x1 = xoffset * sx;
             y1 = (yoffset + y * 319) * sy;
             x2 = (xoffset + 320) * sx;
@@ -260,7 +270,8 @@ int main(void)
 
         yp = 0;
         xp = (npoint - 1) * 320.0 / (double) npoint;
-        for (j = 1; j < npoint; j++) {
+        for (j = 1; j < npoint; j++)
+        {
             x = (npoint - j) * 320.0 / (double) npoint;
             xx = j / (double) npoint;
             k = (int) (xx * (double) np + 0.5);
@@ -277,12 +288,14 @@ int main(void)
                 y = 260;
             if (j == 1)
                 yp = y;
-            if (y != yp) {
+            if (y != yp)
+            {
                 if (k >= j1 + 1 && k < j2 - 1)
                     i = 1;
                 else
                     i = 0;
-                if (i) {
+                if (i)
+                {
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + yp) * sy;
                     x2 = (xp + xoffset) * sx;
@@ -294,7 +307,8 @@ int main(void)
                                 psy1, psx2, psy1);
                 }
                 xp = x;
-                if (y > yp && i) {
+                if (y > yp && i)
+                {
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + yp) * sy;
                     y2 = (yoffset + y) * sy;
@@ -305,7 +319,8 @@ int main(void)
                     fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
                                 psy1, psx1, psy2);
                 }
-                if (yp > y && i) {
+                if (yp > y && i)
+                {
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + y) * sy;
                     y2 = (yoffset + yp) * sy;
@@ -320,21 +335,22 @@ int main(void)
             yp = y;
         }
 
-        if (freq > 1500.0)
+    if (freq > 1500.0)
         restfreq = 1612.201;    // OH line
-	else
-		restfreq=1420.405752;
-        fstart = freq + (double) (1 - np / 2) * freqsep;
-        fstop = freq + (double) (np - 1 - np / 2) * freqsep;
-        vstart = -vlsr - (fstop - restfreq) * 299790.0 / restfreq;
-        vstop = -vlsr - (fstart - restfreq) * 299790.0 / restfreq;
-        ddd = fstop - fstart;
-        n3 = (int) (ddd) + 1;
-        ddd = 10.0 / n3;
-        j1 = (int) (fstart * ddd);
-        j2 = (int) (fstop * ddd);
-	fprintf(file1, "/Times-Roman findfont\n 10 scalefont\n setfont\n");
-        for (j = j1 + 1; j <= j2; j++) {
+    else
+        restfreq=1420.405752;
+    fstart = freq + (double) (1 - np / 2) * freqsep;
+    fstop = freq + (double) (np - 1 - np / 2) * freqsep;
+    vstart = -vlsr - (fstop - restfreq) * 299790.0 / restfreq;
+    vstop = -vlsr - (fstart - restfreq) * 299790.0 / restfreq;
+    ddd = fstop - fstart;
+    n3 = (int) (ddd) + 1;
+    ddd = 10.0 / n3;
+    j1 = (int) (fstart * ddd);
+    j2 = (int) (fstop * ddd);
+    fprintf(file1, "/Times-Roman findfont\n 10 scalefont\n setfont\n");
+        for (j = j1 + 1; j <= j2; j++)
+        {
             dd = ((double) (j) / ddd - freq + (double) (np / 2) * freqsep)
                 * 320.0 / ((double) (np) * freqsep);
             x1 = (320 - dd + xoffset) * sx;
@@ -363,8 +379,9 @@ int main(void)
         ddd = 10.0 * n3;
         j1 = (int) (vstart / ddd);
         j2 = (int) (vstop / ddd);
-	fprintf(file1, "/Times-Roman findfont\n 8 scalefont\n setfont\n");
-        for (j = j1 + 1; j <= j2 - 1; j++) {
+    fprintf(file1, "/Times-Roman findfont\n 8 scalefont\n setfont\n");
+        for (j = j1 + 1; j <= j2 - 1; j++)
+        {
             freqq = restfreq - ((double) (j) * ddd + vlsr) * restfreq / 299790.0;
             dd = (freqq - freq + (double) (np / 2) * freqsep)
                 * 320.0 / ((double) (np) * freqsep);
@@ -391,7 +408,7 @@ int main(void)
             psy1 = yps - y1 / sy;
             fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
         }
-	fprintf(file1, "/Times-Roman findfont\n 10 scalefont\n setfont\n");
+    fprintf(file1, "/Times-Roman findfont\n 10 scalefont\n setfont\n");
         dd = log(scale) / log(2.0) - 0.6;
         if (dd < 0.0)
             j = (int) (dd - 0.5);
@@ -400,9 +417,11 @@ int main(void)
         dd = 0.5 * pow(2.0, (double) j);
         j1 = 0;
         j2 = (int) (scale / dd);
-        for (j = 0; j <= j2; j++) {
+        for (j = 0; j <= j2; j++)
+        {
             y = (int) (260.0 - ((double) j * dd / scale) * 260.0);
-            if (y > 0) {
+            if (y > 0)
+            {
                 x1 = xoffset * sx;
                 y1 = (yoffset + y) * sy;
                 x2 = (10 + xoffset) * sx;
@@ -422,7 +441,8 @@ int main(void)
             }
         }
         yy = ((3.0 * sigma) / scale) * 260.0;
-        if (yy > 0.0) {
+        if (yy > 0.0)
+        {
             x1 = (xoffset + 310) * sx;
             y1 = (yoffset + 10) * sy;
             x2 = (xoffset + 310) * sx;

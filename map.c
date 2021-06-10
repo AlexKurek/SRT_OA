@@ -20,7 +20,8 @@ void scanplot(void)
     double sum, az, el, a, b, mmax, max, min, dx, dy, azwid, elwid;
     double R, G, B, H, S, V, var_h, var_1, var_2, var_3, var_i, var_r, var_g, var_b;
     char txt[80];
-    if (d1.displ) {
+    if (d1.displ)
+	{
         midx = drawing_area->allocation.width / 2;
         midy = drawing_area->allocation.height / 2;
         gdk_draw_rectangle(pixmap, drawing_area->style->white_gc, TRUE, 0, 0, midx / 2, midy);
@@ -28,7 +29,8 @@ void scanplot(void)
     max = mmax = -1e99;
     min = 1e99;
     ppx = 0;
-    for (i = 0; i < 25; i++) {
+    for (i = 0; i < 25; i++)
+	{
         if (scanpwr[i + 1] > max)
             max = scanpwr[i + 1];
         if (scanpwr[i + 1] < min)
@@ -36,10 +38,13 @@ void scanplot(void)
     }
 //printf("max %f min %f\n",max,min);
     mx = my = 0;
-    for (x = -50; x < 50; x++) {
-        for (y = -50; y < 49; y++) {
+    for (x = -50; x < 50; x++)
+	{
+        for (y = -50; y < 49; y++)
+		{
             sum = 0.0;
-            for (i = 0; i < 25; i++) {
+            for (i = 0; i < 25; i++)
+			{
                 az = (double) ((i % 5) - 2);
                 el = (double) (i / 5 - 2);
                 dx = x * 0.05 - az;
@@ -57,7 +62,8 @@ void scanplot(void)
                 sum += a * b * (scanpwr[i + 1] - min);
             }
             a = sum;
-            if (a > mmax) {
+            if (a > mmax)
+			{
                 mmax = a;
                 mx = x;
                 my = y;
@@ -96,34 +102,47 @@ void scanplot(void)
                 R = V * 0xffff; //RGB results = From 0 to 0xffff
                 G = V * 0xffff;
                 B = V * 0xffff;
-            } else {
+            }
+			else
+			{
                 var_h = H * 6;
                 var_i = (int) (var_h);
                 var_1 = V * (1 - S);
                 var_2 = V * (1 - S * (var_h - var_i));
                 var_3 = V * (1 - S * (1 - (var_h - var_i)));
 
-                if (var_i == 0) {
+                if (var_i == 0)
+				{
                     var_r = V;
                     var_g = var_3;
                     var_b = var_1;
-                } else if (var_i == 1) {
+                }
+				else if (var_i == 1)
+				{
                     var_r = var_2;
                     var_g = V;
                     var_b = var_1;
-                } else if (var_i == 2) {
+                }
+				else if (var_i == 2)
+				{
                     var_r = var_1;
                     var_g = V;
                     var_b = var_3;
-                } else if (var_i == 3) {
+                }
+				else if (var_i == 3)
+				{
                     var_r = var_1;
                     var_g = var_2;
                     var_b = V;
-                } else if (var_i == 4) {
+                }
+				else if (var_i == 4)
+				{
                     var_r = var_3;
                     var_g = var_1;
                     var_b = V;
-                } else {
+                }
+				else
+				{
                     var_r = V;
                     var_g = var_1;
                     var_b = var_2;
@@ -133,7 +152,8 @@ void scanplot(void)
                 G = var_g * 0xffff;
                 B = var_b * 0xffff;
             }
-            if (d1.displ) {
+            if (d1.displ)
+			{
                 color.red = R;
                 color.green = G;
                 color.blue = B;
@@ -156,10 +176,13 @@ void scanplot(void)
         }
     }
     azwid = elwid = 0.0;
-    for (x = -50; x < 50; x++) {
-        for (y = -50; y < 49; y++) {
+    for (x = -50; x < 50; x++)
+	{
+        for (y = -50; y < 49; y++)
+		{
             sum = 0.0;
-            for (i = 0; i < 25; i++) {
+            for (i = 0; i < 25; i++)
+			{
                 az = (double) ((i % 5) - 2);
                 el = (double) (i / 5 - 2);
                 dx = x * 0.05 - az;
@@ -185,7 +208,8 @@ void scanplot(void)
     }
     d1.scnazoff = d1.beamw * 0.5 * 0.05 * mx / cos(d1.elcmd * PI / 180.0);
     d1.scneloff = d1.beamw * 0.5 * 0.05 * my;
-    if (d1.printout) {
+    if (d1.printout)
+	{
         toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
         printf("%4d:%03d:%02d:%02d:%02d %3s ", yr, da, hr, mn, sc, d1.timsource);
         printf("Scan results:");
@@ -198,7 +222,8 @@ void scanplot(void)
     if (d1.ppos < 150)
         d1.ppos = 150;
 
-    if (d1.displ) {
+    if (d1.displ)
+	{
         ix = midx * 0.02;
         sprintf(txt, "scan results:");
         iy = midy * 0.80;

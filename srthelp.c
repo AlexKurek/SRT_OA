@@ -32,13 +32,13 @@ void display_help()
     GtkWidget *vertbox, *buttonbox;
     GtkWidget *scrollbox;
     GtkWidget *button_helphome, *button_helpmode, *button_helpnpoint, *button_helpbeamsw,
-        *button_helpfreq, *button_helpoffset, *button_helprecord, *button_helpcmdfl,
-        *button_helpcal, *button_helpexit;
+        *button_helpfreq, *button_helpoffset, *button_helprecord, *button_helpcmdfl, *button_helpcal, *button_helpexit;
     GdkGeometry geometry;
     GdkWindowHints geo_mask;
     //  GdkRectangle update_rect;
 
-    if (d1.helpwindow) {
+    if (d1.helpwindow)
+    {
         gtk_widget_destroy(helpwindow);
         d1.helpwindow = 0;
     }
@@ -232,7 +232,8 @@ void load_help(char *command)
     // add command to the end of cmd to get the string we are looking for
     strcat(cmd, command);
     // Open the help source file
-    if ((file1 = fopen(d1.hlpnam, "r")) == NULL) {
+    if ((file1 = fopen(d1.hlpnam, "r")) == NULL)
+    {
         printf("Unable to open %s\n", d1.hlpnam);
         return;
     }
@@ -240,7 +241,8 @@ void load_help(char *command)
     buffer = gtk_text_buffer_new(NULL);
 
     // find the starting location of this command in the file (##command)
-    while (strstr(text, cmd) == NULL) {
+    while (strstr(text, cmd) == NULL)
+    {
         if (fgets(text, 256, file1) == NULL) {
             printf("cannot find help file content\n");
             return;
@@ -250,7 +252,8 @@ void load_help(char *command)
     // get the first line to output
     fgets(text, 256, file1);
     // now loop until we find a line starting with ## to print text
-    while ((text[0] != '#') && (text[1] != '#')) {
+    while ((text[0] != '#') && (text[1] != '#'))
+    {
         gtk_text_buffer_insert_at_cursor(buffer, text, -1);
         fgets(text, 256, file1);
     }

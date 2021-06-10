@@ -14,13 +14,14 @@
 
 GtkWidget *button_psw, *button_vexit;
 
-void velspec()
+void velspec(void)
 {
     GdkGeometry geometry;
     GdkWindowHints geo_mask;
     if (d1.debug)
         printf("enter velspec\n");
-    if (d1.vwindow) {
+    if (d1.vwindow)
+    {
         gtk_widget_destroy(vwindow);
         d1.vwindow = 0;
     }
@@ -59,8 +60,7 @@ void velspec()
     g_signal_connect_swapped(G_OBJECT(button_vexit), "clicked",
                              G_CALLBACK(gtk_widget_destroy), G_OBJECT(vwindow));
     gtk_table_attach(GTK_TABLE(vtable), button_psw, 0, NUMBUTTONS - 1, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-    gtk_table_attach(GTK_TABLE(vtable), button_vexit, NUMBUTTONS - 1, NUMBUTTONS, 0, 2, GTK_FILL, GTK_FILL, 0,
-                     0);
+    gtk_table_attach(GTK_TABLE(vtable), button_vexit, NUMBUTTONS - 1, NUMBUTTONS, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
     gtk_widget_show(button_psw);
     gtk_widget_show(button_vexit);
 
@@ -106,7 +106,8 @@ gint vconfigure_event(GtkWidget * widget)
         newp = 1;
     if (vpixmap && newp)
         gdk_pixmap_unref(vpixmap);
-    if (newp) {
+    if (newp)
+    {
         if (d1.debug)
             printf("in vconfig2\n");
 
@@ -146,7 +147,7 @@ gint vexpose_event(GtkWidget * widget, GdkEventExpose * event)
     return FALSE;
 }
 
-void vquit()
+void vquit(void)
 {
     d1.vwindow = 0;
 }
@@ -164,10 +165,12 @@ void vplot(void)
     FILE *file1 = NULL;
     if (d1.integ == 0.0)
         return;
-    if (d1.psw) {
+    if (d1.psw)
+    {
         toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
         sprintf(fnam, "%s%4d_%03d_%02d_%02d.ps", d1.datadir, yr, da, hr, mn);
-        if ((file1 = fopen(fnam, "w")) == NULL) {
+        if ((file1 = fopen(fnam, "w")) == NULL)
+        {
             printf("cannot write %s\n", txt);
             return;
         }
@@ -191,12 +194,14 @@ void vplot(void)
     j2 = np * 1.0;
     npoint = 2048;
     av = avx = avy = avxx = avxy = 0.0;
-    for (j = 0; j < np; j++) {
+    for (j = 0; j < np; j++)
+    {
         pp[j] = aavspec[j + (int) (d1.f1 * d1.nfreq)];
         if (j < j1 || j > j2 - 1)
             pp[j] = 0.0;
         dd = pp[j];
-        if (j >= j1 && j < j2) {
+        if (j >= j1 && j < j2)
+        {
             avx += j;
             avy += dd;
             avxx += j * j;
@@ -207,13 +212,13 @@ void vplot(void)
         }
     }
     slope = (-avx * avy + av * avxy) / (av * avxx - avx * avx);
-    for (j = j1; j < j2; j++) {
+    for (j = j1; j < j2; j++)
+    {
         if (np > 1)
             pp[j] -= slope * (double) (j - j1) / ((double) (j2 - j1) - 1.0);
         dd = pp[j];
-        if (dd > dmax) {
+        if (dd > dmax)
             dmax = dd;
-        }
         if (dd < dmin)
             dmin = dd;
     }
@@ -229,7 +234,8 @@ void vplot(void)
     else
         xx = d1.freq;
 
-    if (np > 1) {
+    if (np > 1)
+    {
         sprintf(txt, "integ. %5.1f m", (d1.integ * d1.nsam) / (2.0e6 * d1.bw * 60.0));
         sigma = 3.0 * d1.tsys / sqrt((d1.nsam * d1.integ / (2.0e6 * d1.bw)) * freqsep * 1e6);
         if (d1.bsw != 0)
@@ -241,7 +247,8 @@ void vplot(void)
         psy1 = yps - y1 / sy;
         if (d1.psw)
             fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
-        if (soutrack[0] > 0) {
+        if (soutrack[0] > 0)
+        {
             sprintf(txt, "%s", soutrack);
             x1 = (xoffset + 20.0) * sx;
             y1 = (yoffset + 15.0) * sy;
@@ -250,7 +257,8 @@ void vplot(void)
             psy1 = yps - y1 / sy;
             if (d1.psw)
                 fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
-            if (!strstr(soutrack, "Sun") && !strstr(soutrack, "Moon")) {
+            if (!strstr(soutrack, "Sun") && !strstr(soutrack, "Moon"))
+            {
                 sprintf(txt, "Galactic l = %3.0f b = %3.0f", d1.glon, d1.glat);
                 x1 = (xoffset + 60.0) * sx;
                 y1 = (yoffset + 15.0) * sy;
@@ -261,7 +269,8 @@ void vplot(void)
                     fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
             }
         }
-        for (y = 0; y < 2; y++) {
+        for (y = 0; y < 2; y++)
+        {
             x1 = xoffset * sx;
             y1 = (yoffset + y * 319) * sy;
             x2 = (xoffset + 320) * sx;
@@ -291,7 +300,8 @@ void vplot(void)
         yp = 0;
         xp = (npoint - 1) * 320.0 / (double) npoint;
 // spec plot start
-        for (j = 1; j < npoint; j++) {
+        for (j = 1; j < npoint; j++)
+        {
             x = (npoint - j) * 320.0 / (double) npoint;
             xx = j / (double) npoint;
             k = (int) (xx * (double) np + 0.5);
@@ -308,12 +318,14 @@ void vplot(void)
                 y = 260;
             if (j == 1)
                 yp = y;
-            if (y != yp) {
+            if (y != yp)
+            {
                 if (k >= j1 + 1 && k <= j2 - 1)
                     i = 1;
                 else
                     i = 0;
-                if (i) {
+                if (i)
+                {
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + yp) * sy;
                     x2 = (xp + xoffset) * sx;
@@ -327,7 +339,8 @@ void vplot(void)
                                 psy1, psx2, psy1);
                 }
                 xp = x;
-                if (y > yp && i) {
+                if (y > yp && i)
+                {
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + yp) * sy;
                     y2 = (yoffset + y) * sy;
@@ -340,7 +353,8 @@ void vplot(void)
                         fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
                                 psy1, psx1, psy2);
                 }
-                if (yp > y && i) {
+                if (yp > y && i)
+                {
                     x1 = (x + xoffset) * sx;
                     y1 = (yoffset + y) * sy;
                     y2 = (yoffset + yp) * sy;
@@ -350,8 +364,7 @@ void vplot(void)
                     psx2 = x2 / sx;
                     psy2 = yps - y2 / sy;
                     if (d1.psw)
-                        fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
-                                psy1, psx1, psy2);
+                        fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx1, psy2);
                 }
             }
             yp = y;
@@ -368,7 +381,8 @@ void vplot(void)
         j2 = (int) (fstop * ddd);
         if (d1.psw)
             fprintf(file1, "/Times-Roman findfont\n 10 scalefont\n setfont\n");
-        for (j = j1 + 1; j <= j2; j++) {
+        for (j = j1 + 1; j <= j2; j++)
+        {
             dd = ((double) (j) / ddd - d1.freq + (double) (np / 2) * freqsep)
                 * 320.0 / ((double) (np) * freqsep);
             x1 = (320 - dd + xoffset) * sx;
@@ -405,7 +419,8 @@ void vplot(void)
         j2 = (int) (vstop / ddd);
         if (d1.psw)
             fprintf(file1, "/Times-Roman findfont\n 8 scalefont\n setfont\n");
-        for (j = j1 + 1; j < j2; j++) {
+        for (j = j1 + 1; j < j2; j++)
+        {
             freq = d1.restfreq - ((double) (j) * ddd + d1.vlsr) * d1.restfreq / 299790.0;
             dd = (freq - d1.freq + (double) (np / 2) * freqsep)
                 * 320.0 / ((double) (np) * freqsep);
@@ -448,7 +463,8 @@ void vplot(void)
         dd = 0.5 * pow(2.0, (double) j);
         j1 = 0;
         j2 = (int) (scale / dd);
-        for (j = 0; j <= j2; j++) {
+        for (j = 0; j <= j2; j++)
+        {
             y = (int) (260.0 - ((double) j * dd / scale) * 260.0);
             if (y > 0) {
                 x1 = xoffset * sx;
@@ -461,8 +477,7 @@ void vplot(void)
                 psx2 = x2 / sx;
                 psy2 = yps - y2 / sy;
                 if (d1.psw)
-                    fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                            psx2, psy2);
+                    fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
                 sprintf(txt, "%5.1fK", j * dd);
                 x1 = (xoffset - 30) * sx;
                 y1 = (yoffset + y + 2.0) * sy;
@@ -474,7 +489,8 @@ void vplot(void)
             }
         }
         yy = (sigma / scale) * 260.0;
-        if (yy > 0.0) {
+        if (yy > 0.0)
+        {
             x1 = (xoffset + 310) * sx;
             y1 = (yoffset + 10) * sy;
             x2 = (xoffset + 310) * sx;
@@ -485,8 +501,7 @@ void vplot(void)
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
             if (d1.psw)
-                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             x1 = (xoffset + 305) * sx;
             y1 = (yoffset + 10) * sy;
             x2 = (xoffset + 315) * sx;
@@ -497,8 +512,7 @@ void vplot(void)
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
             if (d1.psw)
-                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             x1 = (xoffset + 305) * sx;
             y1 = (yoffset + yy + 10) * sy;
             x2 = (xoffset + 315) * sx;
@@ -509,8 +523,7 @@ void vplot(void)
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
             if (d1.psw)
-                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             sprintf(txt, "3-sigma");
             x1 = (xoffset + 270) * sx;
             y1 = (yoffset + yy * 0.5 + 14) * sy;
@@ -521,7 +534,8 @@ void vplot(void)
                 fprintf(file1, "%f %f moveto\n (%s) show\n", psx1, psy1, txt);
         }
     }
-    if (d1.psw) {
+    if (d1.psw)
+    {
         sprintf(txt, "file: %s%4d_%03d_%02d_%02d.ps", d1.datadir, yr, da, hr, mn);
         fprintf(file1, "%f %f moveto\n (%s) show\n",xoffset,20.0, txt);
         fprintf(file1, "showpage\n%c%cTrailer\n", '%', '%');
