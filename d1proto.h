@@ -25,7 +25,7 @@ void cal (int);
 void azel_to_radec (double, double, double, double *, double *);
 void outfile (char *);
 void Four (double *, double *, int);
-double cmdfile (void);
+// double cmdfile (void);
 void zerospectra (int);
 void aver (void);
 double gauss(void);

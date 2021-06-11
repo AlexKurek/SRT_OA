@@ -60,7 +60,8 @@ int r820t_Convert(int InvertNum)
     AddNum = 0x80;
     BitNum = 0x01;
 
-    for (CountNum = 0; CountNum < 8; CountNum++) {
+    for (CountNum = 0; CountNum < 8; CountNum++)
+    {
         if (BitNum & InvertNum)
             ReturnNum += AddNum;
 
@@ -95,7 +96,8 @@ R828_ErrCode I2C_Write_Len(void *pTuner, R828_I2C_LEN_TYPE * I2C_Info)
 
     // Set tuner register bytes with writing bytes.
     // Note: Set tuner register bytes considering maximum writing byte number.
-    for (i = 0; i < ByteNum; i += WritingByteNumMax) {
+    for (i = 0; i < ByteNum; i += WritingByteNumMax)
+    {
         // Set register writing address.
         RegWritingAddr = RegStartAddr + i;
 
@@ -157,9 +159,8 @@ R828_ErrCode I2C_Read_Len(void *pTuner, R828_I2C_LEN_TYPE * I2C_Info)
     if (rtlsdr_i2c_read_fn(pTuner, R820T_I2C_ADDR, ReadingBytes, ByteNum) < 0)
         return RT_Fail;
 
-    for (i = 0; i < ByteNum; i++) {
+    for (i = 0; i < ByteNum; i++)
         I2C_Info->Data[i] = (UINT8) r820t_Convert(ReadingBytes[i]);
-    }
 
 
     return RT_Success;
@@ -364,7 +365,8 @@ Sys_Info_Type R828_Sys_Sel(R828_Standard_Type R828_Standard)
 {
     Sys_Info_Type R828_Sys_Info;
 
-    switch (R828_Standard) {
+    switch (R828_Standard)
+    {
 
     case DVB_T_6M:
     case DVB_T2_6M:
@@ -471,7 +473,8 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
 
 // printf("LO_freq in Freq_Info = %u \n", LO_freq);
 
-    if (LO_freq < 50000) {
+    if (LO_freq < 50000)
+    {
         R828_Freq_Info.OPEN_D = 0x08; // low
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0xDF; //R27[7:0]  band2,band0
@@ -481,7 +484,8 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.IMR_MEM = 0;
     }
 
-    else if (LO_freq >= 50000 && LO_freq < 55000) {
+    else if (LO_freq >= 50000 && LO_freq < 55000)
+    {
         R828_Freq_Info.OPEN_D = 0x08; // low
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0xBE; //R27[7:0]  band4,band1 
@@ -489,7 +493,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 55000 && LO_freq < 60000) {
+    }
+    else if (LO_freq >= 55000 && LO_freq < 60000)
+    {
         R828_Freq_Info.OPEN_D = 0x08; // low
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x8B; //R27[7:0]  band7,band4
@@ -497,7 +503,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 60000 && LO_freq < 65000) {
+    }
+    else if (LO_freq >= 60000 && LO_freq < 65000)
+    {
         R828_Freq_Info.OPEN_D = 0x08; // low
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x7B; //R27[7:0]  band8,band4
@@ -505,7 +513,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 65000 && LO_freq < 70000) {
+    }
+    else if (LO_freq >= 65000 && LO_freq < 70000)
+    {
         R828_Freq_Info.OPEN_D = 0x08; // low
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x69; //R27[7:0]  band9,band6
@@ -513,7 +523,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 70000 && LO_freq < 75000) {
+    }
+    else if (LO_freq >= 70000 && LO_freq < 75000)
+    {
         R828_Freq_Info.OPEN_D = 0x08; // low
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x58; //R27[7:0]  band10,band7
@@ -521,7 +533,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 75000 && LO_freq < 80000) {
+    }
+    else if (LO_freq >= 75000 && LO_freq < 80000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x44; //R27[7:0]  band11,band11
@@ -529,7 +543,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 80000 && LO_freq < 90000) {
+    }
+    else if (LO_freq >= 80000 && LO_freq < 90000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x44; //R27[7:0]  band11,band11
@@ -537,7 +553,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 90000 && LO_freq < 100000) {
+    }
+    else if (LO_freq >= 90000 && LO_freq < 100000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x34; //R27[7:0]  band12,band11
@@ -545,7 +563,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 100000 && LO_freq < 110000) {
+    }
+    else if (LO_freq >= 100000 && LO_freq < 110000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x34; //R27[7:0]  band12,band11
@@ -553,7 +573,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 0;
-    } else if (LO_freq >= 110000 && LO_freq < 120000) {
+    }
+    else if (LO_freq >= 110000 && LO_freq < 120000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x24; //R27[7:0]  band13,band11
@@ -561,7 +583,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 1;
-    } else if (LO_freq >= 120000 && LO_freq < 140000) {
+    }
+    else if (LO_freq >= 120000 && LO_freq < 140000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x24; //R27[7:0]  band13,band11
@@ -569,7 +593,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 1;
-    } else if (LO_freq >= 140000 && LO_freq < 180000) {
+    }
+    else if (LO_freq >= 140000 && LO_freq < 180000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x14; //R27[7:0]  band14,band11
@@ -577,7 +603,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x01;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 1;
-    } else if (LO_freq >= 180000 && LO_freq < 220000) {
+    }
+    else if (LO_freq >= 180000 && LO_freq < 220000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x13; //R27[7:0]  band14,band12
@@ -585,7 +613,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x00;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 1;
-    } else if (LO_freq >= 220000 && LO_freq < 250000) {
+    }
+    else if (LO_freq >= 220000 && LO_freq < 250000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x13; //R27[7:0]  band14,band12
@@ -593,7 +623,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x00;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 2;
-    } else if (LO_freq >= 250000 && LO_freq < 280000) {
+    }
+    else if (LO_freq >= 250000 && LO_freq < 280000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x11; //R27[7:0]  highest,highest
@@ -601,7 +633,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x00;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 2;
-    } else if (LO_freq >= 280000 && LO_freq < 310000) {
+    }
+    else if (LO_freq >= 280000 && LO_freq < 310000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x02; //R26[7:6]=0 (LPF)  R26[1:0]=2 (low)
         R828_Freq_Info.TF_C = 0x00; //R27[7:0]  highest,highest
@@ -609,7 +643,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x00;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 2;
-    } else if (LO_freq >= 310000 && LO_freq < 450000) {
+    }
+    else if (LO_freq >= 310000 && LO_freq < 450000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x41; //R26[7:6]=1 (bypass)  R26[1:0]=1 (middle)
         R828_Freq_Info.TF_C = 0x00; //R27[7:0]  highest,highest
@@ -617,7 +653,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x00;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 2;
-    } else if (LO_freq >= 450000 && LO_freq < 588000) {
+    }
+    else if (LO_freq >= 450000 && LO_freq < 588000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x41; //R26[7:6]=1 (bypass)  R26[1:0]=1 (middle)
         R828_Freq_Info.TF_C = 0x00; //R27[7:0]  highest,highest
@@ -625,7 +663,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x00;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 3;
-    } else if (LO_freq >= 588000 && LO_freq < 650000) {
+    }
+    else if (LO_freq >= 588000 && LO_freq < 650000)
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x40; //R26[7:6]=1 (bypass)  R26[1:0]=0 (highest)
         R828_Freq_Info.TF_C = 0x00; //R27[7:0]  highest,highest
@@ -633,7 +673,9 @@ Freq_Info_Type R828_Freq_Sel(UINT32 LO_freq)
         R828_Freq_Info.XTAL_CAP10P = 0x00;
         R828_Freq_Info.XTAL_CAP0P = 0x00;
         R828_Freq_Info.IMR_MEM = 3;
-    } else {
+    }
+    else
+    {
         R828_Freq_Info.OPEN_D = 0x00; // high
         R828_Freq_Info.RF_MUX_PLOY = 0x40; //R26[7:6]=1 (bypass)  R26[1:0]=0 (highest)
         R828_Freq_Info.TF_C = 0x00; //R27[7:0]  highest,highest
@@ -656,12 +698,15 @@ SysFreq_Info_Type R828_SysFreq_Sel(R828_Standard_Type R828_Standard, UINT32 RF_f
     case DVB_T_7M:
     case DVB_T_7M_2:
     case DVB_T_8M:
-        if ((RF_freq == 506000) || (RF_freq == 666000) || (RF_freq == 818000)) {
+        if ((RF_freq == 506000) || (RF_freq == 666000) || (RF_freq == 818000))
+        {
             R828_SysFreq_Info.MIXER_TOP = 0x14; // MIXER TOP:14 , TOP-1, low-discharge
             R828_SysFreq_Info.LNA_TOP = 0xE5; // Detect BW 3, LNA TOP:4, PreDet Top:2
             R828_SysFreq_Info.CP_CUR = 0x28; //101, 0.2
             R828_SysFreq_Info.DIV_BUF_CUR = 0x20; // 10, 200u
-        } else {
+        }
+        else
+        {
             R828_SysFreq_Info.MIXER_TOP = 0x24; // MIXER TOP:13 , TOP-1, low-discharge
             R828_SysFreq_Info.LNA_TOP = 0xE5; // Detect BW 3, LNA TOP:4, PreDet Top:2
             R828_SysFreq_Info.CP_CUR = 0x38; // 111, auto
@@ -726,12 +771,16 @@ SysFreq_Info_Type R828_SysFreq_Sel(R828_Standard_Type R828_Standard, UINT32 RF_f
 
 //DTV use Diplexer
 #if(USE_DIPLEXER==TRUE)
-    if ((Rafael_Chip == R820C) || (Rafael_Chip == R820T) || (Rafael_Chip == R828S)) {
+    if ((Rafael_Chip == R820C) || (Rafael_Chip == R820T) || (Rafael_Chip == R828S))
+    {
         // Air-in (>=DIP_FREQ) & cable-1(<DIP_FREQ) 
-        if (RF_freq >= DIP_FREQ) {
+        if (RF_freq >= DIP_FREQ)
+        {
             R828_SysFreq_Info.AIR_CABLE1_IN = 0x00; //air in, cable-1 off
             R828_SysFreq_Info.CABLE2_IN = 0x00; //cable-2 off
-        } else {
+        }
+        else
+        {
             R828_SysFreq_Info.AIR_CABLE1_IN = 0x60; //cable-1 in, air off
             R828_SysFreq_Info.CABLE2_IN = 0x00; //cable-2 off
         }
@@ -746,9 +795,8 @@ R828_ErrCode R828_Xtal_Check(void *pTuner)
     UINT8 ArrayNum;
 
     ArrayNum = 27;
-    for (ArrayNum = 0; ArrayNum < 27; ArrayNum++) {
+    for (ArrayNum = 0; ArrayNum < 27; ArrayNum++)
         R828_Arry[ArrayNum] = R828_iniArry[ArrayNum];
-    }
 
     //cap 30pF & Drive Low
     R828_I2C.RegAddr = 0x10;
@@ -883,23 +931,28 @@ R828_ErrCode R828_Xtal_Check(void *pTuner)
 #endif
                     {
                         return RT_Fail;
-                    } else      //0p+high drive lock
+                    }
+                    else      //0p+high drive lock
                     {
                         Xtal_cap_sel_tmp = XTAL_HIGH_CAP_0P;
                     }
-                } else          //0p lock
+                }
+                else          //0p lock
                 {
                     Xtal_cap_sel_tmp = XTAL_LOW_CAP_0P;
                 }
-            } else              //10p lock
+            }
+            else              //10p lock
             {
                 Xtal_cap_sel_tmp = XTAL_LOW_CAP_10P;
             }
-        } else                  //20p lock
+        }
+        else                  //20p lock
         {
             Xtal_cap_sel_tmp = XTAL_LOW_CAP_20P;
         }
-    } else                      // 30p lock
+    }
+    else                      // 30p lock
     {
         Xtal_cap_sel_tmp = XTAL_LOW_CAP_30P;
     }
@@ -926,9 +979,10 @@ R828_ErrCode R828_Init(void *pTuner)
 //    return RT_Fail;
 
         //Do Xtal check
-        if ((Rafael_Chip == R820T) || (Rafael_Chip == R828S) || (Rafael_Chip == R820C)) {
+        if ((Rafael_Chip == R820T) || (Rafael_Chip == R828S) || (Rafael_Chip == R820C))
             Xtal_cap_sel = XTAL_HIGH_CAP_0P;
-        } else {
+        else
+        {
             if (R828_Xtal_Check(pTuner) != RT_Success) //1st
                 return RT_Fail;
 
@@ -937,21 +991,19 @@ R828_ErrCode R828_Init(void *pTuner)
             if (R828_Xtal_Check(pTuner) != RT_Success) //2nd
                 return RT_Fail;
 
-            if (Xtal_cap_sel_tmp > Xtal_cap_sel) {
+            if (Xtal_cap_sel_tmp > Xtal_cap_sel)
                 Xtal_cap_sel = Xtal_cap_sel_tmp;
-            }
 
             if (R828_Xtal_Check(pTuner) != RT_Success) //3rd
                 return RT_Fail;
 
-            if (Xtal_cap_sel_tmp > Xtal_cap_sel) {
+            if (Xtal_cap_sel_tmp > Xtal_cap_sel)
                 Xtal_cap_sel = Xtal_cap_sel_tmp;
-            }
-
         }
 
         //reset filter cal.
-        for (i = 0; i < STD_SIZE; i++) {
+        for (i = 0; i < STD_SIZE; i++)
+        {
             R828_Fil_Cal_flag[i] = FALSE;
             R828_Fil_Cal_code[i] = 0;
         }
@@ -1004,9 +1056,8 @@ R828_ErrCode R828_InitReg(void *pTuner)
     //Write Full Table
     R828_I2C_Len.RegAddr = 0x05;
     R828_I2C_Len.Len = InitArryNum;
-    for (InitArryCount = 0; InitArryCount < InitArryNum; InitArryCount++) {
+    for (InitArryCount = 0; InitArryCount < InitArryNum; InitArryCount++)
         R828_I2C_Len.Data[InitArryCount] = R828_iniArry[InitArryCount];
-    }
     if (I2C_Write_Len(pTuner, &R828_I2C_Len) != RT_Success)
         return RT_Fail;
 
@@ -1020,9 +1071,8 @@ R828_ErrCode R828_IMR_Prepare(void *pTuner)
 
     ArrayNum = 27;
 
-    for (ArrayNum = 0; ArrayNum < 27; ArrayNum++) {
+    for (ArrayNum = 0; ArrayNum < 27; ArrayNum++)
         R828_Arry[ArrayNum] = R828_iniArry[ArrayNum];
-    }
     //IMR Preparation    
     //lna off (air-in off)
     R828_I2C.RegAddr = 0x05;
@@ -1110,7 +1160,8 @@ R828_ErrCode R828_IMR(void *pTuner, UINT8 IMR_MEM, int IM_Flag)
     else
         RingRef = R828_Xtal;
 
-    for (n = 0; n < 16; n++) {
+    for (n = 0; n < 16; n++)
+    {
         if ((16 + n) * 8 * RingRef >= 3100000) {
             n_ring = n;
             break;
@@ -1131,7 +1182,8 @@ R828_ErrCode R828_IMR(void *pTuner, UINT8 IMR_MEM, int IM_Flag)
     R828_Arry[20] &= 0xFC;      //clear ring_seldiv
     R828_Arry[26] &= 0xFC;      //clear ring_att
 
-    switch (IMR_MEM) {
+    switch (IMR_MEM)
+    {
     case 0:
         RingFreq = RingVCO / 48;
         R828_Arry[19] |= 0x20;  // ring_se23 = 1
@@ -1196,10 +1248,13 @@ R828_ErrCode R828_IMR(void *pTuner, UINT8 IMR_MEM, int IM_Flag)
     if (R828_PLL(pTuner, (RingFreq - 5300) * 1000, STD_SIZE) != RT_Success) //set pll freq = ring freq - 6M
         return RT_Fail;
 
-    if (IM_Flag == TRUE) {
+    if (IM_Flag == TRUE)
+    {
         if (R828_IQ(pTuner, &IMR_POINT) != RT_Success)
             return RT_Fail;
-    } else {
+    }
+    else
+    {
         IMR_POINT.Gain_X = IMR_Data[3].Gain_X;
         IMR_POINT.Phase_Y = IMR_Data[3].Phase_Y;
         IMR_POINT.Value = IMR_Data[3].Value;
@@ -1208,7 +1263,8 @@ R828_ErrCode R828_IMR(void *pTuner, UINT8 IMR_MEM, int IM_Flag)
     }
 
     //Save IMR Value
-    switch (IMR_MEM) {
+    switch (IMR_MEM)
+    {
     case 0:
         IMR_Data[0].Gain_X = IMR_POINT.Gain_X;
         IMR_Data[0].Phase_Y = IMR_POINT.Phase_Y;
@@ -1291,16 +1347,21 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
         {
             R828_Arry[11] |= 0x10; //b4=1
             PLL_Ref = R828_Xtal / 2;
-        } else                  //DTV, FilCal, IMR
+        }
+        else                  //DTV, FilCal, IMR
         {
             R828_Arry[11] &= 0xEF;
             PLL_Ref = R828_Xtal;
         }
-    } else {
+    }
+    else
+    {
         if (R828_Xtal > 24000) {
             R828_Arry[11] |= 0x10; //b4=1
             PLL_Ref = R828_Xtal / 2;
-        } else {
+        }
+        else
+        {
             R828_Arry[11] &= 0xEF;
             PLL_Ref = R828_Xtal;
         }
@@ -1332,9 +1393,11 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
 
     //Divider
     while (MixDiv <= 64) {
-        if ((((LO_Freq / 1000) * MixDiv) >= VCO_Min_kHz) && (((LO_Freq / 1000) * MixDiv) < VCO_Max_kHz)) {
+        if ((((LO_Freq / 1000) * MixDiv) >= VCO_Min_kHz) && (((LO_Freq / 1000) * MixDiv) < VCO_Max_kHz))
+        {
             DivBuf = MixDiv;
-            while (DivBuf > 2) {
+            while (DivBuf > 2)
+            {
                 DivBuf = DivBuf >> 1;
                 DivNum++;
             }
@@ -1434,8 +1497,10 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
         return RT_Fail;
 
     //SDM calculator
-    while (VCO_Fra > 1) {
-        if (VCO_Fra > (2 * PLL_Ref / Nsdm)) {
+    while (VCO_Fra > 1)
+    {
+        if (VCO_Fra > (2 * PLL_Ref / Nsdm))
+        {
             SDM = SDM + 32768 / (Nsdm / 2);
             VCO_Fra = VCO_Fra - 2 * PLL_Ref / Nsdm;
             if (Nsdm >= 0x8000)
@@ -1460,12 +1525,15 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
 
 // R828_Delay_MS(10);
 
-    if ((Rafael_Chip == R620D) || (Rafael_Chip == R828D) || (Rafael_Chip == R828)) {
+    if ((Rafael_Chip == R620D) || (Rafael_Chip == R828D) || (Rafael_Chip == R828))
+    {
         if (R828_Standard <= SECAM_L1)
             R828_Delay_MS(pTuner, 20);
         else
             R828_Delay_MS(pTuner, 10);
-    } else {
+    }
+    else
+    {
         R828_Delay_MS(pTuner, 10);
     }
 
@@ -1475,7 +1543,8 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
     if (I2C_Read_Len(pTuner, &R828_I2C_Len) != RT_Success)
         return RT_Fail;
 
-    if ((R828_I2C_Len.Data[2] & 0x40) == 0x00) {
+    if ((R828_I2C_Len.Data[2] & 0x40) == 0x00)
+    {
         fprintf(stderr, "[R820T] PLL not locked for %u Hz!\n", LO_Freq);
         R828_I2C.RegAddr = 0x12;
         R828_Arry[13] = (R828_Arry[13] & 0x1F) | 0x60; //increase VCO current
@@ -1531,7 +1600,8 @@ R828_ErrCode R828_MUX(void *pTuner, UINT32 RF_KHz)
     // XTAL CAP & Drive
     R828_I2C.RegAddr = 0x10;
     R828_Arry[11] &= 0xF4;
-    switch (Xtal_cap_sel) {
+    switch (Xtal_cap_sel)
+    {
     case XTAL_LOW_CAP_30P:
     case XTAL_LOW_CAP_20P:
         R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP20P | 0x08;
@@ -1558,10 +1628,13 @@ R828_ErrCode R828_MUX(void *pTuner, UINT32 RF_KHz)
         return RT_Fail;
 
     //Set_IMR
-    if (R828_IMR_done_flag == TRUE) {
+    if (R828_IMR_done_flag == TRUE)
+    {
         RT_Reg08 = IMR_Data[Freq_Info1.IMR_MEM].Gain_X & 0x3F;
         RT_Reg09 = IMR_Data[Freq_Info1.IMR_MEM].Phase_Y & 0x3F;
-    } else {
+    }
+    else
+    {
         RT_Reg08 = 0;
         RT_Reg09 = 0;
     }
@@ -1596,7 +1669,8 @@ R828_ErrCode R828_IQ(void *pTuner, R828_SectType * IQ_Pont)
     VGA_Read = 0;
 
     // increase VGA power to let image significant
-    for (VGA_Count = 12; VGA_Count < 16; VGA_Count++) {
+    for (VGA_Count = 12; VGA_Count < 16; VGA_Count++)
+    {
         R828_I2C.RegAddr = 0x0C;
         R828_I2C.Data = (R828_Arry[7] & 0xF0) + VGA_Count;
         if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
@@ -1649,7 +1723,8 @@ R828_ErrCode R828_IQ(void *pTuner, R828_SectType * IQ_Pont)
        return RT_Fail;
      */
 
-    if (X_Direction == 1) {
+    if (X_Direction == 1)
+    {
         //compare and find min of 3 points. determine I/Q direction
         if (R828_CompreCor(&Compare_IQ[0]) != RT_Success)
             return RT_Fail;
@@ -1657,7 +1732,9 @@ R828_ErrCode R828_IQ(void *pTuner, R828_SectType * IQ_Pont)
         //increase step to find min value of this direction
         if (R828_CompreStep(pTuner, &Compare_IQ[0], 0x08) != RT_Success) //X
             return RT_Fail;
-    } else {
+    }
+    else
+    {
         //compare and find min of 3 points. determine I/Q direction
         if (R828_CompreCor(&Compare_IQ[0]) != RT_Success)
             return RT_Fail;
@@ -1682,7 +1759,8 @@ R828_ErrCode R828_IQ(void *pTuner, R828_SectType * IQ_Pont)
      */
 
     //Another direction
-    if (X_Direction == 1) {
+    if (X_Direction == 1)
+    {
         if (R828_IQ_Tree(pTuner, Compare_IQ[0].Gain_X, Compare_IQ[0].Phase_Y, 0x08, &Compare_IQ[0]) != RT_Success) //Y
             return RT_Fail;
 
@@ -1693,7 +1771,9 @@ R828_ErrCode R828_IQ(void *pTuner, R828_SectType * IQ_Pont)
         //increase step to find min value of this direction
         if (R828_CompreStep(pTuner, &Compare_IQ[0], 0x09) != RT_Success) //Y
             return RT_Fail;
-    } else {
+    }
+    else
+    {
         if (R828_IQ_Tree(pTuner, Compare_IQ[0].Phase_Y, Compare_IQ[0].Gain_X, 0x09, &Compare_IQ[0]) != RT_Success) //X
             return RT_Fail;
 
@@ -1708,10 +1788,13 @@ R828_ErrCode R828_IQ(void *pTuner, R828_SectType * IQ_Pont)
     //CompareTemp = Compare_IQ[0];
 
     //--- Check 3 points again---//
-    if (X_Direction == 1) {
+    if (X_Direction == 1)
+    {
         if (R828_IQ_Tree(pTuner, Compare_IQ[0].Phase_Y, Compare_IQ[0].Gain_X, 0x09, &Compare_IQ[0]) != RT_Success) //X
             return RT_Fail;
-    } else {
+    }
+    else
+    {
         if (R828_IQ_Tree(pTuner, Compare_IQ[0].Gain_X, Compare_IQ[0].Phase_Y, 0x08, &Compare_IQ[0]) != RT_Success) //Y
             return RT_Fail;
     }
@@ -1791,7 +1874,8 @@ R828_ErrCode R828_IQ_Tree(void *pTuner, UINT8 FixPot, UINT8 FlucPot, UINT8 PotRe
     else
         PntReg = 0x08;          //gain control
 
-    for (TreeCount = 0; TreeCount < TreeTimes; TreeCount++) {
+    for (TreeCount = 0; TreeCount < TreeTimes; TreeCount++)
+    {
         R828_I2C.RegAddr = PotReg;
         R828_I2C.Data = FixPot;
         if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
@@ -1805,10 +1889,13 @@ R828_ErrCode R828_IQ_Tree(void *pTuner, UINT8 FixPot, UINT8 FlucPot, UINT8 PotRe
         if (R828_Muti_Read(pTuner, 0x01, &CompareTree[TreeCount].Value) != RT_Success)
             return RT_Fail;
 
-        if (PotReg == 0x08) {
+        if (PotReg == 0x08)
+        {
             CompareTree[TreeCount].Gain_X = FixPot;
             CompareTree[TreeCount].Phase_Y = FlucPot;
-        } else {
+        }
+        else
+        {
             CompareTree[TreeCount].Phase_Y = FixPot;
             CompareTree[TreeCount].Gain_X = FlucPot;
         }
@@ -1824,14 +1911,16 @@ R828_ErrCode R828_IQ_Tree(void *pTuner, UINT8 FixPot, UINT8 FlucPot, UINT8 PotRe
                 {
                     FlucPot &= 0xC0;
                     FlucPot |= TempPot;
-                } else {
+                }
+                else
+                {
                     FlucPot |= (0x20 | TempPot);
                 }
-            } else
+            }
+            else
                 FlucPot -= 2;
         }
     }
-
     return RT_Success;
 }
 
@@ -1847,7 +1936,8 @@ R828_ErrCode R828_CompreCor(R828_SectType * CorArry)
 
     CompCount = 0;
 
-    for (CompCount = 3; CompCount > 0; CompCount--) {
+    for (CompCount = 3; CompCount > 0; CompCount--)
+    {
         if (CorArry[0].Value > CorArry[CompCount - 1].Value) //compare IMC result [0][1][2], find min value
         {
             CorTemp = CorArry[0];
@@ -1896,16 +1986,15 @@ R828_ErrCode R828_CompreStep(void *pTuner, R828_SectType * StepArry, UINT8 Pace)
         if (R828_Muti_Read(pTuner, 0x01, &StepTemp.Value) != RT_Success)
             return RT_Fail;
 
-        if (StepTemp.Value <= StepArry[0].Value) {
+        if (StepTemp.Value <= StepArry[0].Value)
+        {
             StepArry[0].Gain_X = StepTemp.Gain_X;
             StepArry[0].Phase_Y = StepTemp.Phase_Y;
             StepArry[0].Value = StepTemp.Value;
-        } else {
-            break;
         }
-
+        else
+            break;
     }                           //end of while()
-
     return RT_Success;
 }
 
@@ -1931,7 +2020,8 @@ R828_ErrCode R828_Muti_Read(void *pTuner, UINT8 IMR_Reg, UINT16 * IMR_Result_Dat
 
     R828_Delay_MS(pTuner, 5);
 
-    for (ReadCount = 0; ReadCount < 6; ReadCount++) {
+    for (ReadCount = 0; ReadCount < 6; ReadCount++)
+    {
         R828_I2C_Len.RegAddr = 0x00;
         R828_I2C_Len.Len = IMR_Reg + 1; //IMR_Reg = 0x01
         if (I2C_Read_Len(pTuner, &R828_I2C_Len) != RT_Success)
@@ -1958,7 +2048,8 @@ R828_ErrCode R828_Section(void *pTuner, R828_SectType * IQ_Pont)
     R828_SectType Compare_Bet[3];
 
     //Try X-1 column and save min result to Compare_Bet[0]
-    if ((IQ_Pont->Gain_X & 0x1F) == 0x00) {
+    if ((IQ_Pont->Gain_X & 0x1F) == 0x00)
+    {
         /*
            if((IQ_Pont->Gain_X & 0xE0) == 0x40) //bug => only compare b[5],     
            Compare_IQ[0].Gain_X = 0x61; // Gain=1, I-path //Jason
@@ -1966,7 +2057,8 @@ R828_ErrCode R828_Section(void *pTuner, R828_SectType * IQ_Pont)
            Compare_IQ[0].Gain_X = 0x41; // Gain=1, Q-path
          */
         Compare_IQ[0].Gain_X = ((IQ_Pont->Gain_X) & 0xDF) + 1; //Q-path, Gain=1
-    } else
+    }
+    else
         Compare_IQ[0].Gain_X = IQ_Pont->Gain_X - 1; //left point
     Compare_IQ[0].Phase_Y = IQ_Pont->Phase_Y;
 
@@ -2039,21 +2131,31 @@ R828_ErrCode R828_IMR_Cross(void *pTuner, R828_SectType * IQ_Pont, UINT8 * X_Dir
 
     Compare_Temp.Value = 255;
 
-    for (CrossCount = 0; CrossCount < 5; CrossCount++) {
+    for (CrossCount = 0; CrossCount < 5; CrossCount++)
+    {
 
-        if (CrossCount == 0) {
+        if (CrossCount == 0)
+        {
             Compare_Cross[CrossCount].Gain_X = Reg08;
             Compare_Cross[CrossCount].Phase_Y = Reg09;
-        } else if (CrossCount == 1) {
+        }
+        else if (CrossCount == 1)
+        {
             Compare_Cross[CrossCount].Gain_X = Reg08; //0
             Compare_Cross[CrossCount].Phase_Y = Reg09 + 1; //Q-1
-        } else if (CrossCount == 2) {
+        }
+        else if (CrossCount == 2)
+        {
             Compare_Cross[CrossCount].Gain_X = Reg08; //0
             Compare_Cross[CrossCount].Phase_Y = (Reg09 | 0x20) + 1; //I-1
-        } else if (CrossCount == 3) {
+        }
+        else if (CrossCount == 3)
+        {
             Compare_Cross[CrossCount].Gain_X = Reg08 + 1; //Q-1
             Compare_Cross[CrossCount].Phase_Y = Reg09;
-        } else {
+        }
+        else
+        {
             Compare_Cross[CrossCount].Gain_X = (Reg08 | 0x20) + 1; //I-1
             Compare_Cross[CrossCount].Phase_Y = Reg09;
         }
@@ -2071,7 +2173,8 @@ R828_ErrCode R828_IMR_Cross(void *pTuner, R828_SectType * IQ_Pont, UINT8 * X_Dir
         if (R828_Muti_Read(pTuner, 0x01, &Compare_Cross[CrossCount].Value) != RT_Success)
             return RT_Fail;
 
-        if (Compare_Cross[CrossCount].Value < Compare_Temp.Value) {
+        if (Compare_Cross[CrossCount].Value < Compare_Temp.Value)
+        {
             Compare_Temp.Value = Compare_Cross[CrossCount].Value;
             Compare_Temp.Gain_X = Compare_Cross[CrossCount].Gain_X;
             Compare_Temp.Phase_Y = Compare_Cross[CrossCount].Phase_Y;
@@ -2093,7 +2196,8 @@ R828_ErrCode R828_IMR_Cross(void *pTuner, R828_SectType * IQ_Pont, UINT8 * X_Dir
         IQ_Pont[2].Gain_X = Compare_Cross[2].Gain_X;
         IQ_Pont[2].Phase_Y = Compare_Cross[2].Phase_Y;
         IQ_Pont[2].Value = Compare_Cross[2].Value;
-    } else                      //(0,0) or x-direction
+    }
+    else                      //(0,0) or x-direction
     {
         *X_Direct = (UINT8) 1;
         IQ_Pont[0].Gain_X = Compare_Cross[0].Gain_X;
@@ -2147,7 +2251,8 @@ R828_ErrCode R828_F_IMR(void *pTuner, R828_SectType * IQ_Pont)
     //Try X-1 column and save min result to Compare_Bet[0]
     if ((IQ_Pont->Gain_X & 0x1F) == 0x00) {
         Compare_IQ[0].Gain_X = ((IQ_Pont->Gain_X) & 0xDF) + 1; //Q-path, Gain=1
-    } else
+    }
+    else
         Compare_IQ[0].Gain_X = IQ_Pont->Gain_X - 1; //left point
     Compare_IQ[0].Phase_Y = IQ_Pont->Phase_Y;
 
@@ -2224,9 +2329,8 @@ R828_ErrCode R828_SetStandard(void *pTuner, R828_Standard_Type RT_Standard)
     UINT8 ArrayNum;
 
     ArrayNum = 27;
-    for (ArrayNum = 0; ArrayNum < 27; ArrayNum++) {
+    for (ArrayNum = 0; ArrayNum < 27; ArrayNum++)
         R828_Arry[ArrayNum] = R828_iniArry[ArrayNum];
-    }
 
 
     // Record Init Flag & Xtal_check Result
@@ -2249,7 +2353,8 @@ R828_ErrCode R828_SetStandard(void *pTuner, R828_Standard_Type RT_Standard)
 
 
     //for LT Gain test
-    if (RT_Standard > SECAM_L1) {
+    if (RT_Standard > SECAM_L1)
+    {
         R828_I2C.RegAddr = 0x1D; //[5:3] LNA TOP
         R828_I2C.Data = (R828_Arry[24] & 0xC7) | 0x00;
         if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
@@ -2278,7 +2383,8 @@ R828_ErrCode R828_SetStandard(void *pTuner, R828_Standard_Type RT_Standard)
         R828_Fil_Cal_code[RT_Standard] = R828_I2C_Len.Data[4] & 0x0F;
 
         //Filter Cali. Protection
-        if (R828_Fil_Cal_code[RT_Standard] == 0 || R828_Fil_Cal_code[RT_Standard] == 15) {
+        if (R828_Fil_Cal_code[RT_Standard] == 0 || R828_Fil_Cal_code[RT_Standard] == 15)
+        {
             if (R828_Filt_Cal(pTuner, Sys_Info1.FILT_CAL_LO) != RT_Success)
                 return RT_Fail;
 
@@ -2427,9 +2533,8 @@ R828_ErrCode R828_SetFrequency(void *pTuner, R828_Set_Info R828_INFO, R828_SetFr
 
 #if 0
     // Check Input Frequency Range
-    if ((R828_INFO.RF_KHz < 40000) || (R828_INFO.RF_KHz > 900000)) {
+    if ((R828_INFO.RF_KHz < 40000) || (R828_INFO.RF_KHz > 900000))
         return RT_Fail;
-    }
 #endif
 
 // printf("The Desired Frequency: %u \n", R828_INFO.RF_Hz);
@@ -2438,12 +2543,12 @@ R828_ErrCode R828_SetFrequency(void *pTuner, R828_Set_Info R828_INFO, R828_SetFr
 // printf("SECAM_L1 = %u \n", SECAM_L1);
 // printf("R828_Standard = %u \n", R828_INFO.R828_Standard);
 
-    if (R828_INFO.R828_Standard == SECAM_L1) {
+    if (R828_INFO.R828_Standard == SECAM_L1)
         LO_Hz = R828_INFO.RF_Hz - (Sys_Info1.IF_KHz * 1000);
-    }                           //printf("Hit the IF statement\n");}
-    else {
+                         //printf("Hit the IF statement\n");}
+    else
         LO_Hz = R828_INFO.RF_Hz + (Sys_Info1.IF_KHz * 1000);
-    }                           //printf("Hit the else statement\n");}
+                           //printf("Hit the else statement\n");}
 
     //Set MUX dependent var. Must do before PLL( ) 
     if (R828_MUX(pTuner, LO_Hz / 1000) != RT_Success)
@@ -2548,7 +2653,8 @@ R828_ErrCode R828_SetFrequency(void *pTuner, R828_Set_Info R828_INFO, R828_SetFr
         return RT_Fail;
 
     //Set LNA
-    if (R828_INFO.R828_Standard > SECAM_L1) {
+    if (R828_INFO.R828_Standard > SECAM_L1)
+    {
 
         if (R828_SetFreqMode == FAST_MODE) //FAST mode 
         {
@@ -2577,7 +2683,8 @@ R828_ErrCode R828_SetFrequency(void *pTuner, R828_Set_Info R828_INFO, R828_SetFr
             R828_I2C.Data = R828_Arry[21];
             if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
                 return RT_Fail;
-        } else                  //NORMAL mode
+        }
+        else                  //NORMAL mode
         {
 
             R828_Arry[24] = (R828_Arry[24] & 0xC7) | 0x00; //LNA TOP:lowest
@@ -2644,8 +2751,11 @@ R828_ErrCode R828_SetFrequency(void *pTuner, R828_Set_Info R828_INFO, R828_SetFr
             if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
                 return RT_Fail;
         }
-    } else {
-        if (R828_SetFreqMode == NORMAL_MODE || R828_SetFreqMode == FAST_MODE) {
+    }
+    else
+    {
+        if (R828_SetFreqMode == NORMAL_MODE || R828_SetFreqMode == FAST_MODE)
+        {
             /*
                // PRE_DECT on
                R828_Arry[1]  = (R828_Arry[1] & 0xBF) | SysFreq_Info1.PRE_DECT;
@@ -2703,7 +2813,8 @@ R828_ErrCode R828_SetFrequency(void *pTuner, R828_Set_Info R828_INFO, R828_SetFr
 
 R828_ErrCode R828_Standby(void *pTuner, R828_LoopThrough_Type R828_LoopSwitch)
 {
-    if (R828_LoopSwitch == LOOP_THROUGH) {
+    if (R828_LoopSwitch == LOOP_THROUGH)
+    {
         R828_I2C.RegAddr = 0x06;
         R828_I2C.Data = 0xB1;
         if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
@@ -2714,7 +2825,9 @@ R828_ErrCode R828_Standby(void *pTuner, R828_LoopThrough_Type R828_LoopSwitch)
 
         if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
             return RT_Fail;
-    } else {
+    }
+    else
+    {
         R828_I2C.RegAddr = 0x05;
         R828_I2C.Data = 0xA3;
         if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
@@ -2771,7 +2884,6 @@ R828_ErrCode R828_Standby(void *pTuner, R828_LoopThrough_Type R828_LoopSwitch)
     if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
         return RT_Fail;
 
-
     return RT_Success;
 }
 
@@ -2797,9 +2909,9 @@ R828_ErrCode R828_GetRfGain(void *pTuner, R828_RF_Gain_Info * pR828_rf_gain)
  */
 
 #define VGA_BASE_GAIN -47
-static const int r820t_vga_gain_steps[] = {
-    0, 26, 26, 30, 42, 35, 24, 13, 14, 32, 36, 34, 35, 37, 35, 36
-};
+// static const int r820t_vga_gain_steps[] = {
+    // 0, 26, 26, 30, 42, 35, 24, 13, 14, 32, 36, 34, 35, 37, 35, 36
+// };
 
 static const int r820t_lna_gain_steps[] = {
     0, 9, 13, 40, 38, 13, 31, 22, 26, 31, 26, 14, 19, 5, 35, 13
@@ -2814,7 +2926,8 @@ R828_ErrCode R828_SetRfGain(void *pTuner, int gain)
     int i, total_gain = 0;
     uint8_t mix_index = 0, lna_index = 0;
 
-    for (i = 0; i < 15; i++) {
+    for (i = 0; i < 15; i++)
+    {
         if (total_gain >= gain)
             break;
 
@@ -2849,19 +2962,16 @@ R828_ErrCode R828_SetRfGain(void *pTuner, int gain)
     if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
         return RT_Fail;
 
-
     return RT_Success;
 }
 
 R828_ErrCode R828_RfGainMode(void *pTuner, int manual)
 {
-    UINT8 MixerGain;
-    UINT8 LnaGain;
+    // UINT8 MixerGain = 0;
+    // UINT8 LnaGain = 0;
 
-    MixerGain = 0;
-    LnaGain = 0;
-
-    if (manual) {
+    if (manual)
+    {
         //LNA auto off
         R828_I2C.RegAddr = 0x05;
         R828_Arry[0] = R828_Arry[0] | 0x10;
@@ -2889,7 +2999,9 @@ R828_ErrCode R828_RfGainMode(void *pTuner, int manual)
             return RT_Fail;
 
 
-    } else {
+    }
+    else
+    {
         //LNA
         R828_I2C.RegAddr = 0x05;
         R828_Arry[0] = R828_Arry[0] & 0xEF;
