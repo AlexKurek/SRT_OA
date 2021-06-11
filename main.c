@@ -65,7 +65,8 @@ int main(int argc, char *argv[])
 //    GdkRectangle update_rect;
     sprintf(d1.catnam, "srt.cat");
     sprintf(d1.hlpnam, "srt.hlp");
-    for (i = 0; i < argc - 1; i++) {
+    for (i = 0; i < argc - 1; i++)
+    {
         sscanf(argv[i], "%63s", buf);
         if (strstr(buf, "-c") && strlen(buf) == 2)
             sscanf(argv[i + 1], "%63s", d1.catnam);
@@ -162,18 +163,22 @@ int main(int argc, char *argv[])
     if (!catfile())
         return 0;
 
-    if (d1.lock) {
-        if ((file1 = fopen("lock.txt", "r")) == NULL) {
+    if (d1.lock)
+    {
+        if ((file1 = fopen("lock.txt", "r")) == NULL)
+        {
             printf("cannot open lock.txt\n");
             return 0;
         }
         fgets(buf, 256, file1);
-        if (buf[0] == '1') {
+        if (buf[0] == '1')
+        {
             printf("srt is running\n");
             fclose(file1);
             return 0;
         }
-        if ((file1 = fopen("lock.txt", "w")) == NULL) {
+        if ((file1 = fopen("lock.txt", "w")) == NULL)
+        {
             printf("cannot open lock.txt\n");
             return 0;
         }
@@ -183,39 +188,53 @@ int main(int argc, char *argv[])
 
     d1.foutstatus = 0;
 // to get permission su root chown root srtn then chmod u+s srtn then exit 
-    if (!d1.azelsim) {
+    if (!d1.azelsim)
+    {
         if (d1.printout)
             printf("initializing antenna controller\n");
-        if (d1.rot2mode < 10) {
+        if (d1.rot2mode < 10)
+        {
             i = rot2(&d1.aznow, &d1.elnow, -1, buf); // initialize
             i = rot2(&d1.aznow, &d1.elnow, 1, buf); // read
-        } else {
+        }
+        else
+        {
             i = h180(&d1.aznow, &d1.elnow, -1, buf); // initialize
             d1.stow = 1;
             i = h180(&d1.azlim1, &d1.ellim1, 2, buf); // initialize
             d1.aznow = d1.azprev = d1.azlim1; // assume at stow
             d1.elnow = d1.elprev = d1.ellim1;
         }
-        if (i < 0) {
+        if (i < 0)
+        {
             printf("Couldn't talk to antenna controller\n");
             return 0;
         }
-    } else {
-        if (d1.stowatlim) {
+    }
+    else
+    {
+        if (d1.stowatlim)
+        {
             d1.azprev = d1.azlim1;
             d1.elprev = d1.ellim1;
-        } else {
+        }
+        else
+        {
             d1.azprev = d1.stowaz;
             d1.elprev = d1.stowel;
         }
     }
     setgid(getgid());
     setuid(getuid());
-    if (d1.mainten == 0) {
-        if (d1.stowatlim) {
+    if (d1.mainten == 0)
+    {
+        if (d1.stowatlim)
+        {
             d1.azcmd = d1.azlim1;
             d1.elcmd = d1.ellim1;
-        } else {
+        }
+        else
+        {
             d1.azcmd = d1.stowaz;
             d1.elcmd = d1.stowel;
         }
@@ -223,7 +242,8 @@ int main(int argc, char *argv[])
         d1.elcount = 0;
         d1.stow = 1;
     }
-    if (d1.azlim1 > d1.azlim2) {
+    if (d1.azlim1 > d1.azlim2)
+    {
         d1.south = 0;           // dish pointing North for southern hemisphere
         if (d1.azlim2 < 360.0)
             d1.azlim2 += 360.0;
@@ -232,7 +252,8 @@ int main(int argc, char *argv[])
     if (!d1.radiosim)
         Init_Device(0);
 
-    if (d1.displ) {
+    if (d1.displ)
+    {
         gtk_init(&argc, &argv);
         window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         geometry.min_width = 500;
@@ -254,8 +275,7 @@ int main(int argc, char *argv[])
         g_signal_connect(G_OBJECT(drawing_area), "expose_event", (GtkSignalFunc) expose_event, NULL);
         g_signal_connect(G_OBJECT(drawing_area), "configure_event", (GtkSignalFunc) configure_event, NULL);
 
-        g_signal_connect(G_OBJECT(drawing_area), "button_press_event",
-                         (GtkSignalFunc) button_press_event, NULL);
+        g_signal_connect(G_OBJECT(drawing_area), "button_press_event", (GtkSignalFunc) button_press_event, NULL);
 
         gtk_widget_set_events(drawing_area, GDK_EXPOSURE_MASK
                               | GDK_LEAVE_NOTIFY_MASK
@@ -343,7 +363,8 @@ int main(int argc, char *argv[])
         gtk_widget_show(window);
         clearpaint();
     }
-    if (d1.printout) {
+    if (d1.printout)
+    {
         toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
         printf("%4d:%03d:%02d:%02d:%02d %3s ", yr, da, hr, mn, sc, d1.timsource);
     }
@@ -351,37 +372,44 @@ int main(int argc, char *argv[])
     for (i = 0; i < d1.nfreq; i++)
         bspec[i] = 1;
     d1.secs = readclock();
-    while (d1.run) {
+    while (d1.run)
+    {
         zerospectra(1);
-        if (d1.clearint) {
+        if (d1.clearint)
+        {
             if (d1.displ)
                 cleararea();
             zerospectra(0);
             d1.clearint = 0;
         }
-        if (d1.freqchng) {
+        if (d1.freqchng)
+        {
             if (d1.dongle)
                 Init_Device(1);
-            if (d1.printout) {
+            if (d1.printout)
+            {
                 toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
                 printf("%4d:%03d:%02d:%02d:%02d %3s ", yr, da, hr, mn, sc, d1.timsource);
             }
-            if (!d1.radiosim) {
+            if (!d1.radiosim)
                 sleep(1);
-            }
             zerospectra(0);
             d1.freqchng = 0;
         }
-        if (d1.docal) {
-            if (d1.docal == 1) {
+        if (d1.docal)
+        {
+            if (d1.docal == 1)
+            {
                 sprintf(d1.recnote, "* calibration started\n");
                 outfile(d1.recnote);
             }
-            if (d1.bsw) {
+            if (d1.bsw)
+            {
                 d1.bsw = 0;
                 d1.azoff = 0.0;
             }
-            if (d1.scan) {
+            if (d1.scan)
+            {
                 d1.scan = 0;
                 d1.eloff = d1.azoff = 0.0;
             }
@@ -391,7 +419,8 @@ int main(int argc, char *argv[])
                 cal(0);
             d1.docal = 2;
             cal(1);
-            if (d1.integ >= NCAL) {
+            if (d1.integ >= NCAL)
+            {
                 cal(2);
                 d1.docal = 0;
             }
@@ -402,26 +431,30 @@ int main(int argc, char *argv[])
         azel(d1.azcmd, d1.elcmd); // allow time after cal 
         if (d1.comerr == -1)
             return 0;
-        if (!d1.slew) {
+        if (!d1.slew)
             pwr = 0.0;
-        }
         if (!d1.slew)
             vspectra();
         d1.secs = readclock();
-        if (!d1.slew) {
+        if (!d1.slew)
+        {
             aver();
             d1.integ2++;
         }
-        if (d1.record_int_sec && d1.integ2 >= d1.record_int_sec) {
-            outfile(" ");
+        if (d1.record_int_sec && d1.integ2 >= d1.record_int_sec)
+        {
+            char *strTemp = " ";
+            outfile(strTemp);
             if (d1.record_clearint && d1.track && !d1.bsw && !d1.scan)
                 d1.clearint = 1;
             d1.integ2 = 0;
         }
-        if (d1.displ) {
+        if (d1.displ)
+        {
             if (!d1.plot)
                 Repaint();
-            while (gtk_events_pending() || d1.stopproc == 1) {
+            while (gtk_events_pending() || d1.stopproc == 1)
+            {
                 gtk_main_iteration();
                 d1.plot = 0;
             }
@@ -430,8 +463,10 @@ int main(int argc, char *argv[])
             scanplot();
     }
 
-    if (d1.lock) {
-        if ((file1 = fopen("lock.txt", "w")) == NULL) {
+    if (d1.lock)
+    {
+        if ((file1 = fopen("lock.txt", "w")) == NULL)
+        {
             printf(" Unable to write lock.txt");
             return 0;
         }
@@ -449,7 +484,8 @@ void zerospectra(int mode)
     double az, el, secs, ra, dec;
     secs = d1.secs;
 
-    if (!mode) {
+    if (!mode)
+    {
         for (i = 0; i < d1.nfreq; i++)
             avspec[i] = avspecoff[i] = avspecon[i] = 0;
         d1.pwron = d1.pwroff = 0;
@@ -461,21 +497,28 @@ void zerospectra(int mode)
 
     d1.vlsr = 0.0;
     az = -1;
-    for (i = 0; d1.track >= 0 && i < d1.nsou; i++) {
-        if (strstr(sounam[i], soutrack) && soutrack[0]) {
+    for (i = 0; d1.track >= 0 && i < d1.nsou; i++)
+    {
+        if (strstr(sounam[i], soutrack) && soutrack[0])
+        {
             toyrday(secs, &yr, &da, &hr, &mn, &sc);
             d1.year = yr;
-            if (strstr(sounam[i], "Sun") || strstr(sounam[i], "Moon")) {
+            if (strstr(sounam[i], "Sun") || strstr(sounam[i], "Moon"))
+            {
                 if (strstr(sounam[i], "Sun"))
                     sunradec(secs, &ra, &dec);
                 else
                     moonradec(secs, &ra, &dec);
                 radec_azel(gst(secs) - ra - d1.lon, dec, d1.lat, &az, &el);
-            } else if (soutype[i]) {
+            }
+            else if (soutype[i])
+            {
                 az = ras[i] * PI / 180.0;
                 el = decs[i] * PI / 180.0;
                 azel_to_radec(secs, ras[i], decs[i], &ra, &dec);
-            } else {
+            }
+            else
+            {
                 precess(ras[i], decs[i], &ra, &dec, epoc[i], d1.year);
                 radec_azel(gst(secs) - ra - d1.lon, dec, d1.lat, &az, &el);
             }
@@ -483,14 +526,17 @@ void zerospectra(int mode)
             sprintf(souinfo, "%s %4d", to_radecp(ra, dec), yr);
         }
     }
-    if (d1.track && az >= 0.0) {
-        if (d1.scan > 0) {
+    if (d1.track && az >= 0.0)
+    {
+        if (d1.scan > 0)
+        {
             i = (d1.scan - 1) / 5;
             j = (d1.scan - 1) % 5;
             d1.eloff = (i - 2) * d1.beamw * 0.5;
             d1.azoff = (j - 2) * d1.beamw * 0.5 / cos(el + d1.eloff * PI / 180.0);
             d1.scan++;
-            if (d1.scan > 26) {
+            if (d1.scan > 26)
+            {
                 d1.scan = 0;
                 if (d1.displ)
                     gtk_tooltips_set_tip(tooltips, button_npoint, "click to start npoint scan", NULL);
@@ -500,7 +546,8 @@ void zerospectra(int mode)
         }
         if (d1.bsw == 1)
             d1.bswint = 0;
-        if (d1.bsw > 0 && d1.bswint == 0) {
+        if (d1.bsw > 0 && d1.bswint == 0)
+        {
             if (d1.bsw == 1)
                 d1.clearint = 1;
             i = (d1.bsw - 1) % 4;
@@ -513,15 +560,19 @@ void zerospectra(int mode)
             d1.bsw++;
         }
     }
-    if (az >= 0 && d1.stow != 1) {
+    if (az >= 0 && d1.stow != 1)
+    {
         d1.azcmd = az * 180.0 / PI + d1.azoff;
         d1.elcmd = el * 180.0 / PI + d1.eloff;
 //     printf("inzero azcmd %f ellim2 %f\n",d1.azcmd,d1.ellim2);
-    } else {
+    }
+    else
+    {
         azel_to_radec(secs, d1.azcmd, d1.elcmd, &ra, &dec);
         d1.vlsr = vlsr(secs, ra, dec);
     }
-    if (mode == 0) {
+    if (mode == 0)
+    {
         d1.integ = 0.0;
         pwr = 0.0;
     }
@@ -535,9 +586,11 @@ void aver(void)
     p = a = 0;
     j1 = d1.f1 * d1.nfreq;
     j2 = d1.f2 * d1.nfreq;
-    for (i = 0; i < d1.nfreq; i++) {
+    for (i = 0; i < d1.nfreq; i++)
+    {
         avspec[i] += spec[i];
-        if (i > j1 && i < j2) {
+        if (i > j1 && i < j2)
+        {
             p += spec[i];
             a++;
         }
@@ -546,11 +599,13 @@ void aver(void)
     i = d1.fc * d1.nfreq;
     if (spec[i] == 0.0)
         return;
-    if (d1.calpwr == 0 && spec[i] > 0.0) {
+    if (d1.calpwr == 0 && spec[i] > 0.0)
+    {
 //        printf("calpwr\n");
         for (j = 0; j < d1.nfreq; j++)
             bspec[j] = 1;
-        if (d1.caldone && d1.displ) {
+        if (d1.caldone && d1.displ)
+        {
             d1.caldone = 0;
             color.green = 0xffff;
             color.red = 0xffff;
@@ -562,7 +617,8 @@ void aver(void)
     pwr = (d1.tsys + d1.tcal) * p / (a * d1.calpwr);
     if (d1.caldone)
         d1.tant = pwr - d1.tsys;
-    if (d1.calon) {
+    if (d1.calon)
+    {
 //      pwr=pwr*3.0;
         if (d1.yfac == 0.0)
             d1.yfac = pwr / pwrprev;
@@ -573,29 +629,33 @@ void aver(void)
     for (i = 0; i < d1.nfreq; i++)
         aavspec[i] = (d1.tsys + d1.tcal) * avspec[i] / (bspec[i] * d1.calpwr * d1.integ);
 //  printf("d1.calpwr %f %f\n",d1.calpwr, aavspec[(int)(0.4*d1.nfreq)]);
-    if (d1.scan != 0 && d1.track) {
+    if (d1.scan != 0 && d1.track)
+    {
         scanpwr[d1.scan - 1] = pwr;
 //  printf("pwr %f scan %d\n",pwr,d1.scan);
     }
-    if (d1.bsw && d1.track) {
+    if (d1.bsw && d1.track)
+    {
 
         j = (d1.bsw - 1) % 4;
-        if (j == 1 || j == 3) {
+        if (j == 1 || j == 3)
+        {
             for (i = 0; i < d1.nfreq; i++)
                 avspecon[i] += spec[i];
             d1.pwron += pwr;
             d1.numon++;
-        } else {
+        }
+        else
+        {
             for (i = 0; i < d1.nfreq; i++)
                 avspecoff[i] += spec[i];
             d1.pwroff += pwr;
             d1.numoff++;
         }
-        if (d1.numon && d1.numoff) {
+        if (d1.numon && d1.numoff)
+        {
             for (i = 0; i < d1.nfreq; i++)
-                aavspec[i] =
-                    d1.tsys * (avspecon[i] / d1.numon -
-                               avspecoff[i] / d1.numoff) / (avspecoff[i] / d1.numoff);
+                aavspec[i] = d1.tsys * (avspecon[i] / d1.numon - avspecoff[i] / d1.numoff) / (avspecoff[i] / d1.numoff);
             d1.bswpwr = d1.tsys * (d1.pwron / d1.numon - d1.pwroff / d1.numoff) / (d1.pwroff / d1.numoff);
 // printf("j %d d1.azoff %f pwr %f\n",j,d1.azoff,pwr);
         }
@@ -610,7 +670,8 @@ double gauss(void)
 {
     double v1, v2, r, fac, aamp, vv1;
     v1 = r = 0.0;
-    while (r > 1.0 || r == 0.0) {
+    while (r > 1.0 || r == 0.0)
+    {
         v1 = 2.0 * (rand() / 2147483648.0) - 1.0;
         v2 = 2.0 * (rand() / 2147483648.0) - 1.0;
         r = v1 * v1 + v2 * v2;

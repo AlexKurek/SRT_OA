@@ -11,8 +11,10 @@ void Four(double *fft_r, double *fft_i, int nn)
 
     n = nn << 1;
     j = 1;
-    for (i = 1; i < n; i += 2) {
-        if (j > i) {
+    for (i = 1; i < n; i += 2)
+    {
+        if (j > i)
+        {
             jj = (j - 1) / 2;
             ii = (i - 1) / 2;
             tempr = fft_r[jj];
@@ -23,14 +25,16 @@ void Four(double *fft_r, double *fft_i, int nn)
             fft_i[ii] = tempi;
         }
         m = n >> 1;
-        while (m >= 2 && j > m) {
+        while (m >= 2 && j > m)
+        {
             j -= m;
             m >>= 1;
         }
         j += m;
     }
     mmax = 2;
-    while (n > mmax) {
+    while (n > mmax)
+    {
         istep = mmax << 1;
 
         theta = -(6.28318530717959 / mmax);
@@ -39,8 +43,10 @@ void Four(double *fft_r, double *fft_i, int nn)
         wpi = sin(theta);
         wr = 1.0;
         wi = 0.0;
-        for (m = 1; m < mmax; m += 2) {
-            for (i = m; i <= n; i += istep) {
+        for (m = 1; m < mmax; m += 2)
+        {
+            for (i = m; i <= n; i += istep)
+            {
                 j = i + mmax;
                 jj = (j - 1) / 2;
                 ii = (i - 1) / 2;

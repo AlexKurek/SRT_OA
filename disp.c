@@ -16,10 +16,13 @@ void button_clear_clicked(void)
 
 void button_stow_clicked(void)
 {
-    if (d1.stowatlim) {
+    if (d1.stowatlim)
+    {
         d1.azcmd = d1.azlim1;
         d1.elcmd = d1.ellim1;
-    } else {
+    }
+    else
+    {
         d1.azcmd = d1.stowaz;
         d1.elcmd = d1.stowel;
     }
@@ -93,7 +96,8 @@ void hit_enter_freq(void)
     if (str != NULL)
         sscanf(str, "%*s %*s %lf %lf %d", &freq, &bw, &n);
     if (bw > 0 && bw <= 10.0)
-        if (freq > 1200.0 && freq < 1800.0) {
+        if (freq > 1200.0 && freq < 1800.0)
+		{
             d1.freq = freq;
             d1.nfreq = n;
             if (d1.nfreq > NSPEC || d1.nfreq < 1)
@@ -148,10 +152,13 @@ void hit_enter_offset(void)
 
 void button_npoint_clicked(void)
 {
-    if (d1.scan == 0 && !d1.stow) {
+    if (d1.scan == 0 && !d1.stow)
+	{
         d1.scan = 1;
         gtk_tooltips_set_tip(tooltips, button_npoint, "npoint running", NULL);
-    } else {
+    }
+	else
+	{
         d1.scan = 0;
         d1.eloff = 0;
         gtk_tooltips_set_tip(tooltips, button_npoint, "click to start npoint scan", NULL);
@@ -162,10 +169,13 @@ void button_npoint_clicked(void)
 
 void button_bsw_clicked(void)
 {
-    if (d1.bsw == 0 && !d1.stow) {
+    if (d1.bsw == 0 && !d1.stow)
+	{
         d1.bsw = 1;
         gtk_tooltips_set_tip(tooltips, button_bsw, "beam switch running - click again to stop", NULL);
-    } else {
+    }
+	else
+	{
         d1.bsw = 0;
         gtk_tooltips_set_tip(tooltips, button_bsw, "click to start beam switch", NULL);
         d1.azoff = 0;
@@ -183,7 +193,9 @@ void button_record_clicked(void)
         color.red = 0xffff;
         color.blue = 0xffff;
         gtk_widget_modify_bg(button_record, GTK_STATE_NORMAL, &color);
-    } else {
+    }
+	else
+	{
         d1.record = 1;
 
         if (d1.entry6)
@@ -214,9 +226,8 @@ void hit_enter_record(void)
     txt[0] = d1.filname[0] = 0;
     if (str != NULL)
         sscanf(str, "%*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %24s", txt);
-    if (txt[0]) {
+    if (txt[0])
         sscanf(txt, "%24s", d1.filname);
-    }
     d1.stopproc = 0;
     gtk_entry_set_text(GTK_ENTRY(entry6), "");
     gtk_widget_destroy(entry6);
@@ -238,7 +249,8 @@ void button_cmdfl_clicked(void)
     FILE *file1;
     if (d1.debug)
         printf("cmdfl\n");
-    if (d1.cmdfl) {
+    if (d1.cmdfl)
+	{
         sprintf(txt, "cmdfile: %s stopped", d1.cmdfnam);
         gtk_tooltips_set_tip(tooltips, button_cmdfl, txt, NULL);
         d1.cmdfl = 0;
@@ -247,7 +259,8 @@ void button_cmdfl_clicked(void)
     d1.cmdfl = 1;
     d1.cmdfline = 0;
     d1.secstop = 0;
-    if ((file1 = fopen(d1.cmdfnam, "r")) == NULL) {
+    if ((file1 = fopen(d1.cmdfnam, "r")) == NULL)
+	{
         if (d1.debug)
             printf(" Unable to open %s\n", d1.cmdfnam);
         if (d1.entry5)
@@ -263,7 +276,9 @@ void button_cmdfl_clicked(void)
         d1.stopproc = 1;
         gtk_entry_set_position(GTK_ENTRY(entry5), 14);
         gtk_entry_set_visibility(GTK_ENTRY(entry5), TRUE);
-    } else {
+    }
+	else
+	{
         fclose(file1);
         sprintf(txt, "cmdfile: %s activated", d1.cmdfnam);
         gtk_tooltips_set_tip(tooltips, button_cmdfl, txt, NULL);
@@ -283,7 +298,9 @@ void hit_enter_cmdfl(void)
     d1.stopproc = 0;
     if ((file1 = fopen(d1.cmdfnam, "r")) == NULL) {
         d1.cmdfl = 0;
-    } else {
+    }
+	else
+	{
         fclose(file1);
         sprintf(txt, "cmdfile: %s activated", d1.cmdfnam);
         gtk_tooltips_set_tip(tooltips, button_cmdfl, txt, NULL);
@@ -304,7 +321,8 @@ void button_cal_clicked(void)
 void button_cal_clicked(void)
 {
     GdkColor color;
-    if (d1.caldone) {
+    if (d1.caldone)
+	{
         d1.caldone = 0;
         color.green = 0xffff;
         color.red = 0xffff;
@@ -313,11 +331,13 @@ void button_cal_clicked(void)
     }
     if (d1.entry8)
         return;
-    if (d1.calmode == 1) {
+    if (d1.calmode == 1)
+	{
         d1.calpwr = 0;
         return;
     }
-    if (d1.calmode == 3) {
+    if (d1.calmode == 3)
+	{
         d1.docal = 1;
         return;
     }
@@ -364,12 +384,15 @@ void button_exit_clicked(void)
 {
     if (d1.stow == -1)
         d1.run = 0;
-    else {
-        if (d1.slew) {
+    else
+	{
+        if (d1.slew)
+		{
             d1.track = -1;
             soutrack[0] = 0;
             gtk_tooltips_set_tip(tooltips, button_exit, "antenna stopped - go to stow", NULL);
-        } else
+        }
+		else
             gtk_tooltips_set_tip(tooltips, button_exit, "first go to stow", NULL);
     }
 }
@@ -379,36 +402,42 @@ gint button_press_event(GtkWidget * widget, GdkEventButton * event)
 //  GdkModifierType state;
     int x, y, i, imin;
     double secs, az, el, ra, dec, min, az2, el2, daz, del, r;
-    if (event->button == 1 && pixmap != NULL) {
+    if (event->button == 1 && pixmap != NULL)
+	{
 //    gdk_window_get_pointer (event->window, &x, &y, &state)
         x = event->x;
         y = event->y;
-    } else
+    }
+	else
         return TRUE;
     if (d1.debug)
         printf("x= %d y= %d midx %d midy %d width %d\n", x, y, midx, midy, widget->allocation.width);
     secs = d1.secs;
     min = 1e99;
     imin = -1;
-    for (i = 0; i < d1.nsou; i++) {
-        if (strstr(sounam[i], "Sun") || strstr(sounam[i], "Moon")) {
+    for (i = 0; i < d1.nsou; i++)
+	{
+        if (strstr(sounam[i], "Sun") || strstr(sounam[i], "Moon"))
+		{
             if (strstr(sounam[i], "Sun"))
                 sunradec(secs, &ra, &dec);
             else
                 moonradec(secs, &ra, &dec);
             radec_azel(gst(secs) - ra - d1.lon, dec, d1.lat, &az, &el);
-        } else if (soutype[i]) {
+        }
+		else if (soutype[i])
+		{
             az = ras[i] * PI / 180.0;
             el = decs[i] * PI / 180.0;
-        } else
+        }
+		else
             radec_azel(gst(secs) - ras[i] - d1.lon, decs[i], d1.lat, &az, &el);
         az = az * 180.0 / PI;
         el = el * 180.0 / PI;
         if (d1.south)
             az2 = 180.0 * x / ((double) midx);
-        else {
+        else
             az2 = (x - midx) * 180.0 / ((double) midx);
-        }
         el2 = (midy * 2 - y) * 180.0 / (((double) midy) * 2.0);
         daz = az2 - az;
         del = el2 - el;
@@ -423,22 +452,26 @@ gint button_press_event(GtkWidget * widget, GdkEventButton * event)
             imin = i;
         }
     }
-    if (imin >= 0 && min < 40.0 * 40.0 && y >= midy) {
+    if (imin >= 0 && min < 40.0 * 40.0 && y >= midy)
+	{
         strncpy(soutrack, sounam[imin], sizeof(soutrack) - 1);
         if (d1.debug)
             printf("track %s i=%d\n", soutrack, imin);
         d1.track = 1;
         if (!d1.noclearint)
             d1.clearint = 1;
-        if (d1.scan) {
+        if (d1.scan)
+		{
             d1.scan = 0;
             d1.azoff = d1.eloff = 0.0;
         }
-        if (d1.bsw) {
+        if (d1.bsw)
+		{
             d1.bsw = 0;
             d1.azoff = 0.0;
         }
-    } else if (y <= midy && x >= midx)
+    }
+	else if (y <= midy && x >= midx)
         velspec();
 
     return TRUE;
@@ -447,20 +480,16 @@ gint button_press_event(GtkWidget * widget, GdkEventButton * event)
 
 void clearpaint(void)
 {
-    gdk_draw_rectangle(pixmap,
-                       drawing_area->style->white_gc, TRUE, 0, 0,
-                       drawing_area->allocation.width, drawing_area->allocation.height);
+    gdk_draw_rectangle(pixmap, drawing_area->style->white_gc, TRUE, 0, 0, drawing_area->allocation.width, drawing_area->allocation.height);
     midx = drawing_area->allocation.width / 2;
     midy = drawing_area->allocation.height / 2;
 }
 
 void cleararea(void)
 {
-    gdk_draw_rectangle(pixmap,
-                       drawing_area->style->white_gc, TRUE, 0, midy, drawing_area->allocation.width, midy);
+    gdk_draw_rectangle(pixmap, drawing_area->style->white_gc, TRUE, 0, midy, drawing_area->allocation.width, midy);
     gdk_draw_rectangle(pixmap, drawing_area->style->white_gc, TRUE, midx, 0, midx, midy * 0.95);
-    gdk_draw_rectangle(pixmap, drawing_area->style->white_gc, TRUE, midx * 1.46, midy * 0.95,
-                       midx * 0.5, midy * 0.05);
+    gdk_draw_rectangle(pixmap, drawing_area->style->white_gc, TRUE, midx * 1.46, midy * 0.95, midx * 0.5, midy * 0.05);
 }
 
 gint configure_event(GtkWidget * widget)
@@ -474,7 +503,8 @@ gint configure_event(GtkWidget * widget)
 // if (pixmap && newp)  printf("new pixmap\n");   // only occurs on resize
     if (pixmap && newp)
         gdk_pixmap_unref(pixmap);
-    if (newp) {
+    if (newp)
+	{
 
         sz = (widget->allocation.width / 72) * 10; // font = 110 with wid = 800  - works best over range of size
 //  printf("sz %d wid %d %d %d\n",sz,widget->allocation.width,midx,drawing_area->allocation.width);
@@ -509,16 +539,12 @@ gint configure_event(GtkWidget * widget)
 
 gint expose_event(GtkWidget * widget, GdkEventExpose * event)
 {
-    gdk_draw_pixmap(widget->window,
-                    widget->style->fg_gc[GTK_WIDGET_STATE(widget)],
-                    pixmap,
-                    event->area.x, event->area.y,
-                    event->area.x, event->area.y, event->area.width, event->area.height);
+    gdk_draw_pixmap(widget->window, widget->style->fg_gc[GTK_WIDGET_STATE(widget)], pixmap, event->area.x, event->area.y, event->area.x, event->area.y, event->area.width, event->area.height);
 //  printf("draw pixmap\n");   // the above actually draws to screen
     return FALSE;
 }
 
-void quit()
+void quit(void)
 {
     gtk_exit(0);
 }

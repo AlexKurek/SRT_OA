@@ -25,20 +25,20 @@ GtkWidget *textbox;
 GtkWidget *helpwindow;
 
 // display_help will open a new window for the help to be displayed
-void display_help()
+void display_help(void)
 {
     char txt[25];
     PangoFontDescription *font_desc;
     GtkWidget *vertbox, *buttonbox;
     GtkWidget *scrollbox;
     GtkWidget *button_helphome, *button_helpmode, *button_helpnpoint, *button_helpbeamsw,
-        *button_helpfreq, *button_helpoffset, *button_helprecord, *button_helpcmdfl,
-        *button_helpcal, *button_helpexit;
+        *button_helpfreq, *button_helpoffset, *button_helprecord, *button_helpcmdfl, *button_helpcal, *button_helpexit;
     GdkGeometry geometry;
     GdkWindowHints geo_mask;
     //  GdkRectangle update_rect;
 
-    if (d1.helpwindow) {
+    if (d1.helpwindow)
+    {
         gtk_widget_destroy(helpwindow);
         d1.helpwindow = 0;
     }
@@ -159,53 +159,61 @@ void display_help()
 
     // Show the help window now that it is complete
     gtk_widget_show(helpwindow);
-
 }
 
 
 void button_helphome_clicked(void)
 {
-    load_help("home");
+    char strTemp1[] = "home"; // to avoid [-Wdiscarded-qualifiers]
+    load_help(strTemp1);
 }
 
 void button_helpmode_clicked(void)
 {
-    load_help("mode");
+    char strTemp2[] = "mode";
+    load_help(strTemp2);
 }
 
 void button_helpnpoint_clicked(void)
 {
-    load_help("npoint");
+    char strTemp3[] = "npoint";
+    load_help(strTemp3);
 }
 
 void button_helpbeamsw_clicked(void)
 {
-    load_help("beamsw");
+    char strTemp4[] = "beamsw";
+    load_help(strTemp4);
 }
 
 void button_helpfreq_clicked(void)
 {
-    load_help("freq");
+    char strTemp5[] = "freq";
+    load_help(strTemp5);
 }
 
 void button_helpoffset_clicked(void)
 {
-    load_help("offset");
+    char strTemp6[] = "offset";
+    load_help(strTemp6);
 }
 
 void button_helprecord_clicked(void)
 {
-    load_help("record");
+    char strTemp7[] = "record";
+    load_help(strTemp7);
 }
 
 void button_helpcmdfl_clicked(void)
 {
-    load_help("cmdfl");
+    char strTemp8[] = "cmdfl";
+    load_help(strTemp8);
 }
 
 void button_helpcal_clicked(void)
 {
-    load_help("cal");
+    char strTemp9[] = "cal";
+    load_help(strTemp9);
 }
 
 void button_helpexit_clicked(void)
@@ -220,7 +228,6 @@ void button_helpexit_clicked(void)
     sprintf(text, "Exit");
     gtk_text_buffer_set_text(buffer, text, -1);
     d1.helpwindow = 0;
-
 }
 
 void load_help(char *command)
@@ -232,7 +239,8 @@ void load_help(char *command)
     // add command to the end of cmd to get the string we are looking for
     strcat(cmd, command);
     // Open the help source file
-    if ((file1 = fopen(d1.hlpnam, "r")) == NULL) {
+    if ((file1 = fopen(d1.hlpnam, "r")) == NULL)
+    {
         printf("Unable to open %s\n", d1.hlpnam);
         return;
     }
@@ -240,8 +248,10 @@ void load_help(char *command)
     buffer = gtk_text_buffer_new(NULL);
 
     // find the starting location of this command in the file (##command)
-    while (strstr(text, cmd) == NULL) {
-        if (fgets(text, 256, file1) == NULL) {
+    while (strstr(text, cmd) == NULL)
+    {
+        if (fgets(text, 256, file1) == NULL)
+        {
             printf("cannot find help file content\n");
             return;
         }
@@ -250,7 +260,8 @@ void load_help(char *command)
     // get the first line to output
     fgets(text, 256, file1);
     // now loop until we find a line starting with ## to print text
-    while ((text[0] != '#') && (text[1] != '#')) {
+    while ((text[0] != '#') && (text[1] != '#'))
+    {
         gtk_text_buffer_insert_at_cursor(buffer, text, -1);
         fgets(text, 256, file1);
     }

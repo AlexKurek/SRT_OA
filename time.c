@@ -16,7 +16,8 @@ double gst(double ttime)
 //    secs = (1999 - 1970) * 31536000.0 + 17.0 * 3600.0 + 16.0 * 60.0 + 20.1948;
 //    secs = (2011 - 1970) * 31536000.0 + 17.0 * 3600.0 + 15.0 * 60.0 + 58.0778;
     secs = (2020 - 1970) * 31536000.0 + 17.0 * 3600.0 + 16.0 * 60.0 + 40.5;
-    for (i = 1970; i < 2020; i++) {
+    for (i = 1970; i < 2020; i++)
+    {
         if ((i % 4 == 0 && i % 100 != 0) || i % 400 == 0)
             secs += 86400.0;
     }
@@ -33,7 +34,8 @@ double tosecs(int yr, int day, int hr, int min, int sec)
     int i;
     double secs;
     secs = (yr - 1970) * 31536000.0 + (day - 1) * 86400.0 + hr * 3600.0 + min * 60.0 + sec;
-    for (i = 1970; i < yr; i++) {
+    for (i = 1970; i < yr; i++)
+    {
         if ((i % 4 == 0 && i % 100 != 0) || i % 400 == 0)
             secs += 86400.0;
     }
@@ -51,7 +53,8 @@ void toyrday(double secs, int *pyear, int *pday, int *phr, int *pmin, int *psec)
 
     day = floor(secs / 86400.0);
     sec = secs - day * 86400.0;
-    for (i = 1970; day > 365; i++) {
+    for (i = 1970; day > 365; i++)
+    {
         days = ((i % 4 == 0 && i % 100 != 0) || i % 400 == 0) ? 366.0 : 365.0;
         day -= days;
     }
@@ -65,7 +68,8 @@ void toyrday(double secs, int *pyear, int *pday, int *phr, int *pmin, int *psec)
     if (day == 366)             // fix for problem with day 366
     {
         days = ((i % 4 == 0 && i % 100 != 0) || i % 400 == 0) ? 366 : 365;
-        if (days == 365) {
+        if (days == 365)
+        {
             day -= 365;
             *pday = day;
             *pyear = i + 1;
@@ -88,12 +92,10 @@ int dayofyear(int year, int month, int day)
 
 char *to_date(int year, int day)
 {
-    int day_tab[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
-        0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
-    };
-    char *mon[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-        "Aug", "Sep", "Oct", "Nov", "Dec"
-    };
+    int day_tab[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    const char *Jan = "Jan", *Feb = "Feb", *Mar = "Mar", *Apr = "Apr", *May = "May", *Jun = "Jun", *Jul = "Jul", *Aug = "Aug", *Sep = "Sep", *Oct = "Oct", *Nov = "Nov", *Dec = "Dec";  // to avoid [-Wdiscarded-qualifiers]
+    const char *mon[] = { Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec };
+
     int k, leap;
     static char str[80];
     if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
@@ -117,7 +119,8 @@ char *to_radecp(double ra, double dec)
     sec = sec - min * 60;
     sg = 1;
     dsec = (int) (dec * 3600.0 * 180.0 / PI);
-    if (dsec < 0) {
+    if (dsec < 0)
+    {
         sg = -1;
         dsec = -dsec;
     }
@@ -139,12 +142,14 @@ double readclock(void)
     t = gmtime(&now);
 // gmtime Jan 1 is day 0
     secs = tosecs(t->tm_year + 1900, t->tm_yday + 1, t->tm_hour, t->tm_min, t->tm_sec);
-    if (d1.azelsim) {
+    if (d1.azelsim)
+    {
         if (d1.start_time == 0.0)
             d1.start_time = secs;
         if (d1.start_sec)
             secs = d1.start_sec + (secs - d1.start_time) * d1.speed_up;
-        else {
+        else
+        {
             if (d1.speed_up > 0)
                 secs = d1.start_time + (secs - d1.start_time) * d1.speed_up;
             else

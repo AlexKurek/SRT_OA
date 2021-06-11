@@ -54,7 +54,8 @@ void vspectra(void)
 
     info = 0;
     comm = 0;
-    if (!d1.fftsim) {
+    if (!d1.fftsim)
+    {
         comm = (double *) malloc((5 * blsiz + 100) * sizeof(double));
         fft_init(blsiz2, ream, comm, &info);
     }
@@ -69,15 +70,18 @@ void vspectra(void)
     min = 1e99;
     for (i = 0; i < blsiz2; i++)
         vspec[i] = 0.0;
-    for (k = 0; k < num; k++) {
+    for (k = 0; k < num; k++)
+    {
         if (!d1.radiosim)
 // Read the raw data from the RTL Dongle
             r = rtlsdr_read_sync(dev, bufferRead, nsam, &n_read);
-        else {
+        else
+        {
             av = 5.0;
             if (d1.elnow < 5.0)
                 av = av * (d1.tsys + d1.tcal) / d1.tsys;
-            if (strstr(soutrack, "Sun")) {
+            if (strstr(soutrack, "Sun"))
+            {
                 av = sqrt(d1.eloff * d1.eloff +
                           d1.azoff * d1.azoff * cos(d1.elnow * PI / 180.0) * cos(d1.elnow * PI / 180.0) +
                           1e-6);
@@ -90,15 +94,19 @@ void vspectra(void)
         }
 
 //   for(i=0;i<nsam;i+=0x10000)  printf("%d %f\n",i,(double)(bufferRead[i]-127.397));
-        for (kk = 0; kk < nsam / blsiz; kk++) {
+        for (kk = 0; kk < nsam / blsiz; kk++)
+        {
             if (d1.fftsim)
-                for (i = 0; i < blsiz2; i++) {
+                for (i = 0; i < blsiz2; i++)
+                {
                     re[i] = (double) (bufferRead[2 * i + kk * blsiz] - 127.397);
                     am[i] = (double) (bufferRead[2 * i + 1 + kk * blsiz] - 127.397);
                     if (re[i] > smax)
                         smax = re[i];
-            } else
-                for (i = 0; i < blsiz2; i++) {
+            }
+            else
+                for (i = 0; i < blsiz2; i++)
+                {
                     ream[2 * i] = (float) (bufferRead[2 * i + kk * blsiz] - 127.397);
                     ream[2 * i + 1] = (float) (bufferRead[2 * i + 1 + kk * blsiz] - 127.397);
                     if (ream[2 * i] > smax)
@@ -107,16 +115,19 @@ void vspectra(void)
 
             if (d1.fftsim)
                 Four(re, am, blsiz2);
-            else {
+            else
+            {
                 cfft(blsiz2, ream, comm, &info);
-                for (i = 0; i < blsiz2; i++) {
+                for (i = 0; i < blsiz2; i++)
+                {
                     re[i] = ream[2 * i];
                     am[i] = ream[2 * i + 1];
                 }
             }
 // for(i = 0; i < blsiz2; i++) if(re[i] > max) max=re[i];
 // for(i = 0; i < blsiz2; i++) if(re[i] < min) min=re[i];
-            for (i = 0; i < blsiz2; i++) {
+            for (i = 0; i < blsiz2; i++)
+            {
                 if (i < blsiz2 / 2)
                     j = i + blsiz2 / 2;
                 else
@@ -126,7 +137,8 @@ void vspectra(void)
             }
         }
     }
-    if (d1.rms >= 0) {
+    if (d1.rms >= 0)
+    {
         d1.rms = 0;
         for (i = 0; i < blsiz2; i++)
             d1.rms += vspec[i];
@@ -140,29 +152,37 @@ void vspectra(void)
     maxi = 0;
     for (i = 0; i < blsiz2; i++)
         wtt[i] = 1;
-    if (numm > 0) {
+    if (numm > 0)
+    {
         if (d1.nfreq == blsiz2) {
-            for (i = 0; i < blsiz2; i++) {
+            for (i = 0; i < blsiz2; i++)
+            {
                 if (i > 10)
                     spec[i] = vspec[i] / (double) numm;
                 else
                     spec[i] = 0;
             }
-        } else {
+        }
+        else
+        {
             m = blsiz2 / d1.nfreq;
-            for (i = 0; i < d1.nrfi; i++) {
+            for (i = 0; i < d1.nrfi; i++)
+            {
                 i4 = (d1.rfi[i] - d1.freq + d1.bw * 0.5) * blsiz2 / d1.bw + 0.5; // index of rfi MHz 
                 wid = 0.5 * d1.rfiwid[i] / (d1.bw / NSPEC);
                 for (j = -wid; j <= wid; j++)
                     if ((i4 + j) >= 0 && (i4 + j) < blsiz2)
                         wtt[i4 + j] = 0;
             }
-            for (j = 0; j < d1.nfreq; j++) {
+            for (j = 0; j < d1.nfreq; j++)
+            {
                 av = mm = 0;
-                for (i = j * m - m / 2; i <= j * m + m / 2; i++) {
+                for (i = j * m - m / 2; i <= j * m + m / 2; i++)
+                {
                     if (i > 10 && i < blsiz2 && wtt[i]) { // wtt=0 removal of spurs
                         av += vspec[i] / (double) numm;
-                        if (vspec[i] > max) {
+                        if (vspec[i] > max)
+                        {
                             max = vspec[i];
                             maxi = i;
                         }
@@ -174,16 +194,13 @@ void vspectra(void)
                 else {
                     spec[j] = 0;
                     if (j > 10)
-                        printf("check RFI settings in srt.cat data deleted at %8.3f\n",
-                               j * d1.bw / d1.nfreq + d1.freq - d1.bw * 0.5);
+                        printf("check RFI settings in srt.cat data deleted at %8.3f\n", j * d1.bw / d1.nfreq + d1.freq - d1.bw * 0.5);
                 }
             }
             max = max / (double) numm;
             noise = spec[maxi / m] * sqrt(2.0 * blsiz2 / (double) d1.nsam);
             if (max > spec[maxi / m] + d1.rfisigma * noise && d1.printout) // rfisigma sigma
-                printf("check for RFI at %8.4f MHz max %5.0e av %5.0e smax %5.0f %3.0f sigma\n",
-                       maxi * d1.bw / blsiz2 + d1.freq - d1.bw * 0.5, max, spec[maxi / m], smax,
-                       (max - spec[maxi / m]) / noise);
+                printf("check for RFI at %8.4f MHz max %5.0e av %5.0e smax %5.0f %3.0f sigma\n", maxi * d1.bw / blsiz2 + d1.freq - d1.bw * 0.5, max, spec[maxi / m], smax, (max - spec[maxi / m]) / noise);
         }
     }
     d1.smax = smax;
@@ -213,7 +230,8 @@ void Init_Device(int mode)
     char vendor[256], product[256], serial[256];
     d1.dongle = 1;
 
-    if (mode) {
+    if (mode)
+    {
         r = rtlsdr_set_center_freq(dev, frequency);
         if (r < 0)
             fprintf(stderr, "WARNING: Failed to set center freq.\n");
@@ -223,14 +241,16 @@ void Init_Device(int mode)
     }
 
     device_count = rtlsdr_get_device_count();
-    if (!device_count) {
+    if (!device_count)
+    {
         fprintf(stderr, "No supported devices found.\n");
         exit(1);
     }
 
     if (d1.printout)
         printf("Found %d device(s):\n", device_count);
-    for (i = 0; i < device_count; i++) {
+    for (i = 0; i < device_count; i++)
+    {
         rtlsdr_get_device_usb_strings(i, vendor, product, serial);
         if (d1.printout)
             printf("  %d:  %s, %s, SN: %s\n", i, vendor, product, serial);
@@ -240,7 +260,8 @@ void Init_Device(int mode)
         printf("Using device %d: %s\n", dev_index, rtlsdr_get_device_name(dev_index));
 
     r = rtlsdr_open(&dev, dev_index);
-    if (r < 0) {
+    if (r < 0)
+    {
         fprintf(stderr, "Failed to open rtlsdr device #%d.\n", dev_index);
         exit(1);
     }
@@ -257,12 +278,15 @@ void Init_Device(int mode)
     else if (d1.printout)
         printf("Tuned to %u Hz.\n", frequency);
 
-    if (0 == gain) {
+    if (0 == gain)
+    {
         /* Enable automatic gain */
         r = rtlsdr_set_tuner_gain_mode(dev, 0);
         if (r < 0)
             fprintf(stderr, "WARNING: Failed to enable automatic gain.\n");
-    } else {
+    }
+    else
+    {
         /* Enable manual gain */
         r = rtlsdr_set_tuner_gain_mode(dev, 1);
         if (r < 0)
