@@ -22,7 +22,7 @@ void outfile(char *txt)
         if (d1.filname[0] == 0)
             sprintf(d1.filname, "%s%4d_%03d_%02d.rad", d1.datadir, yr, da, hr);
         if (d1.displ)
-		{
+        {
             color.green = 0xffff;
             color.red = 0;
             color.blue = 0;
@@ -31,9 +31,9 @@ void outfile(char *txt)
         }
     }
     if ((file1 = fopen(d1.filname, "a")) == NULL)
-	{
+    {
         if ((file1 = fopen(d1.filname, "w")) == NULL)
-		{
+        {
             d1.foutstatus = -99;
             printf("cannot write %s\n", d1.filname);
             return;
@@ -41,33 +41,33 @@ void outfile(char *txt)
         d1.obsn = 0;            // file was new so reset obsn
         d1.foutstatus = 1;
     }
-	else
+    else
         d1.foutstatus = 1;
     toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
     if (d1.foutstatus == 1)
-	{
+    {
         if (d1.newday && da != d1.rday)
-		{
+        {
             fclose(file1);
             d1.foutstatus = 0;
             toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
             sprintf(d1.filname, "%s%4d_%03d_%02d.rad", d1.datadir, yr, da, hr);
             if ((file1 = fopen(d1.filname, "w")) == NULL)
-			{
+            {
                 d1.foutstatus = -99;
                 return;
             }
             d1.foutstatus = 1;
         }
         if (d1.printout)
-		{
+        {
             toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
             printf("%4d:%03d:%02d:%02d:%02d %3s file: %s pwr %f\n", yr, da, hr, mn, sc, d1.timsource, d1.filname, pwr);
         }
     }
     if (txt[0] == '*')
-	{
-        fprintf(file1, txt);
+    {
+        fprintf(file1, "%s", txt);
         fclose(file1);
         return;
     }
@@ -85,7 +85,7 @@ void outfile(char *txt)
                 "DATE %4d:%03d:%02d:%02d:%02d obsn %3d az %4.1f el %3.1f freq_MHz %10.4f Tsys %6.3f Tant %6.3f vlsr %7.2f glat %6.3f glon %6.3f source at_stow\n",
                 yr, da, hr, mn, sc, d1.obsn, d1.aznow, d1.elnow, d1.freq, d1.tsys, ppwr, d1.vlsr, d1.glat, d1.glon);
     if (d1.record_spec)
-	{
+    {
         istart = d1.f1 * d1.nfreq + 0.5;
         istop = d1.f2 * d1.nfreq + 0.5;
         sigma = d1.tsys / sqrt((d1.nsam * d1.integ / (2.0e6 * d1.bw)) * freqsep * 1e6);

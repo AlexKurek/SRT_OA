@@ -82,9 +82,7 @@ void vspectra(void)
                 av = av * (d1.tsys + d1.tcal) / d1.tsys;
             if (strstr(soutrack, "Sun"))
             {
-                av = sqrt(d1.eloff * d1.eloff +
-                          d1.azoff * d1.azoff * cos(d1.elnow * PI / 180.0) * cos(d1.elnow * PI / 180.0) +
-                          1e-6);
+                av = sqrt(d1.eloff * d1.eloff + d1.azoff * d1.azoff * cos(d1.elnow * PI / 180.0) * cos(d1.elnow * PI / 180.0) + 1e-6);
                 if (av > d1.beamw)
                     av = d1.beamw;
                 av = 5.0 + 25.0 * cos(av * PI * 0.5 / d1.beamw) * cos(av * PI * 0.5 / d1.beamw);

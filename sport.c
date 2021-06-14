@@ -69,9 +69,9 @@ void azel(double az, double el)
     if (!d1.azelsim && (fabs(d1.aznow - d1.azcmd) > 0.5 || fabs(d1.elnow - d1.elcmd) > 0.5))
     {
         if(d1.rot2mode < 10)
-			d1.comerr = rot2(&azz, &ell, 1, recv); // initial read return if antenna at correct position
+            d1.comerr = rot2(&azz, &ell, 1, recv); // initial read return if antenna at correct position
         else
-			d1.comerr = h180(&azz, &ell, 1, recv); // initial read return if antenna at correct position
+            d1.comerr = h180(&azz, &ell, 1, recv); // initial read return if antenna at correct position
         if (d1.comerr == -1)
         {
             printf("can't talk to antenna controller\n");
@@ -500,7 +500,7 @@ int rot2(double *az, double *el, int cmd, char *resp)
     rstatus = 0;
     if (cmd == -1)
     {
-        system("stty -F /dev/ttyUSB0 600 raw -echo -icanon min 0 time 20"); // needed to make timeout work
+        if (system("stty -F /dev/ttyUSB0 600 raw -echo -icanon min 0 time 20")){}; // needed to make timeout work. if(){} to avoid warning
 //  system("stty -F /dev/ttyUSB0 600 raw -echo -icanon min 12 time 20"); // reads min of 12 chars 10 = up 10x100ms to between chars BUT timeout doesn't work
         return 0;
     }
@@ -572,7 +572,8 @@ int h180(double *az, double *el, int cmd, char *resp)
   if(cmd == -1)
   {
 //  printf("here cmd = -1\n");
-   system("stty -F /dev/ttyUSB0 2400 cs8 -cstopb -parenb -icanon min 1 time 20"); 
+   int unused __attribute__((unused));
+   unused = system("stty -F /dev/ttyUSB0 2400 cs8 -cstopb -parenb -icanon min 1 time 20");
    usbdev = open("/dev/ttyUSB0",O_RDWR,O_NONBLOCK);
       sleep(1);
       status = close(usbdev);

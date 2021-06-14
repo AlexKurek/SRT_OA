@@ -933,29 +933,19 @@ R828_ErrCode R828_Xtal_Check(void *pTuner)
                         return RT_Fail;
                     }
                     else      //0p+high drive lock
-                    {
                         Xtal_cap_sel_tmp = XTAL_HIGH_CAP_0P;
-                    }
                 }
                 else          //0p lock
-                {
                     Xtal_cap_sel_tmp = XTAL_LOW_CAP_0P;
-                }
             }
             else              //10p lock
-            {
                 Xtal_cap_sel_tmp = XTAL_LOW_CAP_10P;
-            }
         }
         else                  //20p lock
-        {
             Xtal_cap_sel_tmp = XTAL_LOW_CAP_20P;
-        }
     }
     else                      // 30p lock
-    {
         Xtal_cap_sel_tmp = XTAL_LOW_CAP_30P;
-    }
 
     return RT_Success;
 }
@@ -1913,9 +1903,7 @@ R828_ErrCode R828_IQ_Tree(void *pTuner, UINT8 FixPot, UINT8 FlucPot, UINT8 PotRe
                     FlucPot |= TempPot;
                 }
                 else
-                {
                     FlucPot |= (0x20 | TempPot);
-                }
             }
             else
                 FlucPot -= 2;
