@@ -13,7 +13,7 @@ gint Repaint(void)
 {
     GdkRectangle update_rect;
     GdkColor color;
-    char txt[80], *tx2;
+    char txt[280], *tx2;
     int i, j, x, y, yp, yr, da, hr, mn, sc, ix, iy, istart, istop;
     int x1, y1, x2, y2, xst, yst, iav;
     double secs, lst, ra, dec, az, el, c, max, min, xsz, ddt, azz1, azz2;;

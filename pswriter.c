@@ -254,8 +254,7 @@ int main(void)
             psy1 = yps - y1 / sy;
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
-            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             x1 = (xoffset + y * 320) * sx;
             y1 = (yoffset) * sy;
             x2 = (xoffset + y * 320) * sx;
@@ -264,8 +263,7 @@ int main(void)
             psy1 = yps - y1 / sy;
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
-            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
         }
 
         yp = 0;
@@ -303,8 +301,7 @@ int main(void)
                     psy1 = yps - y1 / sy;
                     psx2 = x2 / sx;
                     psy2 = yps - y2 / sy;
-                    fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
-                                psy1, psx2, psy1);
+                    fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy1);
                 }
                 xp = x;
                 if (y > yp && i)
@@ -316,8 +313,7 @@ int main(void)
                     psy1 = yps - y1 / sy;
                     psx2 = x2 / sx;
                     psy2 = yps - y2 / sy;
-                    fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
-                                psy1, psx1, psy2);
+                    fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx1, psy2);
                 }
                 if (yp > y && i)
                 {
@@ -328,8 +324,7 @@ int main(void)
                     psy1 = yps - y1 / sy;
                     psx2 = x2 / sx;
                     psy2 = yps - y2 / sy;
-                    fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
-                                psy1, psx1, psy2);
+                    fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx1, psy2);
                 }
             }
             yp = y;
@@ -361,8 +356,7 @@ int main(void)
             psy1 = yps - y1 / sy;
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
-            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             sprintf(txt, "%6.1f", j / ddd);
             x1 = (300 - dd + xoffset) * sx;
             y1 = (yoffset + 335.0) * sy;
@@ -393,8 +387,7 @@ int main(void)
             psy1 = yps - y1 / sy;
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
-            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             sprintf(txt, "%5.0f", j * ddd);
             x1 = (300 - dd + xoffset) * sx;
             y1 = (yoffset + 290.0) * sy;
@@ -430,8 +423,7 @@ int main(void)
                 psy1 = yps - y1 / sy;
                 psx2 = x2 / sx;
                 psy2 = yps - y2 / sy;
-                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                            psx2, psy2);
+                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
                 sprintf(txt, "%5.1fK", j * dd);
                 x1 = (xoffset - 30) * sx;
                 y1 = (yoffset + y + 2.0) * sy;
@@ -451,8 +443,7 @@ int main(void)
             psy1 = yps - y1 / sy;
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
-            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             x1 = (xoffset + 305) * sx;
             y1 = (yoffset + 10) * sy;
             x2 = (xoffset + 315) * sx;
@@ -461,8 +452,7 @@ int main(void)
             psy1 = yps - y1 / sy;
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
-            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             x1 = (xoffset + 305) * sx;
             y1 = (yoffset + yy + 10) * sy;
             x2 = (xoffset + 315) * sx;
@@ -471,8 +461,7 @@ int main(void)
             psy1 = yps - y1 / sy;
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
-            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+            fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             sprintf(txt, "3-sigma");
             x1 = (xoffset + 270) * sx;
             y1 = (yoffset + yy * 0.5 + 14) * sy;

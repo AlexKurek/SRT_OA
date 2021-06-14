@@ -93,8 +93,7 @@ int dayofyear(int year, int month, int day)
 char *to_date(int year, int day)
 {
     int day_tab[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    const char *Jan = "Jan", *Feb = "Feb", *Mar = "Mar", *Apr = "Apr", *May = "May", *Jun = "Jun", *Jul = "Jul", *Aug = "Aug", *Sep = "Sep", *Oct = "Oct", *Nov = "Nov", *Dec = "Dec";  // to avoid [-Wdiscarded-qualifiers]
-    const char *mon[] = { Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec };
+	const char *mon[] = { (const char*)"Jan", (const char*)"Feb", (const char*)"Mar", (const char*)"Apr", (const char*)"May", (const char*)"Jun", (const char*)"Jul", (const char*)"Aug", (const char*)"Sep", (const char*)"Oct", (const char*)"Nov", (const char*)"Dec" };
 
     int k, leap;
     static char str[80];
