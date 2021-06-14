@@ -500,7 +500,7 @@ int rot2(double *az, double *el, int cmd, char *resp)
     rstatus = 0;
     if (cmd == -1)
     {
-        system("stty -F /dev/ttyUSB0 600 raw -echo -icanon min 0 time 20"); // needed to make timeout work
+        if (system("stty -F /dev/ttyUSB0 600 raw -echo -icanon min 0 time 20")){}; // needed to make timeout work. if(){} to avoid warning
 //  system("stty -F /dev/ttyUSB0 600 raw -echo -icanon min 12 time 20"); // reads min of 12 chars 10 = up 10x100ms to between chars BUT timeout doesn't work
         return 0;
     }
@@ -572,7 +572,8 @@ int h180(double *az, double *el, int cmd, char *resp)
   if(cmd == -1)
   {
 //  printf("here cmd = -1\n");
-   system("stty -F /dev/ttyUSB0 2400 cs8 -cstopb -parenb -icanon min 1 time 20"); 
+   int unused __attribute__((unused));
+   unused = system("stty -F /dev/ttyUSB0 2400 cs8 -cstopb -parenb -icanon min 1 time 20");
    usbdev = open("/dev/ttyUSB0",O_RDWR,O_NONBLOCK);
       sleep(1);
       status = close(usbdev);

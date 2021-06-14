@@ -67,7 +67,7 @@ void outfile(char *txt)
     }
     if (txt[0] == '*')
 	{
-        fprintf(file1, txt);
+        fprintf(file1, "%s", txt);
         fclose(file1);
         return;
     }
