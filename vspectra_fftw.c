@@ -81,9 +81,7 @@ void vspectra(void)
                 av = av * (d1.tsys + d1.tcal) / d1.tsys;
             if (strstr(soutrack, "Sun"))
             {
-                av = sqrt(d1.eloff * d1.eloff +
-                          d1.azoff * d1.azoff * cos(d1.elnow * PI / 180.0) * cos(d1.elnow * PI / 180.0) +
-                          1e-6);
+                av = sqrt(d1.eloff * d1.eloff + d1.azoff * d1.azoff * cos(d1.elnow * PI / 180.0) * cos(d1.elnow * PI / 180.0) + 1e-6);
                 if (av > d1.beamw)
                     av = d1.beamw;
                 av = 5.0 + 25.0 * cos(av * PI * 0.5 / d1.beamw) * cos(av * PI * 0.5 / d1.beamw);
@@ -184,16 +182,13 @@ void vspectra(void)
                 {
                     spec[j] = 0;
                     if (j > 10)
-                        printf("check RFI settings in srt.cat data deleted at %8.3f\n",
-                               j * d1.bw / d1.nfreq + d1.freq - d1.bw * 0.5);
+                        printf("check RFI settings in srt.cat data deleted at %8.3f\n", j * d1.bw / d1.nfreq + d1.freq - d1.bw * 0.5);
                 }
             }
             max = max / (double) numm;
             noise = spec[maxi / m] * sqrt(2.0 * blsiz2 / (double) d1.nsam);
             if (max > spec[maxi / m] + d1.rfisigma * noise && d1.printout) // rfisigma sigma
-                printf("check for RFI at %8.4f MHz max %5.0e av %5.0e smax %5.0f %3.0f sigma\n",
-                       maxi * d1.bw / blsiz2 + d1.freq - d1.bw * 0.5, max, spec[maxi / m], smax,
-                       (max - spec[maxi / m]) / noise);
+                printf("check for RFI at %8.4f MHz max %5.0e av %5.0e smax %5.0f %3.0f sigma\n", maxi * d1.bw / blsiz2 + d1.freq - d1.bw * 0.5, max, spec[maxi / m], smax, (max - spec[maxi / m]) / noise);
         }
     }
     d1.smax = smax;

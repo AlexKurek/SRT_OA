@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
             printf("cannot open lock.txt\n");
             return 0;
         }
-        fgets(buf, 256, file1);
+        if (fgets(buf, 256, file1)) {}; // if(){} to avoid warning
         if (buf[0] == '1')
         {
             printf("srt is running\n");
@@ -224,8 +224,9 @@ int main(int argc, char *argv[])
             d1.elprev = d1.stowel;
         }
     }
-    setgid(getgid());
-    setuid(getuid());
+    int unused __attribute__((unused));
+    unused = setgid(getgid());
+    unused = setuid(getuid());
     if (d1.mainten == 0)
     {
         if (d1.stowatlim)
@@ -443,7 +444,7 @@ int main(int argc, char *argv[])
         }
         if (d1.record_int_sec && d1.integ2 >= d1.record_int_sec)
         {
-            char *strTemp = " ";
+            char *strTemp = (char*)" ";
             outfile(strTemp);
             if (d1.record_clearint && d1.track && !d1.bsw && !d1.scan)
                 d1.clearint = 1;
