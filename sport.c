@@ -634,7 +634,7 @@ int h180(double *az, double *el, int cmd, char *resp)
           if (axis == 0)
               mm = 0;
           else
-			  mm = 2;
+              mm = 2;
           count = 8000;
       }
       if (cmd == 2 && mm >= 0 && count && usbdev > 0)
