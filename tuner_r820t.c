@@ -64,7 +64,6 @@ int r820t_Convert(int InvertNum)
     {
         if (BitNum & InvertNum)
             ReturnNum += AddNum;
-
         AddNum /= 2;
         BitNum *= 2;
     }
@@ -124,7 +123,6 @@ R828_ErrCode I2C_Write_Len(void *pTuner, R828_I2C_LEN_TYPE * I2C_Info)
         if (rtlsdr_i2c_write_fn(pTuner, R820T_I2C_ADDR, WritingBuffer, WritingByteNum + 1) < 0)
             return RT_Fail;
     }
-
     return RT_Success;
 }
 
@@ -161,7 +159,6 @@ R828_ErrCode I2C_Read_Len(void *pTuner, R828_I2C_LEN_TYPE * I2C_Info)
 
     for (i = 0; i < ByteNum; i++)
         I2C_Info->Data[i] = (UINT8) r820t_Convert(ReadingBytes[i]);
-
 
     return RT_Success;
 
@@ -241,6 +238,7 @@ UINT8 R828_iniArry[27] = { 0x83, 0x32, 0x75, 0xC0, 0x40, 0xD6, 0x6C, 0xF5, 0x63,
 
 UINT8 R828_ADDRESS = 0x34;
 UINT8 Rafael_Chip = R820T;
+
 //----------------------------------------------------------//
 //                   Internal Structs                       //
 //----------------------------------------------------------//
@@ -328,6 +326,7 @@ static UINT8 R828_Fil_Cal_code[STD_SIZE];
 
 static UINT8 Xtal_cap_sel = XTAL_LOW_CAP_0P;
 static UINT8 Xtal_cap_sel_tmp = XTAL_LOW_CAP_0P;
+
 //----------------------------------------------------------//
 //                   Internal static struct                 //
 //----------------------------------------------------------//
@@ -335,6 +334,7 @@ static SysFreq_Info_Type SysFreq_Info1;
 static Sys_Info_Type Sys_Info1;
 //static Freq_Info_Type R828_Freq_Info;
 static Freq_Info_Type Freq_Info1;
+
 //----------------------------------------------------------//
 //                   Internal Functions                     //
 //----------------------------------------------------------//
@@ -367,7 +367,6 @@ Sys_Info_Type R828_Sys_Sel(R828_Standard_Type R828_Standard)
 
     switch (R828_Standard)
     {
-
     case DVB_T_6M:
     case DVB_T2_6M:
         R828_Sys_Info.IF_KHz = 3570;
@@ -461,9 +460,7 @@ Sys_Info_Type R828_Sys_Sel(R828_Standard_Type R828_Standard)
         R828_Sys_Info.FLT_EXT_WIDEST = 0x00; //R15[7]: FLT_EXT_WIDE OFF
         R828_Sys_Info.POLYFIL_CUR = 0x60; //R25[6:5]:Min
         break;
-
     }
-
     return R828_Sys_Info;
 }
 
@@ -692,8 +689,8 @@ SysFreq_Info_Type R828_SysFreq_Sel(R828_Standard_Type R828_Standard, UINT32 RF_f
 {
     SysFreq_Info_Type R828_SysFreq_Info;
 
-    switch (R828_Standard) {
-
+    switch (R828_Standard)
+	{
     case DVB_T_6M:
     case DVB_T_7M:
     case DVB_T_7M_2:
@@ -858,8 +855,7 @@ R828_ErrCode R828_Xtal_Check(void *pTuner)
 
         // if 20pF unlock, set to cap 10pF
 #if (USE_16M_XTAL==TRUE)
-        if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) > 29)
-            || ((R828_I2C_Len.Data[2] & 0x3F) < 23))
+        if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) > 29) || ((R828_I2C_Len.Data[2] & 0x3F) < 23))
 #else
         if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) == 0x3F))
 #endif
@@ -880,8 +876,7 @@ R828_ErrCode R828_Xtal_Check(void *pTuner)
 
             // if 10pF unlock, set to cap 0pF
 #if (USE_16M_XTAL==TRUE)
-            if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) > 29)
-                || ((R828_I2C_Len.Data[2] & 0x3F) < 23))
+            if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) > 29) || ((R828_I2C_Len.Data[2] & 0x3F) < 23))
 #else
             if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) == 0x3F))
 #endif
@@ -902,8 +897,7 @@ R828_ErrCode R828_Xtal_Check(void *pTuner)
 
                 // if unlock, set to high drive
 #if (USE_16M_XTAL==TRUE)
-                if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) > 29)
-                    || ((R828_I2C_Len.Data[2] & 0x3F) < 23))
+                if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) > 29) || ((R828_I2C_Len.Data[2] & 0x3F) < 23))
 #else
                 if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) == 0x3F))
 #endif
@@ -924,8 +918,7 @@ R828_ErrCode R828_Xtal_Check(void *pTuner)
                         return RT_Fail;
 
 #if (USE_16M_XTAL==TRUE)
-                    if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) > 29)
-                        || ((R828_I2C_Len.Data[2] & 0x3F) < 23))
+                    if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) > 29) || ((R828_I2C_Len.Data[2] & 0x3F) < 23))
 #else
                     if (((R828_I2C_Len.Data[2] & 0x40) == 0x00) || ((R828_I2C_Len.Data[2] & 0x3F) == 0x3F))
 #endif
@@ -1152,7 +1145,8 @@ R828_ErrCode R828_IMR(void *pTuner, UINT8 IMR_MEM, int IM_Flag)
 
     for (n = 0; n < 16; n++)
     {
-        if ((16 + n) * 8 * RingRef >= 3100000) {
+        if ((16 + n) * 8 * RingRef >= 3100000)
+		{
             n_ring = n;
             break;
         }
@@ -1346,7 +1340,8 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
     }
     else
     {
-        if (R828_Xtal > 24000) {
+        if (R828_Xtal > 24000)
+		{
             R828_Arry[11] |= 0x10; //b4=1
             PLL_Ref = R828_Xtal / 2;
         }
@@ -1445,7 +1440,8 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
         VCO_Fra = 0;
         Nint++;
 //  printf("Case 2\n");
-    } else if ((VCO_Fra > PLL_Ref * 127 / 128) && (VCO_Fra < PLL_Ref)) //> 2*PLL_Ref*127/256,  < 2*PLL_Ref*128/256
+    }
+	else if ((VCO_Fra > PLL_Ref * 127 / 128) && (VCO_Fra < PLL_Ref)) //> 2*PLL_Ref*127/256,  < 2*PLL_Ref*128/256
     {
         VCO_Fra = PLL_Ref * 127 / 128;
     }                           // VCO_Fra = 2*PLL_Ref*127/256
@@ -1455,12 +1451,14 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
         VCO_Fra = PLL_Ref * 129 / 128;
     }                           // VCO_Fra = 2*PLL_Ref*129/256
 //  printf("Case 4\n");}
-    else {
+    else
+	{
         VCO_Fra = VCO_Fra;
     }
 //  printf("Case 5\n");}
 
-    if (Nint > 63) {
+    if (Nint > 63)
+	{
         fprintf(stderr, "[R820T] No valid PLL values for %u Hz!\n", LO_Freq);
         return RT_Fail;
     }
@@ -1523,9 +1521,7 @@ R828_ErrCode R828_PLL(void *pTuner, UINT32 LO_Freq, R828_Standard_Type R828_Stan
             R828_Delay_MS(pTuner, 10);
     }
     else
-    {
         R828_Delay_MS(pTuner, 10);
-    }
 
     //check PLL lock status
     R828_I2C_Len.RegAddr = 0x00;
@@ -1592,26 +1588,26 @@ R828_ErrCode R828_MUX(void *pTuner, UINT32 RF_KHz)
     R828_Arry[11] &= 0xF4;
     switch (Xtal_cap_sel)
     {
-    case XTAL_LOW_CAP_30P:
-    case XTAL_LOW_CAP_20P:
-        R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP20P | 0x08;
-        break;
+		case XTAL_LOW_CAP_30P:
+		case XTAL_LOW_CAP_20P:
+			R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP20P | 0x08;
+			break;
 
-    case XTAL_LOW_CAP_10P:
-        R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP10P | 0x08;
-        break;
+		case XTAL_LOW_CAP_10P:
+			R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP10P | 0x08;
+			break;
 
-    case XTAL_LOW_CAP_0P:
-        R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP0P | 0x08;
-        break;
+		case XTAL_LOW_CAP_0P:
+			R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP0P | 0x08;
+			break;
 
-    case XTAL_HIGH_CAP_0P:
-        R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP0P | 0x00;
-        break;
+		case XTAL_HIGH_CAP_0P:
+			R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP0P | 0x00;
+			break;
 
-    default:
-        R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP0P | 0x08;
-        break;
+		default:
+			R828_Arry[11] = R828_Arry[11] | Freq_Info1.XTAL_CAP0P | 0x08;
+			break;
     }
     R828_I2C.Data = R828_Arry[11];
     if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
@@ -2221,7 +2217,8 @@ R828_ErrCode R828_F_IMR(void *pTuner, R828_SectType * IQ_Pont)
     VGA_Read = 0;
 
     //VGA
-    for (VGA_Count = 12; VGA_Count < 16; VGA_Count++) {
+    for (VGA_Count = 12; VGA_Count < 16; VGA_Count++)
+	{
         R828_I2C.RegAddr = 0x0C;
         R828_I2C.Data = (R828_Arry[7] & 0xF0) + VGA_Count;
         if (I2C_Write(pTuner, &R828_I2C) != RT_Success)
@@ -2356,7 +2353,8 @@ R828_ErrCode R828_SetStandard(void *pTuner, R828_Standard_Type RT_Standard)
     R828_CAL_LO_khz = Sys_Info1.FILT_CAL_LO;
 
     // Filter Calibration
-    if (R828_Fil_Cal_flag[RT_Standard] == FALSE) {
+    if (R828_Fil_Cal_flag[RT_Standard] == FALSE)
+	{
         // do filter calibration 
         if (R828_Filt_Cal(pTuner, Sys_Info1.FILT_CAL_LO) != RT_Success)
             return RT_Fail;
@@ -2643,7 +2641,6 @@ R828_ErrCode R828_SetFrequency(void *pTuner, R828_Set_Info R828_INFO, R828_SetFr
     //Set LNA
     if (R828_INFO.R828_Standard > SECAM_L1)
     {
-
         if (R828_SetFreqMode == FAST_MODE) //FAST mode 
         {
             //R828_Arry[24] = (R828_Arry[24] & 0xC7) | 0x20; //LNA TOP:4
