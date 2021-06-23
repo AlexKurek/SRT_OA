@@ -511,7 +511,7 @@ int rot2(double *az, double *el, int cmd, char *resp)
         return 0;
     }
     usbdev = 0;                 // cmd  0x0f=stop 0x1f=status 0x2f=set
-    usbdev = open("/dev/ttyUSB0",O_RDWR, O_NONBLOCK);
+    usbdev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
     cmd = cmd * 16 + 0xf;
     if (!d1.rot2mode)
       sprintf (command, "W%04d%c%04d%c%c ", (int) (azz + 360.5), 1, (int) (ell + 360.5), 1, cmd); // round to nearest degree
@@ -643,7 +643,7 @@ int h180(double *az, double *el, int cmd, char *resp)
           sprintf (command," move %d %d%1c", mm, count, 13);
           status = write(usbdev, command, strlen(command));
           //  printf ("write status %d usbdev %d\n",status,usbdev);
-          for (i=0;i<32;i++)
+          for (i=0; i<32; i++)
               resp[i]=0;
           usleep(10000);
           im = 0;
@@ -651,7 +651,7 @@ int h180(double *az, double *el, int cmd, char *resp)
           i = j = 0;
           while (j==0 && i < 32)
           {
-              rstatus = read(usbdev,&ch,1);
+              rstatus = read(usbdev, &ch, 1);
               if (d1.debug)
                    printf ("here axis %d status %d ch %1c %x i = %d usbdev %d rstatus %d\n", axis, status, ch, ch, i, usbdev, rstatus);
               usleep(10000);
@@ -663,13 +663,13 @@ int h180(double *az, double *el, int cmd, char *resp)
           }
           status = i;
           usleep(100000);
-          for (i=0;i<status;i++)
+          for (i=0; i<status; i++)
               if (resp[i]=='M' || resp[i]=='T')
                 im = i;
           //  for (i=0;i<status;i++) printf ("i %d %c\n",i,resp[i]);
-          sscanf(&resp[im],"%*s %d",&ccount);
+          sscanf(&resp[im], "%*s %d", &ccount);
           if (d1.debug)
-              printf ("status %d im %d move mm %d sent %d recvd %d %12s rstatus %d azz %f ell %f\n",status,im,mm,count,ccount,&resp[im],rstatus,*az,*el);
+              printf ("status %d im %d move mm %d sent %d recvd %d %12s rstatus %d azz %f ell %f\n", status, im, mm, count, ccount, &resp[im], rstatus, *az, *el);
           if (resp[im] == 'M')
           {
             if (mm==1) d1.azcount += ccount; 
