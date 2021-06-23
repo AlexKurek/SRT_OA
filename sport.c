@@ -461,7 +461,7 @@ void azel(double az, double el)   // command antenna movement
     }
     if (d1.stow != 0)
         d1.track = 0;
-    if (d1.displ)
+    if (d1.displ)     // display text at right hand side of the main window
     {
         sprintf (txt, "azel %5.1f %4.1f deg", d1.aznow, d1.elnow);
         iy = midy * 0.20;
