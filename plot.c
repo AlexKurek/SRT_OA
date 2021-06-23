@@ -264,22 +264,18 @@ gint Repaint(void)
     }
 /* plot spectra vs time and freq */
     sprintf(txt, "vlsr %3.0fkm/s l=%3.0f b=%3.0f", d1.vlsr, d1.glon, d1.glat);
-    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc,
-                  midx * 1.55, midy * 0.6, txt, strlen(txt));
+    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.55, midy * 0.6, txt, strlen(txt));
     sprintf(txt, "integ=%5.0f sec", d1.integ * d1.nsam / (2.0e6 * d1.bw));
-    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc,
-                  midx * 1.55, midy * 0.65, txt, strlen(txt));
+    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.55, midy * 0.65, txt, strlen(txt));
     if (d1.tsys > 0.0)
         sprintf(txt, "%3.1f-%3.1fMHz IF", d1.f1 * d1.bw, d1.f2 * d1.bw);
     else
         sprintf(txt, "uncalibrated");
-    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2,
-                  midy * 0.37, txt, strlen(txt));
+    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2, midy * 0.37, txt, strlen(txt));
     if (d1.radiosim)
     {
         sprintf(txt, "simulated");
-        gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2,
-                      midy * 0.05, txt, strlen(txt));
+        gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2, midy * 0.05, txt, strlen(txt));
     }
     else
     {

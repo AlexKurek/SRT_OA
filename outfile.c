@@ -93,8 +93,7 @@ void outfile(char *txt)
             sigma = 2.0 * sigma;
         fprintf(file1,
                 "Fstart %8.3f fstop %8.3f spacing %8.6f bw %8.3f fbw %8.3f MHz nfreq %d nsam %d npoint %d integ %5.0f sigma %8.3f bsw %d\n",
-                istart * d1.bw / d1.nfreq + d1.efflofreq, istop * d1.bw / d1.nfreq + d1.efflofreq, freqsep,
-                d1.bw, d1.fbw, d1.nfreq, d1.nsam, istop - istart, d1.integ * d1.nsam / (2.0e6 * d1.bw), sigma, d1.bsw);
+                istart * d1.bw / d1.nfreq + d1.efflofreq, istop * d1.bw / d1.nfreq + d1.efflofreq, freqsep, d1.bw, d1.fbw, d1.nfreq, d1.nsam, istop - istart, d1.integ * d1.nsam / (2.0e6 * d1.bw), sigma, d1.bsw);
         fprintf(file1, "Spectrum %6.0f integration periods\n", d1.integ);
         for (i = istart; i < istop; i++)
             fprintf(file1, "%8.3f ", aavspec[i]);

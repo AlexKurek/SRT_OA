@@ -189,9 +189,9 @@ void button_record_clicked(void)
     if (d1.record) {
         d1.record = 0;
         d1.foutstatus = 0;
-        color.green = 0xffff;
-        color.red = 0xffff;
-        color.blue = 0xffff;
+        color.green   = 0xffff;
+        color.red     = 0xffff;
+        color.blue    = 0xffff;
         gtk_widget_modify_bg(button_record, GTK_STATE_NORMAL, &color);
     }
     else
@@ -323,10 +323,10 @@ void button_cal_clicked(void)
     GdkColor color;
     if (d1.caldone)
     {
-        d1.caldone = 0;
+        d1.caldone  = 0;
         color.green = 0xffff;
-        color.red = 0xffff;
-        color.blue = 0xffff;
+        color.red   = 0xffff;
+        color.blue  = 0xffff;
         gtk_widget_modify_bg(button_cal, GTK_STATE_NORMAL, &color);
     }
     if (d1.entry8)

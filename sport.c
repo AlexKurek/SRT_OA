@@ -22,8 +22,8 @@ void azel(double az, double el)   // command antenna movement
     int        n, ix, iy, midxr, ixe, yr, da, hr, mn, sc;
     static int kk;
     double     azz, ell, ra, dec, x, y;
-    GdkColor color;
-    char str[80], recv[256], txt[80];
+    char       str[80], recv[256], txt[80];
+    GdkColor   color;
 
     azz = ell = 0;
     d1.slew   = 0;

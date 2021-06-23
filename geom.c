@@ -9,8 +9,7 @@
 double vlsr(double time, double ra, double dec)
   // calculate velocity of the local standard of rest
 {
-    double decc, rac, vsun, vearth, x0, y0, z0, sunlong, soulong, soulat, x, y,
-        z, dp, rp, gwest, grad, gpole, lon0, ggwest;
+    double decc, rac, vsun, vearth, x0, y0, z0, sunlong, soulong, soulat, x, y, z, dp, rp, gwest, grad, gpole, lon0, ggwest;
     decc = -(28.0 + 56.0 / 60.0) * PI / 180.0;
     rac = (17.0 + 45.5 / 60.0) * PI / 12.0;
     dp = 27.1 * PI / 180.0;
@@ -18,8 +17,7 @@ double vlsr(double time, double ra, double dec)
     x0 = 20.0 * cos(18.0 * PI / 12.0) * cos(30.0 * PI / 180.0);
     y0 = 20.0 * sin(18.0 * PI / 12.0) * cos(30.0 * PI / 180.0);
     z0 = 20.0 * sin(30.0 * PI / 180.0); /* sun 20km/s towards ra=18h dec=30.0 */
-    vsun = -x0 * cos(ra) * cos(dec) - y0 * sin(ra) * cos(dec)
-        - z0 * sin(dec);
+    vsun = -x0 * cos(ra) * cos(dec) - y0 * sin(ra) * cos(dec) - z0 * sin(dec);
     x0 = cos(ra) * cos(dec);
     y0 = sin(ra) * cos(dec);
     z0 = sin(dec);
