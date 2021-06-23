@@ -32,7 +32,7 @@ void azel(double az, double el)   // command antenna movement
     ixe   = midx * 0.25;
     midxr = midx * 2 - ix;
     if (d1.lat >= 0.0)
-        sprintf (txt, "%s %4.1fN %5.1fW", d1.statnam, d1.lat  * 180.0 / PI, d1.lon * 180.0 / PI);
+        sprintf (txt, "%s %4.1fN %5.1fW", d1.statnam,  d1.lat * 180.0 / PI, d1.lon * 180.0 / PI);
     else
         sprintf (txt, "%s %4.1fS %5.1fW", d1.statnam, -d1.lat * 180.0 / PI, d1.lon * 180.0 / PI);
     iy = midy * 0.05;
@@ -489,7 +489,7 @@ void azel(double az, double el)   // command antenna movement
 
 int rot2(double *az, double *el, int cmd, char *resp)
 {
-    int    usbdev, status, rstatus;
+    int    usbDev, status, rstatus;
     double azz, ell;
     char   command[14];
     if (d1.stowatlim)
@@ -510,8 +510,8 @@ int rot2(double *az, double *el, int cmd, char *resp)
 //  system("stty -F /dev/ttyUSB0 600 raw -echo -icanon min 12 time 20"); // reads min of 12 chars 10 = up 10x100ms to between chars BUT timeout doesn't work
         return 0;
     }
-    usbdev = 0;                 // cmd  0x0f=stop 0x1f=status 0x2f=set
-    usbdev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
+    usbDev = 0;                 // cmd  0x0f=stop 0x1f=status 0x2f=set
+    usbDev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
     cmd = cmd * 16 + 0xf;
     if (!d1.rot2mode)
       sprintf (command, "W%04d%c%04d%c%c ", (int) (azz + 360.5), 1, (int) (ell + 360.5), 1, cmd); // round to nearest degree
@@ -519,15 +519,15 @@ int rot2(double *az, double *el, int cmd, char *resp)
       sprintf (command, "W%04d%c%04d%c%c ", (int) (2*(azz + 360.0)+0.5), 2, (int) (2*(ell + 360.0)+0.5), 2, cmd); // round to nearest half degree
 //    printf ("sent to azz %f ell %f\n",azz,ell);
 //  for (i=0;i<13;i++) printf ("isend=%d ch=%2x\n",i,command[i]);
-    status = write(usbdev, command, 13);
+    status = write(usbDev, command, 13);
 //    if (d1.debug)
-        printf ("write status %d cmd %x usbdev %d az %7.2f el %7.2f\n", status, cmd, usbdev,azz,ell);
+        printf ("write status %d cmd %x usbDev %d az %7.2f el %7.2f\n", status, cmd, usbDev,azz,ell);
     sleep(d1.rot2slp);                   // sleep needed
     if (cmd != 0x1f)
         sleep(d1.rot2slp);               // extra sleep needed
     if (cmd == 0x1f)
     {
-        rstatus = read(usbdev, resp, 12);
+        rstatus = read(usbDev, resp, 12);
         if (d1.debug)
             printf ("read status %d\n", rstatus);
 //   for (i=0;i<12;i++) printf ("irec=%d ch=%2x\n",i,resp[i]);
@@ -553,7 +553,7 @@ int rot2(double *az, double *el, int cmd, char *resp)
             *el = ell;
         }
     }
-    close(usbdev);
+    close (usbDev);
     if (rstatus != 12)
         return -1;
     else
@@ -562,14 +562,14 @@ int rot2(double *az, double *el, int cmd, char *resp)
 
 int h180(double *az, double *el, int cmd, char *resp)
 {
-  int    usbdev;
+  int    usbDev;
   int    status, rstatus, mm, count, axis, i, j, im, ccount;
   double azz, ell, acount;
   char   command[16], ch;
 
   if (cmd == 1)
   {
-     azz = d1.azcount / d1.azcounts_per_deg;
+     azz = d1.azCount / d1.azCounts_per_deg;
      ell = d1.elcount / d1.elcounts_per_deg;
      *az = azz + d1.azlim1;
      *el = ell + d1.ellim1;
@@ -581,19 +581,19 @@ int h180(double *az, double *el, int cmd, char *resp)
 //  printf ("here cmd = -1\n");
    int unused __attribute__((unused));
    unused = system("stty -F /dev/ttyUSB0 2400 cs8 -cstopb -parenb -icanon min 1 time 20");
-   usbdev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
+   usbDev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
    sleep(1);
-   status = close(usbdev);
+   status = close(usbDev);
    if (d1.debug)
-       printf ("here stty usbdev %d status %d\n",usbdev,status);
-   if (usbdev<0)
+       printf ("here stty usbDev %d status %d\n", usbDev, status);
+   if (usbDev<0)
        return -1;
    else
        return 0;
   }
-  usbdev = status = count = 0; 
-  usbdev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
-  printf ("usbdev %d\n", usbdev);
+  usbDev = status = count = 0; 
+  usbDev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
+  printf ("usbDev %d\n", usbDev);
   sleep(1);
   azz = d1.azcmd - d1.azlim1;
   ell = d1.elcmd - d1.ellim1;
@@ -602,12 +602,12 @@ int h180(double *az, double *el, int cmd, char *resp)
       mm = -1;
       if (axis==0)
       {
-          acount = azz * d1.azcounts_per_deg - d1.azcount;
-          if (d1.countperstep && acount > d1.countperstep)
-              acount = d1.countperstep;
-          if (d1.countperstep && acount < -d1.countperstep)
-              acount = -d1.countperstep;
-        // printf ("acount %f azz %f d1.count %d %f usbdev %d\n",acount,azz,d1.azcount,azz * d1.azcounts_per_deg - d1.azcount,usbdev);
+          acount = azz * d1.azCounts_per_deg - d1.azCount;
+          if (d1.countPerStep && acount > d1.countPerStep)
+              acount = d1.countPerStep;
+          if (d1.countPerStep && acount < -d1.countPerStep)
+              acount = -d1.countPerStep;
+        // printf ("acount %f azz %f d1.count %d %f usbDev %d\n",acount,azz,d1.azCount,azz * d1.azCounts_per_deg - d1.azCount,usbDev);
           if (acount > 0) count = acount + 0.5; else count = acount - 0.5; 
           if (count > 0) mm = 1; 
           if (count < 0) mm = 0;
@@ -615,10 +615,10 @@ int h180(double *az, double *el, int cmd, char *resp)
       if (axis == 1)
       {
           acount = ell * d1.elcounts_per_deg - d1.elcount;
-          if (d1.countperstep && acount > d1.countperstep)
-              acount = d1.countperstep;
-          if (d1.countperstep && acount < -d1.countperstep)
-              acount = -d1.countperstep;
+          if (d1.countPerStep && acount > d1.countPerStep)
+              acount = d1.countPerStep;
+          if (d1.countPerStep && acount < -d1.countPerStep)
+              acount = -d1.countPerStep;
           if (acount > 0)
               count = acount + 0.5;
           else
@@ -636,13 +636,13 @@ int h180(double *az, double *el, int cmd, char *resp)
               mm = 2;
           count = 8000;
       }
-      if (cmd == 2 && mm >= 0 && count && usbdev > 0)
+      if (cmd == 2 && mm >= 0 && count && usbDev > 0)
       {
           if (d1.debug)
               printf (" move %d count %d %d\n", mm, count, '\n');
           sprintf (command," move %d %d%1c", mm, count, 13);
-          status = write(usbdev, command, strlen(command));
-          //  printf ("write status %d usbdev %d\n",status,usbdev);
+          status = write(usbDev, command, strlen(command));
+          //  printf ("write status %d usbDev %d\n",status,usbDev);
           for (i=0; i<32; i++)
               resp[i]=0;
           usleep(10000);
@@ -651,9 +651,9 @@ int h180(double *az, double *el, int cmd, char *resp)
           i = j = 0;
           while (j==0 && i < 32)
           {
-              rstatus = read(usbdev, &ch, 1);
+              rstatus = read(usbDev, &ch, 1);
               if (d1.debug)
-                   printf ("here axis %d status %d ch %1c %x i = %d usbdev %d rstatus %d\n", axis, status, ch, ch, i, usbdev, rstatus);
+                   printf ("here axis %d status %d ch %1c %x i = %d usbDev %d rstatus %d\n", axis, status, ch, ch, i, usbDev, rstatus);
               usleep(10000);
               if (status && i < 32)
                   resp[i] = ch;
@@ -672,22 +672,22 @@ int h180(double *az, double *el, int cmd, char *resp)
               printf ("status %d im %d move mm %d sent %d recvd %d %12s rstatus %d azz %f ell %f\n", status, im, mm, count, ccount, &resp[im], rstatus, *az, *el);
           if (resp[im] == 'M')
           {
-            if (mm==1) d1.azcount += ccount; 
-            if (mm==0) d1.azcount -= ccount; 
+            if (mm==1) d1.azCount += ccount; 
+            if (mm==0) d1.azCount -= ccount; 
             if (mm==3) d1.elcount += ccount; 
             if (mm==2) d1.elcount -= ccount; 
           }
           if (resp[im] == 'T')
           {
-            if (mm==1) d1.azcount += count;
-            if (mm==0) d1.azcount -= count;
+            if (mm==1) d1.azCount += count;
+            if (mm==0) d1.azCount -= count;
             if (mm==3) d1.elcount += count;
             if (mm==2) d1.elcount -= count;
           }
       }
   }
-  if (d1.stow == 1) d1.stow = d1.azcount = d1.elcount = 0;
-     status = close(usbdev);
+  if (d1.stow == 1) d1.stow = d1.azCount = d1.elcount = 0;
+     status = close(usbDev);
 //  printf ("here close usb status %d\n",status);
 //     sleep(2);
   return 0;
