@@ -24,8 +24,8 @@ char sounam[NSOU][25];
 char soutrack[25], souinfo[25];
 GdkPixmap *pixmap = NULL;
 GdkPixmap *vpixmap = NULL;
-GdkFont *fixed_font;
-GdkFont *vfixed_font;
+GdkFont   *fixed_font;
+GdkFont   *vfixed_font;
 GtkWidget *entry1, *entry2, *entry3, *entry5, *entry6, *entry8;
 GtkWidget *table;
 GtkWidget *vtable;
@@ -278,10 +278,7 @@ int main(int argc, char *argv[])
 
         g_signal_connect(G_OBJECT(drawing_area), "button_press_event", (GtkSignalFunc) button_press_event, NULL);
 
-        gtk_widget_set_events(drawing_area, GDK_EXPOSURE_MASK
-                              | GDK_LEAVE_NOTIFY_MASK
-                              | GDK_BUTTON_PRESS_MASK
-                              | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK);
+        gtk_widget_set_events(drawing_area, GDK_EXPOSURE_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK);
 
 
         button_clear = gtk_button_new_with_label("clear");
@@ -312,14 +309,12 @@ int main(int argc, char *argv[])
 
         // test setting up tooltips instead of the "enter"/"leave" used below
         tooltips = gtk_tooltips_new();
-        gtk_tooltips_set_tip(tooltips, button_clear,
-                             "click to clear integration and reset time plot to 1/4-scale", NULL);
+        gtk_tooltips_set_tip(tooltips, button_clear, "click to clear integration and reset time plot to 1/4-scale", NULL);
         gtk_tooltips_set_tip(tooltips, button_stow, "click to stow antenna", NULL);
         gtk_tooltips_set_tip(tooltips, button_azel, "click to enter az el coordinates", NULL);
         gtk_tooltips_set_tip(tooltips, button_npoint, "click to start npoint scan", NULL);
         gtk_tooltips_set_tip(tooltips, button_bsw, "click to start beam switch", NULL);
-        gtk_tooltips_set_tip(tooltips, button_freq, "click to enter new frequency in MHz [bandwidth] [nfreq]",
-                             NULL);
+        gtk_tooltips_set_tip(tooltips, button_freq, "click to enter new frequency in MHz [bandwidth] [nfreq]", NULL);
         gtk_tooltips_set_tip(tooltips, button_offset, "click to enter offsets", NULL);
         if (!d1.cmdfl)
             gtk_tooltips_set_tip(tooltips, button_cmdfl, "click to start cmd file", NULL);
@@ -367,7 +362,7 @@ int main(int argc, char *argv[])
     if (d1.printout)
     {
         toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
-        printf("%4d:%03d:%02d:%02d:%02d %3s ", yr, da, hr, mn, sc, d1.timsource);
+        printf ("%4d:%03d:%02d:%02d:%02d %3s ", yr, da, hr, mn, sc, d1.timsource);
     }
     zerospectra(0);
     for (i = 0; i < d1.nfreq; i++)
@@ -429,7 +424,7 @@ int main(int argc, char *argv[])
 
         if (d1.displ)
             cleararea();
-        azel(d1.azcmd, d1.elcmd); // allow time after cal 
+        azel(d1.azcmd, d1.elcmd);   // allow time after cal 
         if (d1.comerr == -1)
             return 0;
         if (!d1.slew)
@@ -468,13 +463,12 @@ int main(int argc, char *argv[])
     {
         if ((file1 = fopen("lock.txt", "w")) == NULL)
         {
-            printf(" Unable to write lock.txt");
+            printf("Unable to write lock.txt");
             return 0;
         }
         fprintf(file1, "0");
         fclose(file1);
     }
-
     return 0;
 }
 
@@ -514,7 +508,7 @@ void zerospectra(int mode)
             }
             else if (soutype[i])
             {
-                az = ras[i] * PI / 180.0;
+                az = ras[i]  * PI / 180.0;
                 el = decs[i] * PI / 180.0;
                 azel_to_radec(secs, ras[i], decs[i], &ra, &dec);
             }
@@ -607,10 +601,10 @@ void aver(void)
             bspec[j] = 1;
         if (d1.caldone && d1.displ)
         {
-            d1.caldone = 0;
+            d1.caldone  = 0;
             color.green = 0xffff;
-            color.red = 0xffff;
-            color.blue = 0xffff;
+            color.red   = 0xffff;
+            color.blue  = 0xffff;
             gtk_widget_modify_bg(button_cal, GTK_STATE_NORMAL, &color);
         }
         d1.calpwr = p / a;
@@ -637,7 +631,6 @@ void aver(void)
     }
     if (d1.bsw && d1.track)
     {
-
         j = (d1.bsw - 1) % 4;
         if (j == 1 || j == 3)
         {
