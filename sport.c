@@ -17,8 +17,7 @@
 
 
 
-void azel(double az, double el)
-  // command antenna movement
+void azel(double az, double el)   // command antenna movement
 {
     int        n, ix, iy, midxr, ixe, yr, da, hr, mn, sc;
     static int kk;
@@ -27,13 +26,13 @@ void azel(double az, double el)
     char str[80], recv[256], txt[80];
 
     azz = ell = 0;
-    d1.slew = 0;
+    d1.slew   = 0;
 
     ix    = midx * 1.55;
     ixe   = midx * 0.25;
     midxr = midx * 2 - ix;
     if (d1.lat >= 0.0)
-        sprintf (txt, "%s %4.1fN %5.1fW", d1.statnam, d1.lat * 180.0 / PI, d1.lon * 180.0 / PI);
+        sprintf (txt, "%s %4.1fN %5.1fW", d1.statnam, d1.lat  * 180.0 / PI, d1.lon * 180.0 / PI);
     else
         sprintf (txt, "%s %4.1fS %5.1fW", d1.statnam, -d1.lat * 180.0 / PI, d1.lon * 180.0 / PI);
     iy = midy * 0.05;
@@ -57,8 +56,8 @@ void azel(double az, double el)
     if (d1.displ)
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
 
-    if (d1.ellim2 > 90.0)
-    {  // to support going over 90 deg
+    if (d1.ellim2 > 90.0)    // to support going over 90 deg
+    {
        if (az < d1.azlim2 - 180.0)
        {
            az += 180.0;
@@ -70,7 +69,7 @@ void azel(double az, double el)
            el = 180.0 - el;
        }
        if (d1.debug && el > 90.0)
-           printf ("antenna el over 90 deg az %f el %f\n",az,el);
+           printf ("Antenna el over 90 deg az %f el %f\n",az,el);
     }
     azz = az;
     ell = el;
@@ -83,7 +82,7 @@ void azel(double az, double el)
             d1.comerr = h180(&azz, &ell, 1, recv); // initial read return if antenna at correct position
         if (d1.comerr == -1)
         {
-            printf ("can't talk to antenna controller\n");
+            printf ("Can't talk to antenna controller\n");
             return;
         }
     }
@@ -434,17 +433,17 @@ void azel(double az, double el)
     if ((fabs(d1.aznow - d1.azlim1) < 0.2 && fabs(d1.elnow - d1.ellim1) < 0.2 && d1.stowatlim) ||   // needs test
         (fabs(d1.aznow - d1.stowaz) < 0.2 && fabs(d1.elnow - d1.stowel) < 0.2 && !d1.stowatlim))
         {
-        if (d1.displ)
-        {
-            color.green = 0xffff;
-            color.red = color.blue = 0;
-            gdk_color_parse("green", &color);
-            gtk_widget_modify_bg(button_stow, GTK_STATE_NORMAL, &color);
-            gtk_tooltips_set_tip(tooltips, button_stow, "antenna at stow", NULL);
-            gtk_tooltips_set_tip(tooltips, button_exit, "click to exit program", NULL);
-//  printf ("in green\n");  
-        }
-        d1.stow = -1;           // at stow
+            if (d1.displ)
+            {
+                color.green = 0xffff;
+                color.red = color.blue = 0;
+                gdk_color_parse("green", &color);
+                gtk_widget_modify_bg(button_stow, GTK_STATE_NORMAL, &color);
+                gtk_tooltips_set_tip(tooltips, button_stow, "antenna at stow", NULL);
+                gtk_tooltips_set_tip(tooltips, button_exit, "click to exit program", NULL);
+    //  printf ("in green\n");  
+            }
+            d1.stow = -1;           // at stow
 
     }
     else
@@ -583,8 +582,8 @@ int h180(double *az, double *el, int cmd, char *resp)
    int unused __attribute__((unused));
    unused = system("stty -F /dev/ttyUSB0 2400 cs8 -cstopb -parenb -icanon min 1 time 20");
    usbdev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
-      sleep(1);
-      status = close(usbdev);
+   sleep(1);
+   status = close(usbdev);
    if (d1.debug)
        printf ("here stty usbdev %d status %d\n",usbdev,status);
    if (usbdev<0)
@@ -596,36 +595,36 @@ int h180(double *az, double *el, int cmd, char *resp)
   usbdev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
   printf ("usbdev %d\n", usbdev);
   sleep(1);
-        azz = d1.azcmd - d1.azlim1;
-        ell = d1.elcmd - d1.ellim1;
+  azz = d1.azcmd - d1.azlim1;
+  ell = d1.elcmd - d1.ellim1;
   for (axis=0; axis<2; axis++)
   {
       mm = -1;
       if (axis==0)
       {
           acount = azz * d1.azcounts_per_deg - d1.azcount;
-                   if (d1.countperstep && acount > d1.countperstep)
-                       acount = d1.countperstep;
-                   if (d1.countperstep && acount < -d1.countperstep)
-                       acount = -d1.countperstep;
-    // printf ("acount %f azz %f d1.count %d %f usbdev %d\n",acount,azz,d1.azcount,azz * d1.azcounts_per_deg - d1.azcount,usbdev);
-                   if (acount > 0) count = acount + 0.5; else count = acount - 0.5; 
-                   if (count > 0) mm = 1; 
-                   if (count < 0) mm = 0;
+          if (d1.countperstep && acount > d1.countperstep)
+              acount = d1.countperstep;
+          if (d1.countperstep && acount < -d1.countperstep)
+              acount = -d1.countperstep;
+        // printf ("acount %f azz %f d1.count %d %f usbdev %d\n",acount,azz,d1.azcount,azz * d1.azcounts_per_deg - d1.azcount,usbdev);
+          if (acount > 0) count = acount + 0.5; else count = acount - 0.5; 
+          if (count > 0) mm = 1; 
+          if (count < 0) mm = 0;
       }
       if (axis == 1)
       {
           acount = ell * d1.elcounts_per_deg - d1.elcount;
-                   if (d1.countperstep && acount > d1.countperstep)
-                       acount = d1.countperstep;
-                   if (d1.countperstep && acount < -d1.countperstep)
-                       acount = -d1.countperstep;
-                   if (acount > 0)
-                       count = acount + 0.5;
-                   else
-                       count = acount - 0.5;
-                   if (count > 0) mm = 3;
-                   if (count < 0) mm = 2;
+          if (d1.countperstep && acount > d1.countperstep)
+              acount = d1.countperstep;
+          if (d1.countperstep && acount < -d1.countperstep)
+              acount = -d1.countperstep;
+          if (acount > 0)
+              count = acount + 0.5;
+          else
+              count = acount - 0.5;
+          if (count > 0) mm = 3;
+          if (count < 0) mm = 2;
       }
       if (count < 0)
           count = -count;
@@ -640,8 +639,8 @@ int h180(double *az, double *el, int cmd, char *resp)
       if (cmd == 2 && mm >= 0 && count && usbdev > 0)
       {
           if (d1.debug)
-              printf (" move %d count %d %d\n",mm,count,'\n');
-          sprintf (command," move %d %d%1c",mm,count,13);
+              printf (" move %d count %d %d\n", mm, count, '\n');
+          sprintf (command," move %d %d%1c", mm, count, 13);
           status = write(usbdev, command, strlen(command));
           //  printf ("write status %d usbdev %d\n",status,usbdev);
           for (i=0;i<32;i++)
