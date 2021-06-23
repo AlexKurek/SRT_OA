@@ -195,9 +195,9 @@ void azel(double az, double el)   // command antenna movement
         }
         return;
     }
-    if ((fabs(d1.aznow - d1.azcmd) > 1.0 || fabs(d1.elnow - d1.elcmd) > 1.0) && d1.track != -1)
+    if ( (fabs(d1.aznow - d1.azcmd) > 1.0 || fabs(d1.elnow - d1.elcmd) > 1.0) && d1.track != -1 )
     {
-        if ((fabs(d1.aznow - d1.azcmd) > 1.0 || fabs(d1.elnow - d1.elcmd) > 1.0) && d1.stow != -1)
+        if ( (fabs(d1.aznow - d1.azcmd) > 1.0 || fabs(d1.elnow - d1.elcmd) > 1.0) && d1.stow != -1 )
         {
             d1.slew = 1;
             sprintf (txt, "ant slewing");
@@ -441,9 +441,9 @@ void azel(double az, double el)   // command antenna movement
                 gtk_widget_modify_bg(button_stow, GTK_STATE_NORMAL, &color);
                 gtk_tooltips_set_tip(tooltips, button_stow, "antenna at stow", NULL);
                 gtk_tooltips_set_tip(tooltips, button_exit, "click to exit program", NULL);
-    //  printf ("in green\n");  
+                //  printf ("in green\n");  
             }
-            d1.stow = -1;           // at stow
+            d1.stow = -1;    // at stow
 
     }
     else
