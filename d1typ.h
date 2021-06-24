@@ -60,6 +60,6 @@ typedef struct
   double en_az;
   double en_el;
   double en_az_offset;
-  doubleen_el_offset;
+  double en_el_offset;
 
 } d1type;
