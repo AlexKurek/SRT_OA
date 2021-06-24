@@ -346,8 +346,7 @@ int main(void)
     fprintf(file1, "/Times-Roman findfont\n 10 scalefont\n setfont\n");
         for (j = j1 + 1; j <= j2; j++)
         {
-            dd = ((double) (j) / ddd - freq + (double) (np / 2) * freqsep)
-                * 320.0 / ((double) (np) * freqsep);
+            dd = ((double) (j) / ddd - freq + (double) (np / 2) * freqsep) * 320.0 / ((double) (np) * freqsep);
             x1 = (320 - dd + xoffset) * sx;
             y1 = (yoffset + 310.0) * sy;
             x2 = (320 - dd + xoffset) * sx;
@@ -377,8 +376,7 @@ int main(void)
         for (j = j1 + 1; j <= j2 - 1; j++)
         {
             freqq = restfreq - ((double) (j) * ddd + vlsr) * restfreq / 299790.0;
-            dd = (freqq - freq + (double) (np / 2) * freqsep)
-                * 320.0 / ((double) (np) * freqsep);
+            dd = (freqq - freq + (double) (np / 2) * freqsep) * 320.0 / ((double) (np) * freqsep);
             x1 = (320 - dd + xoffset) * sx;
             y1 = (yoffset + 265.0) * sy;
             x2 = (320 - dd + xoffset) * sx;

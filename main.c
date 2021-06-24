@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
     sprintf(d1.cmdfnam, "cmd.txt");
     sprintf(d1.datadir, "./");  // default to local directory
 
-    if (!catfile())
+    if (!catfile())             // reads config from srt.cat via cat.c (?)
         return 0;
 
     if (d1.lock)
