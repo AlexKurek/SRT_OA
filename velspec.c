@@ -51,14 +51,11 @@ void velspec(void)
     g_signal_connect(G_OBJECT(vdrawing_area), "configure_event", (GtkSignalFunc) vconfigure_event, NULL);
 
 
-    gtk_widget_set_events(vdrawing_area, GDK_EXPOSURE_MASK
-                          | GDK_LEAVE_NOTIFY_MASK
-                          | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK);
+    gtk_widget_set_events(vdrawing_area, GDK_EXPOSURE_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK);
     button_psw = gtk_button_new_with_label("click to write postscript file");
     button_vexit = gtk_button_new_with_label("exit");
     g_signal_connect(G_OBJECT(button_psw), "clicked", G_CALLBACK(button_psw_clicked), NULL);
-    g_signal_connect_swapped(G_OBJECT(button_vexit), "clicked",
-                             G_CALLBACK(gtk_widget_destroy), G_OBJECT(vwindow));
+    g_signal_connect_swapped(G_OBJECT(button_vexit), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(vwindow));
     gtk_table_attach(GTK_TABLE(vtable), button_psw, 0, NUMBUTTONS - 1, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
     gtk_table_attach(GTK_TABLE(vtable), button_vexit, NUMBUTTONS - 1, NUMBUTTONS, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
     gtk_widget_show(button_psw);
@@ -155,12 +152,10 @@ void vquit(void)
 void vplot(void)
   // plot the spectrum
 {
-    char txt[80], fnam[80];
+    char txt[80], fnam[280];
     int i, j, k, np, j1, j2, n3, npoint, yr, da, hr, mn, sc;
-    double xx, yy, dmax, ddmax, dmin, slope, dd, ddd, totpp, scale, sigma, freq, fstart, fstop, vstart, vstop,
-        xoffset;
-    double freqsep, x1, x2, y1, y2, wid, sx, sy, yoffset, x, y, xp, yp, av, avx, avy, avxx, avxy, psx1, psx2,
-        psy1, psy2, yps;
+    double xx, yy, dmax, ddmax, dmin, slope, dd, ddd, totpp, scale, sigma, freq, fstart, fstop, vstart, vstop, xoffset;
+    double freqsep, x1, x2, y1, y2, wid, sx, sy, yoffset, x, y, xp, yp, av, avx, avy, avxx, avxy, psx1, psx2, psy1, psy2, yps;
     double pp[NSPEC];
     FILE *file1 = NULL;
     if (d1.integ == 0.0)
@@ -281,8 +276,7 @@ void vplot(void)
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
             if (d1.psw)
-                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             x1 = (xoffset + y * 320) * sx;
             y1 = (yoffset) * sy;
             x2 = (xoffset + y * 320) * sx;
@@ -293,8 +287,7 @@ void vplot(void)
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
             if (d1.psw)
-                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
         }
 
         yp = 0;
@@ -335,8 +328,7 @@ void vplot(void)
                     psx2 = x2 / sx;
                     psy2 = yps - y2 / sy;
                     if (d1.psw)
-                        fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
-                                psy1, psx2, psy1);
+                        fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy1);
                 }
                 xp = x;
                 if (y > yp && i)
@@ -350,8 +342,7 @@ void vplot(void)
                     psx2 = x2 / sx;
                     psy2 = yps - y2 / sy;
                     if (d1.psw)
-                        fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1,
-                                psy1, psx1, psy2);
+                        fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx1, psy2);
                 }
                 if (yp > y && i)
                 {
@@ -383,8 +374,7 @@ void vplot(void)
             fprintf(file1, "/Times-Roman findfont\n 10 scalefont\n setfont\n");
         for (j = j1 + 1; j <= j2; j++)
         {
-            dd = ((double) (j) / ddd - d1.freq + (double) (np / 2) * freqsep)
-                * 320.0 / ((double) (np) * freqsep);
+            dd = ((double) (j) / ddd - d1.freq + (double) (np / 2) * freqsep) * 320.0 / ((double) (np) * freqsep);
             x1 = (320 - dd + xoffset) * sx;
             y1 = (yoffset + 310.0) * sy;
             x2 = (320.0 - dd + xoffset) * sx;
@@ -395,8 +385,7 @@ void vplot(void)
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
             if (d1.psw)
-                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             sprintf(txt, "%6.1f", j / ddd);
             x1 = (310 - dd + xoffset) * sx;
             y1 = (yoffset + 335.0) * sy;
@@ -422,8 +411,7 @@ void vplot(void)
         for (j = j1 + 1; j < j2; j++)
         {
             freq = d1.restfreq - ((double) (j) * ddd + d1.vlsr) * d1.restfreq / 299790.0;
-            dd = (freq - d1.freq + (double) (np / 2) * freqsep)
-                * 320.0 / ((double) (np) * freqsep);
+            dd = (freq - d1.freq + (double) (np / 2) * freqsep) * 320.0 / ((double) (np) * freqsep);
             x1 = (320 - dd + xoffset) * sx;
             y1 = (yoffset + 265.0) * sy;
             x2 = (320 - dd + xoffset) * sx;
@@ -434,8 +422,7 @@ void vplot(void)
             psx2 = x2 / sx;
             psy2 = yps - y2 / sy;
             if (d1.psw)
-                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1,
-                        psx2, psy2);
+                fprintf(file1, "newpath\n %5.1f %5.1f moveto \n %5.1f %5.1f lineto\nstroke\n", psx1, psy1, psx2, psy2);
             sprintf(txt, "%5.0f", j * ddd);
             x1 = (305 - dd + xoffset) * sx;
             y1 = (yoffset + 290.0) * sy;

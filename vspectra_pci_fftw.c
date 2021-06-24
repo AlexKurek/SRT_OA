@@ -21,17 +21,17 @@
 
 
 int ADC_Mode = ADC_DMA_CONVERSION;
-int Count = 1;
-int Board = 0;
+int Count   = 1;
+int Board   = 0;
 int Channel = 0;
-int dmamap = 0;
+int dmamap  = 0;
 int Status;
 int freq_A2D = 20000000;
 unsigned short *readBuff;
 
-int fdDAC0, fdDAC1;             /* D/A file descriptors */
+int fdDAC0, fdDAC1;                        /* D/A file descriptors */
 int fdADC, fdADC0, fdADC1, fdADC2, fdADC3; /* A/D file descriptors */
-int fdDIOA, fdDIOB, fdDIOC;     /* DIO file descriptors */
+int fdDIOA, fdDIOB, fdDIOC;                /* DIO file descriptors */
 
 
 static unsigned short buffer1[0x200000];
@@ -227,7 +227,8 @@ void vspectra(void)
                 av = mm = 0;
                 for (i = j * m - m / 2; i <= j * m + m / 2; i++)
                 {
-                    if (i > 10 && i < blsiz2 && wtt[i]) { // wtt=0 removal of spurs
+                    if (i > 10 && i < blsiz2 && wtt[i])  // wtt=0 removal of spurs
+                    {
                         av += vspec[i] / (double) numm;
                         if (vspec[i] > max)
                         {
@@ -248,9 +249,8 @@ void vspectra(void)
             }
             max = max / (double) numm;
             noise = spec[maxi / m] * sqrt(2.0 * blsiz2 / (double) d1.nsam);
-            if (max > spec[maxi / m] + d1.rfisigma * noise && d1.printout) // rfisigma sigma
-                printf("check for RFI at %8.4f MHz max %5.0e av %5.0e smax %5.0f %3.0f sigma\n",
-                       maxi * d1.bw / blsiz2 + d1.lofreq, max, spec[maxi / m], smax, (max - spec[maxi / m]) / noise);
+            if (max > spec[maxi / m] + d1.rfisigma * noise && d1.printout)  // rfisigma sigma
+                printf("check for RFI at %8.4f MHz max %5.0e av %5.0e smax %5.0f %3.0f sigma\n", maxi * d1.bw / blsiz2 + d1.lofreq, max, spec[maxi / m], smax, (max - spec[maxi / m]) / noise);
         }
     }
     d1.smax = smax;
