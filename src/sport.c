@@ -27,16 +27,15 @@ void closeMB (void)
     modbus_free(ctx);
 }
 
-int initModbus (int start, int length, const char* dName, int baud, char parity, int data_bit, int stop_bit, int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, char* setTerm, char* recovery, char* debug)
+int initModbus (const char* dName, int baud, char parity, int data_bit, int stop_bit, uint32_t resTimeSec, uint32_t resTimeuSec, char* setTerm, char* recovery, char* debug)
 {   // set all transmission parameters (incl. response timeout), encoders eddresses
 
-#define VERREG        41
-#define SERIALNOREGHI 42
-#define SERIALNOREGLO 43
-#define TERMINREG     268
-#define TERMINREGEXE  269
+#define VER_REG          41
+#define SERIAL_NO_REG_HI 42
+#define SERIAL_NO_REG_LO 43
+#define TERMIN_REG       268
+#define TERMIN_REG_EXE   269
 
-    // uint16_t tab_reg[length];   // The results of reading are stored here
     uint16_t tab_regSN_lo[1];
     uint16_t tab_regSN_hi[1];
     uint16_t tab_regVer[1];
@@ -44,7 +43,6 @@ int initModbus (int start, int length, const char* dName, int baud, char parity,
     struct   timeval response_timeout;
     uint32_t tv_sec  = 0;
     uint32_t tv_usec = 0;
-    // uint32_t pos32   = 0;
     response_timeout.tv_sec  = tv_sec;
     response_timeout.tv_usec = tv_usec;
     int rc;
@@ -80,16 +78,6 @@ int initModbus (int start, int length, const char* dName, int baud, char parity,
             printf("Header length: %d\n", getHeader);
     }
 
-    /* Set slave number */
-    rc = modbus_set_slave(ctx, slaveAddr);
-    printf("modbus_set_slave return: %d\n", rc);
-    if (rc != 0)
-    {
-        printf("modbus_set_slave: %s \n", modbus_strerror(errno));
-        closeMB ();
-        return -1;
-    }
-
     /* Establish a Modbus connection */
     if (modbus_connect(ctx) == -1)
     {
@@ -105,15 +93,15 @@ int initModbus (int start, int length, const char* dName, int baud, char parity,
     }
     printf("Created modbus context\n");
 
-    /* Get termination */
+    /* Get termination register */
     printf("Trying to read termination register...\n");
-    int ter = modbus_read_registers (ctx, TERMINREG, 1, tab_regTer);
+    int ter = modbus_read_registers (ctx, TERMIN_REG, 1, tab_regTer);
     if (ter == -1)
         printf("ERROR: %s\n", modbus_strerror(errno));
     else
         printf("Termination: %d\n", tab_regTer[0]);
 
-    /* Set termination */
+    /* Set termination register */
     if ( (strcmp(setTerm, "0") == 0) || (strcmp(setTerm, "off") == 0) || (strcmp(setTerm, "OFF") == 0) || (strcmp(setTerm, "1") == 0) || (strcmp(setTerm, "on") == 0) || (strcmp(setTerm, "ON") == 0) )
     {
         if ( (strcmp(setTerm, "0") == 0)   || (strcmp(setTerm, "1") == 0) )
@@ -125,21 +113,21 @@ int initModbus (int start, int length, const char* dName, int baud, char parity,
         if (tab_regTer[0] != setTermInt)   // checking, if termination register is already set to the requested value
         {
             printf("Trying to set termination register to %d...\n", setTermInt);
-            int terWrite = modbus_write_register(ctx, TERMINREG, setTermInt);
+            int terWrite = modbus_write_register(ctx, TERMIN_REG, setTermInt);
             if (terWrite == -1)
             {
                 printf("ERROR: %s\n", modbus_strerror(errno));
                 closeMB ();
                 return -1;
             }
-            int terWriteSet = modbus_write_register(ctx, TERMINREGEXE, 1);   // execute the above
+            int terWriteSet = modbus_write_register(ctx, TERMIN_REG_EXE, 1);   // execute the above
             if (terWriteSet == -1)
             {
                 printf("ERROR: %s\n", modbus_strerror(errno));
                 closeMB ();
                 return -1;
             }
-            ter = modbus_read_registers (ctx, TERMINREG, 1, tab_regTer);     // veryfying
+            ter = modbus_read_registers (ctx, TERMIN_REG, 1, tab_regTer);     // veryfying
             if (ter == -1)
                 printf("ERROR: %s\n", modbus_strerror(errno));
             else
@@ -166,8 +154,8 @@ int initModbus (int start, int length, const char* dName, int baud, char parity,
 
     /* Read and print SN register */
     printf("Trying to read SN...\n");
-    int SNhi = modbus_read_registers (ctx, SERIALNOREGHI, 1, tab_regSN_hi);
-    int SNlo = modbus_read_registers (ctx, SERIALNOREGLO, 1, tab_regSN_lo);
+    int SNhi = modbus_read_registers (ctx, SERIAL_NO_REG_HI, 1, tab_regSN_hi);
+    int SNlo = modbus_read_registers (ctx, SERIAL_NO_REG_LO, 1, tab_regSN_lo);
     if ((SNhi == -1) || (SNlo == -1))
         printf("ERROR: %s\n", modbus_strerror(errno));
     else
@@ -178,7 +166,7 @@ int initModbus (int start, int length, const char* dName, int baud, char parity,
 
     /* Read and print version register */
     printf("Trying to read version...\n");
-    int ver = modbus_read_registers (ctx, VERREG, 1, tab_regVer);
+    int ver = modbus_read_registers (ctx, VER_REG, 1, tab_regVer);
     if (ver == -1)
         printf("ERROR: %s\n", modbus_strerror(errno));
     else
@@ -189,6 +177,35 @@ int initModbus (int start, int length, const char* dName, int baud, char parity,
     }
     return 0;
 }
+
+int readEncoder32(int slaveAddr)
+{
+    uint16_t tab_reg[2];   // The results of reading are stored here
+    uint32_t pos32 = 0;
+    int read_val = modbus_read_registers (ctx, 1, 2, tab_reg);
+    if (read_val == -1)
+    {
+        printf("ERROR: %s\n", modbus_strerror(errno));
+        closeMB ();
+        return -1;
+    }
+    else
+    {
+        printf("Read %d registers: \n", read_val);
+        for(int i=0; i<2; i++)
+            printf("%d ", tab_reg[i]);
+        printf("\n");
+        double posRegister = tab_reg[1];
+        double posDeg = ( posRegister / 65536 ) * 360;
+        printf("In degrees: %f\n", posDeg);
+        pos32 = tab_reg[0] | (tab_reg[1]<<16);
+        printf("In 32-bit format: %d\n", pos32);
+    }
+    return pos32;
+}
+
+
+
 
 
 void azel(double az, double el)   // command antenna movement
