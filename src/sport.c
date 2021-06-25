@@ -16,6 +16,19 @@
 #include "d1glob.h"
 
 
+int initModbus (int start, int length, const char* dName, int baud, char parity, int data_bit, int stop_bit, int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, char* setTerm, char* recovery, char* debug)
+{   // set all transmission parameters (incl. response timeout), encoders eddresses
+    uint16_t tab_reg[length];   // The results of reading are stored here
+    struct   timeval response_timeout;
+    uint32_t tv_sec  = 0;
+    uint32_t tv_usec = 0;
+    uint32_t pos32   = 0;
+    response_timeout.tv_sec  = tv_sec;
+    response_timeout.tv_usec = tv_usec;
+    int rc;
+    int setTermInt   = 0;
+}
+
 
 void azel(double az, double el)   // command antenna movement
 {

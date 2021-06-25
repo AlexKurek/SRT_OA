@@ -11,8 +11,7 @@
 #include "d1glob.h"
 
 
-void cal(int mode)
-  // command cal
+void cal(int mode)  // command cal
 {
     int k;
     int ix, iy, midxr;
@@ -152,7 +151,6 @@ void polyfitr(int npoly, int nfreq, float ddata[], float wtt[], float dataout[])
                 m2 += npoly;
             }
             k = j + (i * (i + 1)) / 2;
-
             aarr[k] = re;
         }
     }
