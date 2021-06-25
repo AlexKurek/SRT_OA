@@ -27,26 +27,8 @@ void closeMB (void)
     modbus_free(ctx);
 }
 
-int initModbus (const char* dName, int baud, char parity, int data_bit, int stop_bit, uint32_t resTimeSec, uint32_t resTimeuSec, char* setTerm, char* recovery, char* debug)
+int initModbus (const char* dName, int baud, char parity, int data_bit, int stop_bit, char* recovery, char* debug)
 {   // set all transmission parameters (incl. response timeout), encoders eddresses
-
-#define VER_REG          41
-#define SERIAL_NO_REG_HI 42
-#define SERIAL_NO_REG_LO 43
-#define TERMIN_REG       268
-#define TERMIN_REG_EXE   269
-
-    uint16_t tab_regSN_lo[1];
-    uint16_t tab_regSN_hi[1];
-    uint16_t tab_regVer[1];
-    uint16_t tab_regTer[1];
-    struct   timeval response_timeout;
-    uint32_t tv_sec  = 0;
-    uint32_t tv_usec = 0;
-    response_timeout.tv_sec  = tv_sec;
-    response_timeout.tv_usec = tv_usec;
-    int rc;
-    int setTermInt   = 0;
 
     /* Create a context for RTU */
     printf("\n");
@@ -57,6 +39,7 @@ int initModbus (const char* dName, int baud, char parity, int data_bit, int stop
     {
         modbus_set_debug(ctx, TRUE);  // set debug flag of the context
         printf("Debud mode on\n");
+    
         int getRTS = modbus_rtu_get_rts(ctx);
         printf("Return of get_rts:      %d\n", getRTS);
         printf("Return of RTU_RTS_NONE: %d\n", MODBUS_RTU_RTS_NONE);
@@ -78,7 +61,44 @@ int initModbus (const char* dName, int baud, char parity, int data_bit, int stop
             printf("Header length: %d\n", getHeader);
     }
 
-    /* Establish a Modbus connection */
+    if ( (strcmp(recovery, "true") == 0) || (strcmp(recovery, "TRUE") == 0) || (strcmp(recovery, "1") == 0) )
+    {
+        printf("Setting error recovery mode\n");
+        modbus_set_error_recovery(ctx, MODBUS_ERROR_RECOVERY_LINK | MODBUS_ERROR_RECOVERY_PROTOCOL);
+    }
+    return 0;
+}
+
+int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, char* setTerm, char* debug)     /* Establish a Modbus connection */
+{
+    #define VER_REG          41
+    #define SERIAL_NO_REG_HI 42
+    #define SERIAL_NO_REG_LO 43
+    #define TERMIN_REG       268
+    #define TERMIN_REG_EXE   269
+
+    struct   timeval response_timeout;
+    uint32_t tv_sec  = 0;
+    uint32_t tv_usec = 0;
+    response_timeout.tv_sec  = tv_sec;
+    response_timeout.tv_usec = tv_usec;
+    int rc;
+    int setTermInt   = 0;
+    uint16_t tab_regSN_lo[1];
+    uint16_t tab_regSN_hi[1];
+    uint16_t tab_regVer[1];
+    uint16_t tab_regTer[1];
+
+    /* Set slave number in the context */
+    rc = modbus_set_slave(ctx, slaveAddr);
+    printf("modbus_set_slave return: %d\n", rc);
+    if (rc != 0)
+    {
+        printf("modbus_set_slave: %s \n", modbus_strerror(errno));
+        closeMB ();
+        return -1;
+    }
+
     if (modbus_connect(ctx) == -1)
     {
         fprintf(stderr, "Connection failed: %s\n", modbus_strerror(errno));
@@ -146,12 +166,6 @@ int initModbus (const char* dName, int baud, char parity, int data_bit, int stop
     modbus_get_response_timeout(ctx, &tv_sec, &tv_usec); 
     printf("Set response timeout:     %d sec %d usec \n", tv_sec, tv_usec );
 
-    if ( (strcmp(recovery, "true") == 0) || (strcmp(recovery, "TRUE") == 0) || (strcmp(recovery, "1") == 0) )
-    {
-        printf("Setting error recovery mode\n");
-        modbus_set_error_recovery(ctx, MODBUS_ERROR_RECOVERY_LINK | MODBUS_ERROR_RECOVERY_PROTOCOL);
-    }
-
     /* Read and print SN register */
     printf("Trying to read SN...\n");
     int SNhi = modbus_read_registers (ctx, SERIAL_NO_REG_HI, 1, tab_regSN_hi);
@@ -178,7 +192,7 @@ int initModbus (const char* dName, int baud, char parity, int data_bit, int stop
     return 0;
 }
 
-int readEncoder32(int slaveAddr)
+int readEncoder32(void)
 {
     uint16_t tab_reg[2];   // The results of reading are stored here
     uint32_t pos32 = 0;
