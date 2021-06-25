@@ -11,6 +11,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <errno.h>
+#include <fftw3.h>
 
 #include "d1cons.h"
 #include "d1proto.h"
@@ -20,23 +21,24 @@
 
 
 int ADC_Mode = ADC_DMA_CONVERSION;
-int Count = 1;
-int Board = 0;
+int Count   = 1;
+int Board   = 0;
 int Channel = 0;
-int dmamap = 0;
+int dmamap  = 0;
 int Status;
 int freq_A2D = 20000000;
 unsigned short *readBuff;
 
-int fdDAC0, fdDAC1;             /* D/A file descriptors */
+int fdDAC0, fdDAC1;                        /* D/A file descriptors */
 int fdADC, fdADC0, fdADC1, fdADC2, fdADC3; /* A/D file descriptors */
-int fdDIOA, fdDIOB, fdDIOC;     /* DIO file descriptors */
+int fdDIOA, fdDIOB, fdDIOC;                /* DIO file descriptors */
 
 
 static unsigned short buffer1[0x200000];
 
-void fft_init(int, float *, double *, int *);
-void cfft(int, float *, double *, int *);
+void fft_init(int, fftwf_plan *, float **, float **);
+void fft_free(fftwf_plan *, float **, float **);
+void cfft(fftwf_plan *);
 
 
 void DoOpenDevices();
@@ -52,14 +54,15 @@ void vspectra(void)
 {
 
     int i, j, size, sizep, kk, kkk, num, numm, i4;
-    int k, m, mm, blsiz, blsiz2, nsam, info, maxi;
+    int k, m, mm, blsiz, blsiz2, nsam, maxi;
     double avsig, av, wid, noise, max;
     static double vspec[NSPEC];
     static int wtt[NSPEC];
-    static float ream[NSPEC * 4];
     static double re[NSPEC * 2], am[NSPEC * 2];
     double smax, aam, rre, aam2, rre2;
-    double *comm;
+    fftwf_plan p0;
+    float *reamin0, *reamout0;
+
 
     d1.bw = 10.0;               // 10 MHz
     d1.lofreq = 1416.0;         // Luff 1416 MHz
@@ -70,13 +73,8 @@ void vspectra(void)
 
     blsiz = NSPEC * 2;
 
-    info = 0;
-    comm = 0;
     if (!d1.fftsim)
-    {
-        comm = (double *) malloc((5 * blsiz + 100) * sizeof(double));
-        fft_init(blsiz, ream, comm, &info);
-    }
+        fft_init(blsiz, &p0, &reamin0, &reamout0);
 //    printf("comm %x\n",comm);
 
     nsam = 0x100000;
@@ -107,6 +105,7 @@ void vspectra(void)
                 av = d1.beamw;
             av = 5.0 + 25.0 * cos(av * PI * 0.5 / d1.beamw) * cos(av * PI * 0.5 / d1.beamw);
         }
+
         for (i = 0; i < nsam; i++)
             buffer1[i] = 2048 + sqrt(av) * gauss();
         size = nsam;
@@ -136,11 +135,11 @@ void vspectra(void)
                 {
 //                      if(j==0 && kkk==0) printf("sam %f\n",(buffer1[j + kkk] & 0xfff) - avsig);
                     if (kk % 2 == 0)
-                        ream[2 * j] = ((double) (buffer1[j + kkk] & 0xfff) - avsig);
+                        reamin0[2 * j] = ((double) (buffer1[j + kkk] & 0xfff) - avsig);
                     else
-                        ream[2 * j + 1] = ((double) (buffer1[j + kkk] & 0xfff) - avsig);
-                    if (j && ream[2 * j] > smax)
-                        smax = ream[2 * j];
+                        reamin0[2 * j + 1] = ((double) (buffer1[j + kkk] & 0xfff) - avsig);
+                    if (j && reamin0[2 * j] > smax)
+                        smax = reamin0[2 * j];
                 }
                 if (kk % 2 == 1)
                 {
@@ -148,29 +147,29 @@ void vspectra(void)
                     {
                         for (i = 0; i < blsiz2; i++)
                         {
-                            re[i] = ream[2 * i];
-                            am[i] = ream[2 * i + 1];
+                            re[i] = reamin0[2 * i];
+                            am[i] = reamin0[2 * i + 1];
                         }
                         Four(re, am, blsiz2);
                     }
                     else
-                        cfft(blsiz, ream, comm, &info);
+                        cfft(&p0);
 
                     for (i = 0; i < blsiz2; i++)
                     {
                         if (i >= 1)
                         {
-                            rre = ream[2 * i] + ream[2 * (blsiz - i)];
-                            aam = ream[2 * i + 1] - ream[2 * (blsiz - i) + 1];
-                            aam2 = -ream[2 * i] + ream[2 * (blsiz - i)];
-                            rre2 = ream[2 * i + 1] + ream[2 * (blsiz - i) + 1];
+                            rre = reamout0[2 * i] + reamout0[2 * (blsiz - i)];
+                            aam = reamout0[2 * i + 1] - reamout0[2 * (blsiz - i) + 1];
+                            aam2 = -reamout0[2 * i] + reamout0[2 * (blsiz - i)];
+                            rre2 = reamout0[2 * i + 1] + reamout0[2 * (blsiz - i) + 1];
                         }
                         else
                         {
-                            rre = ream[2 * i] + ream[0];
-                            aam = ream[2 * i + 1] - ream[1];
-                            aam2 = -ream[2 * i] + ream[0];
-                            rre2 = ream[2 * i + 1] + ream[1];
+                            rre = reamout0[2 * i] + reamout0[0];
+                            aam = reamout0[2 * i + 1] - reamout0[1];
+                            aam2 = -reamout0[2 * i] + reamout0[0];
+                            rre2 = reamout0[2 * i + 1] + reamout0[1];
                         }
                         vspec[i] += rre * rre + aam * aam + rre2 * rre2 + aam2 * aam2;
                     }
@@ -228,8 +227,8 @@ void vspectra(void)
                 av = mm = 0;
                 for (i = j * m - m / 2; i <= j * m + m / 2; i++)
                 {
-                    if (i > 10 && i < blsiz2 && wtt[i])
-                    { // wtt=0 removal of spurs
+                    if (i > 10 && i < blsiz2 && wtt[i])  // wtt=0 removal of spurs
+                    {
                         av += vspec[i] / (double) numm;
                         if (vspec[i] > max)
                         {
@@ -250,14 +249,13 @@ void vspectra(void)
             }
             max = max / (double) numm;
             noise = spec[maxi / m] * sqrt(2.0 * blsiz2 / (double) d1.nsam);
-            if (max > spec[maxi / m] + d1.rfisigma * noise && d1.printout) // rfisigma sigma
-                printf("check for RFI at %8.4f MHz max %5.0e av %5.0e smax %5.0f %3.0f sigma\n",
-                       maxi * d1.bw / blsiz2 + d1.lofreq, max, spec[maxi / m], smax, (max - spec[maxi / m]) / noise);
+            if (max > spec[maxi / m] + d1.rfisigma * noise && d1.printout)  // rfisigma sigma
+                printf("check for RFI at %8.4f MHz max %5.0e av %5.0e smax %5.0f %3.0f sigma\n", maxi * d1.bw / blsiz2 + d1.lofreq, max, spec[maxi / m], smax, (max - spec[maxi / m]) / noise);
         }
     }
     d1.smax = smax;
     if (!d1.fftsim)
-        free(comm);
+        fft_free(&p0, &reamin0, &reamout0);
 
 }
 
@@ -315,7 +313,8 @@ int get_pci(unsigned short value[], int count)
         {
             if ((readBuff = mmap(0, Count * 2, PROT_READ, MAP_PRIVATE, fdADC, 0 * getpagesize()))
                 == (unsigned short *) MAP_FAILED) {
-                printf("Test Failed: Mmap call failed %x \n", (int) readBuff);
+//                printf("Test Failed: Mmap call failed %x \n", (int) readBuff);
+                printf("Test Failed: Mmap call failed %x \n", errno);
                 printf(" %d\n", errno);
                 sleep(3);
                 return (0);

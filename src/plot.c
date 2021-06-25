@@ -13,7 +13,7 @@ gint Repaint(void)
 {
     GdkRectangle update_rect;
     GdkColor color;
-    char txt[80], *tx2;
+    char txt[280], *tx2;
     int i, j, x, y, yp, yr, da, hr, mn, sc, ix, iy, istart, istop;
     int x1, y1, x2, y2, xst, yst, iav;
     double secs, lst, ra, dec, az, el, c, max, min, xsz, ddt, azz1, azz2;;
@@ -21,12 +21,12 @@ gint Repaint(void)
     midx = drawing_area->allocation.width / 2;
     midy = drawing_area->allocation.height / 2;
     if (d1.south)
-	{
+    {
         azz1 = d1.azlim1;
         azz2 = d1.azlim2;
     }
-	else
-	{
+    else
+    {
         azz1 = d1.azlim1 - 180.0;
         azz2 = d1.azlim2 - 180.0;
     }
@@ -38,15 +38,15 @@ gint Repaint(void)
     gdk_draw_line(pixmap, drawing_area->style->black_gc, 0, midy, 0, midy * 2);
     gdk_draw_line(pixmap, drawing_area->style->black_gc, midx * 2, midy, midx * 2, midy * 2);
     for (i = 10; i < 360; i += 10)
-	{
+    {
         x = i * midx / 180;
         gdk_draw_line(pixmap, drawing_area->style->black_gc, x, midy * 2 - 2, x, midy * 2);
         if (i % 30 == 0)
-		{
+        {
             if (d1.south)
                 sprintf(txt, "%03d", i);
             else
-			{
+            {
                 if (i >= 180)
                     sprintf(txt, "%03d", i - 180);
                 else
@@ -56,11 +56,11 @@ gint Repaint(void)
         }
     }
     for (i = 10; i < 90; i += 10)
-	{
+    {
         y = midy * 2 - i * midy / 90;
         gdk_draw_line(pixmap, drawing_area->style->black_gc, 0, y, 2, y);
         if (i % 30 == 0)
-		{
+        {
             sprintf(txt, "%02d", i);
             gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, 5, y + 5, txt, strlen(txt));
         }
@@ -68,7 +68,7 @@ gint Repaint(void)
     x2 = y2 = 0;
     j = 0;
     for (i = d1.ellim1; i <= 90; i += 1)
-	{
+    {
         x = azz1 * midx / 180;
         y = midy * 2 - i * midy / 90;
         if (i <= d1.ellim2 && j % 2)
@@ -81,7 +81,7 @@ gint Repaint(void)
     }
     j = 0;
     for (i = azz1; i <= azz2; i += 1)
-	{
+    {
         x = i * midx / 180;
         y = midy * 2 - d1.ellim1 * midy / 90;
         if (j % 2)
@@ -94,7 +94,7 @@ gint Repaint(void)
     }
     j = 0;
     for (i = -d1.ellim2 + 180.0; i <= 90; i += 1)
-	{
+    {
         x = (azz1 + 180.0) * midx / 180;
         y = midy * 2 - i * midy / 90;
         if (j % 2)
@@ -107,7 +107,7 @@ gint Repaint(void)
     }
     j = 0;
     for (i = azz1 + 180.0; i <= 360; i += 1)
-	{
+    {
         x = i * midx / 180;
         y = midy * 2 - (180.0 - d1.ellim2) * midy / 90;
         if (d1.ellim2 > 90.0 && j % 2)
@@ -116,7 +116,7 @@ gint Repaint(void)
         j++;
     }
     for (i = 0; i <= azz2 - 180.0; i += 1)
-	{
+    {
         x = i * midx / 180;
         y = midy * 2 - (180.0 - d1.ellim2) * midy / 90;
         if (d1.ellim2 > 90.0 && i % 2)
@@ -148,32 +148,32 @@ gint Repaint(void)
                midy);
     /* plot sources */
     for (i = 0; i < d1.nsou; i++)
-	{
+    {
         if (strstr(sounam[i], "Sun") || strstr(sounam[i], "Moon"))
-		{
+        {
             if (strstr(sounam[i], "Sun"))
                 sunradec(secs, &ra, &dec);
             else
                 moonradec(secs, &ra, &dec);
             radec_azel(gst(secs) - ra - d1.lon, dec, d1.lat, &az, &el);
         }
-		else if (soutype[i])
-		{
+        else if (soutype[i])
+        {
             az = ras[i] * PI / 180.0;
             el = decs[i] * PI / 180.0;
         }
-		else
-		{
+        else
+        {
             precess(ras[i], decs[i], &ra, &dec, epoc[i], d1.year);
             radec_azel(gst(secs) - ra - d1.lon, dec, d1.lat, &az, &el);
         }
         if (el > 0.0)
-		{
+        {
             sprintf(txt, "%s", sounam[i]);
             if (d1.south)
                 x = az * midx / PI;
             else
-			{
+            {
                 if (az >= 0 && az < PI)
                     x = midx + az * midx / PI;
                 else
@@ -194,7 +194,7 @@ gint Repaint(void)
 
 
     if (d1.azelsim)
-	{
+    {
         sprintf(txt, "antenna motion simulated");
         iy = midy * 0.45;
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
@@ -223,7 +223,7 @@ gint Repaint(void)
     if (d1.south)
         x = d1.aznow * midx / 180.0;
     else
-	{
+    {
         if (d1.aznow > 180.0)
             x = midx + (d1.aznow - 360.0) * midx / 180.0;
         else
@@ -242,15 +242,15 @@ gint Repaint(void)
     //  gdk_draw_line(pixmap,drawing_area->style->black_gc,x,y-4,x,y+4);
     /* plot Galactic plane */
     for (i = 0; i < 360; i += 10)
-	{
+    {
         GalactictoRadec(0, i, &ra, &dec);
         radec_azel(gst(secs) - ra - d1.lon, dec, d1.lat, &az, &el);
         if (el > 0.0)
-		{
+        {
             if (d1.south)
                 x = az * midx / PI;
             else
-			{
+            {
                 if (az > PI)
                     x = midx + (az - 2.0 * PI) * midx / PI;
                 else
@@ -264,25 +264,21 @@ gint Repaint(void)
     }
 /* plot spectra vs time and freq */
     sprintf(txt, "vlsr %3.0fkm/s l=%3.0f b=%3.0f", d1.vlsr, d1.glon, d1.glat);
-    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc,
-                  midx * 1.55, midy * 0.6, txt, strlen(txt));
+    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.55, midy * 0.6, txt, strlen(txt));
     sprintf(txt, "integ=%5.0f sec", d1.integ * d1.nsam / (2.0e6 * d1.bw));
-    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc,
-                  midx * 1.55, midy * 0.65, txt, strlen(txt));
+    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.55, midy * 0.65, txt, strlen(txt));
     if (d1.tsys > 0.0)
         sprintf(txt, "%3.1f-%3.1fMHz IF", d1.f1 * d1.bw, d1.f2 * d1.bw);
     else
         sprintf(txt, "uncalibrated");
-    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2,
-                  midy * 0.37, txt, strlen(txt));
+    gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2, midy * 0.37, txt, strlen(txt));
     if (d1.radiosim)
-	{
+    {
         sprintf(txt, "simulated");
-        gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2,
-                      midy * 0.05, txt, strlen(txt));
+        gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2, midy * 0.05, txt, strlen(txt));
     }
-	else
-	{
+    else
+    {
         sprintf(txt, "%3.1fMHz IF", d1.bw);
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2, midy * 0.05, txt, strlen(txt));
     }
@@ -291,18 +287,18 @@ gint Repaint(void)
         sprintf(txt, "beamswitch %d", d1.bsw);
     gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.2, midy * 0.68, txt, strlen(txt)); // was 0.69
     for (iav = 0; iav < 3; iav++)
-	{
+    {
         max = 1e-6;
         min = 1e99;
         istart = 0;
         istop = d1.nfreq;
         if (iav > 0)
-		{
+        {
             istart = d1.nfreq * d1.f1;
             istop = d1.nfreq * d1.f2;
         }
         for (i = istart; i < istop; i++)
-		{
+        {
             c = spec[i];
             if (iav == 1)
                 c = spec[i] / bspec[i];
@@ -322,22 +318,22 @@ gint Repaint(void)
         y1 = yst;
         y2 = y1 + midy * 0.25;
         if (iav && pwr > 0.0)
-		{
+        {
             ddt = d1.tsys * (max - min) / max;
             if (d1.bsw && iav == 2)
                 ddt = max - min;
             if (d1.tsys > 0.0) {
                 if (!d1.bsw || iav == 1)
-				{
+                {
                     if (d1.caldone)
                         sprintf(txt, "fs %5.2fK Tant %4.1fK", ddt, d1.tant);
                     else
                         sprintf(txt, "fs %5.2fK pwr %4.1f", ddt, pwr);
                 }
-				else
+                else
                     sprintf(txt, "fs %5.2fK bswpwr %5.2fK", ddt, d1.bswpwr);
             }
-			else
+            else
                 sprintf(txt, "%5.1e", ddt);
             gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, x1, y2 + midy * 0.05, txt, strlen(txt));
         }
@@ -352,7 +348,7 @@ gint Repaint(void)
         if (iav < 2)
             min = 0;
         for (i = istart; i < istop; i++)
-		{
+        {
             if (iav == 0)
                 x2 = xst + i * midx * xsz / d1.nfreq;
             if (iav > 0)
@@ -377,7 +373,7 @@ gint Repaint(void)
     sprintf(txt, "%s", d1.filname);
     iy = midy * 0.99;
     if (d1.record)
-	{
+    {
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix - midx * 0.1, iy, txt, strlen(txt));
 //        if (d1.foutstatus == 0) {
 //            iy = midy * 0.99;
@@ -387,17 +383,17 @@ gint Repaint(void)
 //        }
     }
     if (d1.tsys > 0.0)
-	{
+    {
         iy = midy * 0.30;
         if (!d1.caldone)
-		{
+        {
             if (d1.rms < 0)
                 sprintf(txt, "Tsys %4.0f smax %4.0f", d1.tsys, d1.smax);
             else
                 sprintf(txt, "Tsys %4.0f srms %6.1f", d1.tsys, d1.rms);
         }
-		else
-		{
+        else
+        {
             if (d1.rms < 0)
                 sprintf(txt, "Tsys %4.0f smax %4.0f", d1.tsys + d1.tant, d1.smax);
             else
@@ -406,10 +402,10 @@ gint Repaint(void)
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, midx * 1.1, iy, txt, strlen(txt));
     }
     if (!d1.slew)
-	{
+    {
         xsz = 1.0;
         if (pwr > 0.0 && (d1.ppos == 0 || pwrst == 0.0))
-		{
+        {
             pwrst = pwr;
             pprev = pwr;
         }
@@ -433,7 +429,7 @@ gint Repaint(void)
 // printf("rect ppos %d\n",d1.ppos);
     }
     if (d1.ptick && fmod(secs, 60) < 2.5)
-	{
+    {
         x = d1.ppos * midx / 400;
         gdk_draw_line(pixmap, drawing_area->style->black_gc, x, midy, x, midy - 5);
         d1.ptick = 0;

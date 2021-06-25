@@ -164,56 +164,47 @@ void display_help(void)
 
 void button_helphome_clicked(void)
 {
-    char strTemp1[] = "home"; // to avoid [-Wdiscarded-qualifiers]
-    load_help(strTemp1);
+    load_help((char*)"home");
 }
 
 void button_helpmode_clicked(void)
 {
-    char strTemp2[] = "mode";
-    load_help(strTemp2);
+    load_help((char*)"mode");
 }
 
 void button_helpnpoint_clicked(void)
 {
-    char strTemp3[] = "npoint";
-    load_help(strTemp3);
+    load_help((char*)"npoint");
 }
 
 void button_helpbeamsw_clicked(void)
 {
-    char strTemp4[] = "beamsw";
-    load_help(strTemp4);
+    load_help((char*)"beamsw");
 }
 
 void button_helpfreq_clicked(void)
 {
-    char strTemp5[] = "freq";
-    load_help(strTemp5);
+    load_help((char*)"freq");
 }
 
 void button_helpoffset_clicked(void)
 {
-    char strTemp6[] = "offset";
-    load_help(strTemp6);
+    load_help((char*)"offset");
 }
 
 void button_helprecord_clicked(void)
 {
-    char strTemp7[] = "record";
-    load_help(strTemp7);
+    load_help((char*)"record");
 }
 
 void button_helpcmdfl_clicked(void)
 {
-    char strTemp8[] = "cmdfl";
-    load_help(strTemp8);
+    load_help((char*)"cmdfl");
 }
 
 void button_helpcal_clicked(void)
 {
-    char strTemp9[] = "cal";
-    load_help(strTemp9);
+    load_help((char*)"cal");
 }
 
 void button_helpexit_clicked(void)
@@ -258,12 +249,12 @@ void load_help(char *command)
     }
 
     // get the first line to output
-    fgets(text, 256, file1);
+    if (fgets(text, 256, file1)) {};  // if(){} to avoid warning
     // now loop until we find a line starting with ## to print text
     while ((text[0] != '#') && (text[1] != '#'))
     {
         gtk_text_buffer_insert_at_cursor(buffer, text, -1);
-        fgets(text, 256, file1);
+        if (fgets(text, 256, file1)) {};  // if(){} to avoid warning
     }
 
     // Set the textbox to display the new buffer

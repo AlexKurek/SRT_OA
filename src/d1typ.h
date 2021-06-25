@@ -40,8 +40,8 @@ typedef struct
   int nsecstart;
   int secstop, clearint, noclearint, fstatus, radiosim, azelsim, mainten, azcount, elcount, domap, xmark, map, mancal, south, ptoler, countperstep,
     azelport, drift, scan, stow, slew, sourn, bsw, nbsw, bswint, calon, calmode, docal, caldone, rod, stopproc, comerr, limiterr, 
-    cmdfl, cmdfline, year, nblk, nsam, unitid, run,wid,whgt,vwid,vwhgt,numon,numoff,psw,entry1,entry2,entry3,entry5,entry6,entry8,
-    helpwindow,vwindow,plot,obsn,nrfi,dongle,npoly,stowatlim,rot2slp,rot2mode,lock,ver;
+    cmdfl, cmdfline, year, nblk, nsam, unitid, run, wid, whgt, vwid, vwhgt, numon, numoff, psw, entry1, entry2, entry3, entry5, entry6, entry8,
+    helpwindow, vwindow, plot, obsn, nrfi, dongle, npoly, stowatlim, rot2slp, rot2mode, lock, ver;
   int fftsim;
   unsigned int seed;
   int devices;
@@ -55,4 +55,11 @@ typedef struct
   char statnam[32];
   char timsource[8];
   char recnote[256];
+  
+  // OA UJ
+  double en_az;
+  double en_el;
+  double en_az_offset;
+  double en_el_offset;
+
 } d1type;
