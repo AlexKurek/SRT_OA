@@ -27,9 +27,9 @@ void closeMB (void)
     modbus_free(ctx);
 }
 
+/* Set all transmission parameters (incl. response timeout), encoders eddresses */
 int initModbus (const char* dName, int baud, char parity, int data_bit, int stop_bit, const char* recovery, const char* debug)
-{   // set all transmission parameters (incl. response timeout), encoders eddresses
-
+{
     /* Create a context for RTU */
     printf("\n");
     printf("Trying to connect...\n");
@@ -69,7 +69,8 @@ int initModbus (const char* dName, int baud, char parity, int data_bit, int stop
     return 0;
 }
 
-int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, const char* setTerm, const char* debug)     /* Establish a Modbus connection */
+/* Establish a master-slave connection */
+int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, const char* setTerm, const char* debug)
 {
     #define VER_REG          41
     #define SERIAL_NO_REG_HI 42

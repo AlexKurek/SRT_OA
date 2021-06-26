@@ -13,8 +13,8 @@
 * BANDWIDTH is actual bandwith plotted it must be < 10 MHz for PCI card and 2.4 MHz for dongle
 * TSYS previously measured system temperature on cold sky
 * COMMAND galacticHsurvey.txt  // names command file to execute at startup 
-COMMAND cmdtest.txt  // names command file to execute at startup 
-*LOCKSRT // use to generate lock.txt to prevent running the SRT if it is aleady running
+COMMAND cmdtest.txt            // names command file to execute at startup 
+*LOCKSRT    // use to generate lock.txt to prevent running the SRT if it is aleady running
 SIMULATE ANTENNA
 *BIGRAS     // 0.5 degree resolution rot2 protocol default is rot2 with 1 degree resolution
 *CALMODE 20  
@@ -24,8 +24,8 @@ SIMULATE RECEIVER
 *RMSCALC       // display rms rather than max
 *SIMULATE FFT  // use c-coded FFT
 *SPEED_UP 800  // speeds up time by factor for simulations 
-*START_DATE 2017:291:22:00:00  //date for simulation http://ssd.jpl.nasa.gov/horizons.cgi for check 
-*START_DATE 2017:258:02:00:00  //date for simulation http://ssd.jpl.nasa.gov/horizons.cgi for check 
+*START_DATE 2017:291:22:00:00  // date for simulation http://ssd.jpl.nasa.gov/horizons.cgi for check 
+*START_DATE 2017:258:02:00:00  // date for simulation http://ssd.jpl.nasa.gov/horizons.cgi for check 
 *SPEED_UP -2     // negative value advances time hours 
 *MAINTENANCE
 DEBUG
@@ -96,32 +96,32 @@ GALACTIC 80 0 G80
 *GALACTIC 53 0 G53
 *GALACTIC 69 0 G69
 *AZEL  50 60 azel
-AZEL 120 7 cal  // defines a position looking the trees for calibration
+AZEL 120 7 cal   // defines a position looking the trees for calibration
 
-*NOCLEARINT     // prevents automatic clear of integration on source change
+*NOCLEARINT      // prevents automatic clear of integration on source change
 NOPRINTOUT
 *NODISPLAY
-BEAMWIDTH 6     // FWHM beamwidth also used to set spacing for beam switch
-NBSW 10         // number of cycles in beam switch observation
-AZLIMITS 4 355   // current SRT
-*ELLIMITS 0 175 // test for old SRT
-ELLIMITS 0 89.0 // current SRT
-AZLIMITS 92 265  // test for old SRT
+BEAMWIDTH 6       // FWHM beamwidth also used to set spacing for beam switch
+NBSW 10           // number of cycles in beam switch observation
+AZLIMITS 4 355    // current SRT
+*ELLIMITS 0 175   // test for old SRT
+ELLIMITS 0 89.0   // current SRT
+AZLIMITS 92 265   // test for old SRT
 *ELLIMITS 0 89
-*AZLIMITS 270 90   // for pointing North 
+*AZLIMITS 270 90  // for pointing North 
 *ELLIMITS 10 89.0
 *ELLIMITS -4 89.0
 *ELLIMITS 2 89.0
 *STOWPOS 17 10
-TSYS 171    // assumed system temperature
+TSYS 171     // assumed system temperature
 *TCAL 100    // should equal ambient load
-TCAL 290    // should equal ambient load
+TCAL 290     // should equal ambient load
 *DATADIR /home/phughes     // specifies directory for output files - default is ./
 *RECORD 1 SPEC
-*RECORD 10 SPEC RCLR    // RCLR clears integration for each record
+*RECORD 10 SPEC RCLR       // RCLR clears integration for each record
 RECORD 10 SPEC
 *NUMFREQ 1024   // good choise for ADC card
-NUMFREQ 256    // good choice for dongle
+NUMFREQ 256     // good choice for dongle
 *FREQUENCY 1420.406
 BANDWIDTH 2.0
 FREQUENCY 1420.4
@@ -129,7 +129,7 @@ FREQUENCY 1420.4
 *FREQUENCY 1419.92
 RESTFREQ 1420.406  // hydrogen 21cm line
 *RESTFREQ 1667.0
-FREQCORR -0.05   // TV dongle correction
+FREQCORR -0.05     // TV dongle correction
 NBLOCK 5   // number of blocks per update - can be reduced for Beagle board with slow display for PCI it is hardwired to 20
 *NUMPOLY 15  // number of terms in polynomial fit of bandpass - use default value of 25 for dongle
 
