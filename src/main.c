@@ -584,9 +584,10 @@ int main(int argc, char *argv[])
     for (i = 0; i < d1.nfreq; i++)
         bspec[i] = 1;
     d1.secs = readclock();
-	/* Encoder related */
-	initModbus ("/dev/ttyUSB0", 19200, 'E', 8, 1, "true", "true");
-	slaveComm  (127, 0, 40000, "false", "true");
+
+    /* Encoder related */
+    initModbus ("/dev/ttyUSB0", 19200, 'E', 8, 1, "true", "true");
+    slaveComm  (127, 0, 40000, "false", "true");
     while (d1.run)
     {
         zerospectra(1);
