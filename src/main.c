@@ -162,12 +162,12 @@ int main(int argc, char *argv[])
 
     if (!catfile())             // reads config from srt.cat via cat.c ? (AK)
         return 0;
-	
-	// OA UJ
-	d1.en_az = d1.stowaz;
-	d1.en_el = d1.stowel;
-	d1.en_az_offset = 0;
-	d1.en_el_offset = 0;
+    
+    // OA UJ
+    d1.en_az = d1.stowaz;
+    d1.en_el = d1.stowel;
+    d1.en_az_offset = 0;
+    d1.en_el_offset = 0;
 
     if (d1.lock)
     {

@@ -27,7 +27,7 @@ void closeMB (void)
     modbus_free(ctx);
 }
 
-int initModbus (const char* dName, int baud, char parity, int data_bit, int stop_bit, char* recovery, char* debug)
+int initModbus (const char* dName, int baud, char parity, int data_bit, int stop_bit, const char* recovery, const char* debug)
 {   // set all transmission parameters (incl. response timeout), encoders eddresses
 
     /* Create a context for RTU */
@@ -69,7 +69,7 @@ int initModbus (const char* dName, int baud, char parity, int data_bit, int stop
     return 0;
 }
 
-int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, char* setTerm, char* debug)     /* Establish a Modbus connection */
+int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, const char* setTerm, const char* debug)     /* Establish a Modbus connection */
 {
     #define VER_REG          41
     #define SERIAL_NO_REG_HI 42
@@ -192,10 +192,11 @@ int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, char* se
     return 0;
 }
 
+/* Encoder related */
 int readEncoder32(void)
 {
     uint16_t tab_reg[2];   // The results of reading are stored here
-    uint32_t pos32 = 0;
+    uint32_t pos32bit = 0;
     int read_val = modbus_read_registers (ctx, 1, 2, tab_reg);
     if (read_val == -1)
     {
@@ -212,10 +213,9 @@ int readEncoder32(void)
         double posRegister = tab_reg[1];
         double posDeg = ( posRegister / 65536 ) * 360;
         printf("In degrees: %f\n", posDeg);
-        pos32 = tab_reg[0] | (tab_reg[1]<<16);
-        printf("In 32-bit format: %d\n", pos32);
+        pos32bit = tab_reg[0] | (tab_reg[1]<<16);
     }
-    return pos32;
+    return pos32bit;
 }
 
 
@@ -236,6 +236,14 @@ void azel(double az, double el)   // command antenna movement
     ix    = midx * 1.55;
     ixe   = midx * 0.25;
     midxr = midx * 2 - ix;
+
+    /* Encoder related */
+    uint32_t pos32bit = 0;
+    initModbus ("/dev/ttyUSB0", 19200, 'E', 8, 1, "true", "true");
+    slaveComm  (127, 0, 40000, "false", "true");
+    d1.en_az = readEncoder32();
+    printf("In 32-bit format: %d\n", d1.en_az);
+
     if (d1.lat >= 0.0)
         sprintf (txt, "%s %4.1fN %5.1fW", d1.statnam,  d1.lat * 180.0 / PI, d1.lon * 180.0 / PI);
     else
@@ -768,6 +776,7 @@ int rot2(double *az, double *el, int cmd, char *resp)
         return 0;
 }
 
+/* Executes motor movement */
 int h180(double *az, double *el, int cmd, char *resp)
 {
   int    usbDev;
@@ -787,7 +796,7 @@ int h180(double *az, double *el, int cmd, char *resp)
   if (cmd == -1)
   {
 //  printf ("here cmd = -1\n");
-   int unused __attribute__((unused));
+   int unused __attribute__((unused));   // to avoid warning
    unused = system("stty -F /dev/ttyUSB0 2400 cs8 -cstopb -parenb -icanon min 1 time 20");
    usbDev = open("/dev/ttyUSB0", O_RDWR, O_NONBLOCK);
    sleep(1);
