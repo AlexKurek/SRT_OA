@@ -192,7 +192,7 @@ int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, const ch
     return 0;
 }
 
-/* Encoder related */
+/* Reading encoder position in 32bit */
 int readEncoder32(void)
 {
     uint16_t tab_reg[2];   // The results of reading are stored here
@@ -238,11 +238,10 @@ void azel(double az, double el)   // command antenna movement
     midxr = midx * 2 - ix;
 
     /* Encoder related */
-    uint32_t pos32bit = 0;
     initModbus ("/dev/ttyUSB0", 19200, 'E', 8, 1, "true", "true");
     slaveComm  (127, 0, 40000, "false", "true");
     d1.en_az = readEncoder32();
-    printf("In 32-bit format: %d\n", d1.en_az);
+    printf("In 32-bit format: %f\n", d1.en_az);
 
     if (d1.lat >= 0.0)
         sprintf (txt, "%s %4.1fN %5.1fW", d1.statnam,  d1.lat * 180.0 / PI, d1.lon * 180.0 / PI);
