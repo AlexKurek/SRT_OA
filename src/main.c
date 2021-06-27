@@ -16,9 +16,10 @@
 #include "d1proto.h"
 #include "d1typ.h"
 
+/* Encoder related */
 #include <modbus.h>
 
-
+/* Encoder related */
 modbus_t *ctx;
 
 
@@ -56,12 +57,14 @@ int    midx, midy;
 
 
 
+/* Encoder related */
 void closeMB (void)
 {
     modbus_close(ctx);
     modbus_free(ctx);
 }
 
+/* Encoder related */
 /* Set all transmission parameters (incl. response timeout), encoders eddresses */
 int initModbus (const char* dName, int baud, char parity, int data_bit, int stop_bit, const char* recovery, const char* debug)
 {
@@ -104,6 +107,7 @@ int initModbus (const char* dName, int baud, char parity, int data_bit, int stop
     return 0;
 }
 
+/* Encoder related */
 /* Establish a master-slave connection */
 int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, const char* setTerm, const char* debug)
 {
@@ -228,6 +232,7 @@ int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, const ch
     return 0;
 }
 
+/* Encoder related */
 /* Reading encoder position in 32bit */
 int readEncoder32(void)
 {
@@ -259,10 +264,14 @@ int readEncoder32(void)
 
 
 
-
-
 int main(int argc, char *argv[])
 {
+	/* Encoder related */
+	// This is so early to get en_az_now immediately. In the future add here some donditions when not to initiate encoders
+	initModbus ("/dev/ttyUSB0", 19200, 'E', 8, 1, "true", "true");
+	slaveComm  (127, 0, 40000, "false", "true");
+	d1.en_az_now = readEncoder32();
+
     GtkWidget *window;
     GtkWidget *button_clear, *button_azel, *button_freq, *button_offset;
     GtkWidget *button_help;
@@ -373,7 +382,7 @@ int main(int argc, char *argv[])
     if (!catfile())             // reads config from srt.cat via cat.c ? (AK)
         return 0;
     
-    // OA UJ
+    /* Encoder related */
     d1.en_az = d1.stowaz;
     d1.en_el = d1.stowel;
     d1.en_az_offset = 0;
@@ -585,9 +594,10 @@ int main(int argc, char *argv[])
         bspec[i] = 1;
     d1.secs = readclock();
 
-    /* Encoder related */
-    initModbus ("/dev/ttyUSB0", 19200, 'E', 8, 1, "true", "true");
-    slaveComm  (127, 0, 40000, "false", "true");
+	/* Encoder related */
+	d1.en_az = readEncoder32();
+	d1.en_az_offset = (d1.en_az - d1.en_az_now) * 65536 / 360.0;
+
     while (d1.run)   // here the main program loops seems to start
     {
         zerospectra(1);
@@ -644,7 +654,7 @@ int main(int argc, char *argv[])
 
         if (d1.displ)
             cleararea();
-        azel(d1.azcmd, d1.elcmd);   // allow time after cal 
+        azel (d1.azcmd, d1.elcmd);   // allow time after cal 
         if (d1.comerr == -1)
             return 0;
         if (!d1.slew)

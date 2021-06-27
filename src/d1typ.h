@@ -59,6 +59,8 @@ typedef struct
   // OA UJ
   double en_az;
   double en_el;
+  double en_az_now;
+  double en_el_now;
   double en_az_offset;
   double en_el_offset;
 
