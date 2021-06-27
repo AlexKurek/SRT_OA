@@ -234,9 +234,9 @@ void scanplot(void)
         sprintf(txt, "azelwid %3.1f %3.1f", azwid * 0.025 * d1.beamw, elwid * 0.025 * d1.beamw);
         iy = midy * 0.90;
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
-        if (d1.tsys > 0) {
+        if (d1.tsys > 0)
             sprintf(txt, "ratio %4.2f", max / min);
-        } else
+        else
             sprintf(txt, "power_ratio %5.2f", max / min);
         iy = midy * 0.95;
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));

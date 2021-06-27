@@ -588,7 +588,7 @@ int main(int argc, char *argv[])
     /* Encoder related */
     initModbus ("/dev/ttyUSB0", 19200, 'E', 8, 1, "true", "true");
     slaveComm  (127, 0, 40000, "false", "true");
-    while (d1.run)
+    while (d1.run)   // here the main program loops seems to start
     {
         zerospectra(1);
         if (d1.clearint)
@@ -607,7 +607,7 @@ int main(int argc, char *argv[])
                 toyrday(d1.secs, &yr, &da, &hr, &mn, &sc);
                 printf("%4d:%03d:%02d:%02d:%02d %3s ", yr, da, hr, mn, sc, d1.timsource);
             }
-            if (!d1.radiosim)
+            if (!d1.radiosim)     // sleep if in hardware simulation mode to simulate real delay
                 sleep(1);
             zerospectra(0);
             d1.freqchng = 0;
@@ -676,7 +676,7 @@ int main(int argc, char *argv[])
             }
         }
         if (!d1.displ && d1.domap)
-            scanplot();
+            scanplot();   // in map.c
     }
 
     if (d1.lock)
