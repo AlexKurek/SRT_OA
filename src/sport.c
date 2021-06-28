@@ -15,12 +15,6 @@
 #include "d1typ.h"
 #include "d1glob.h"
 
-#include <modbus.h>
-
-/* Encoder related */
-extern modbus_t *ctx;
-
-
 
 
 void azel(double az, double el)   // command antenna movement
@@ -28,7 +22,6 @@ void azel(double az, double el)   // command antenna movement
     int        n, ix, iy, midxr, ixe, yr, da, hr, mn, sc;
     static int kk;
     double     azz, ell, ra, dec, x, y;
-    double     en_azDeg;   /* Encoder related */
     char       str[80], recv[256], txt[80];
     GdkColor   color;
 
@@ -38,12 +31,6 @@ void azel(double az, double el)   // command antenna movement
     ix    = midx * 1.55;
     ixe   = midx * 0.25;
     midxr = midx * 2 - ix;
-
-    /* Encoder related */
-    d1.en_az = readEncoder32() - d1.en_az_offset;
-    printf("In 32-bit format: %u\n", d1.en_az);
-    en_azDeg = (d1.en_az) * 360.0 / 65535.0;
-    printf("In deg from 32-bit: %u\n", en_azDeg);
 
     if (d1.lat >= 0.0)
         sprintf (txt, "%s %4.1fN %5.1fW", d1.statnam,  d1.lat * 180.0 / PI, d1.lon * 180.0 / PI);
@@ -65,8 +52,7 @@ void azel(double az, double el)   // command antenna movement
         printf ("%4d:%03d:%02d:%02d:%02d %3s ", yr, da, hr, mn, sc, d1.timsource);
         printf ("%s\n", txt);
     }
-    // sprintf (txt, "offsets %5.1f %4.1f deg", d1.azoff, d1.eloff);
-    sprintf (txt, "encoders %5.1f %4.1f deg", d1.en_az, d1.en_el);
+    sprintf (txt, "offsets %5.1f %4.1f deg", d1.azoff, d1.eloff);
     iy = midy * 0.25;
     if (d1.displ)
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
@@ -331,8 +317,7 @@ void azel(double az, double el)   // command antenna movement
                     sprintf (txt, "azel %5.1f %4.1f deg", d1.aznow, d1.elnow);
                     iy = midy * 0.20;
                     gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
-                    // sprintf (txt, "offsets %5.1f %4.1f deg", d1.azoff, d1.eloff);
-                    sprintf (txt, "encoders %5.1f %4.1f deg", d1.en_az, d1.en_el);
+                    sprintf (txt, "offsets %5.1f %4.1f deg", d1.azoff, d1.eloff);
                     iy = midy * 0.25;
                     gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
                     azel_to_radec(d1.secs, d1.aznow, d1.elnow, &ra, &dec);
@@ -489,8 +474,7 @@ void azel(double az, double el)   // command antenna movement
         sprintf (txt, "cmd  %5.1f %4.1f deg", d1.azcmd, d1.elcmd);
         iy = midy * 0.15;
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
-        // sprintf (txt, "offsets %5.1f %4.1f deg", d1.azoff, d1.eloff);
-        sprintf (txt, "encoders %5.1f %4.1f deg", d1.en_az, d1.en_el);
+        sprintf (txt, "offsets %5.1f %4.1f deg", d1.azoff, d1.eloff);
         iy = midy * 0.25;
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
     }

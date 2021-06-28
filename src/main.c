@@ -16,12 +16,6 @@
 #include "d1proto.h"
 #include "d1typ.h"
 
-/* Encoder related */
-#include <modbus.h>
-
-/* Encoder related */
-modbus_t *ctx;
-
 
 d1type d1;
 double ras[NSOU], decs[NSOU], epoc[NSOU];
@@ -57,221 +51,8 @@ int    midx, midy;
 
 
 
-/* Encoder related */
-void closeMB (void)
-{
-    modbus_close(ctx);
-    modbus_free(ctx);
-}
-
-/* Encoder related */
-/* Set all transmission parameters (incl. response timeout), encoders eddresses */
-int initModbus (const char* dName, int baud, char parity, int data_bit, int stop_bit, const char* recovery, const char* debug)
-{
-    /* Create a context for RTU */
-    printf("\n");
-    printf("Trying to connect...\n");
-    ctx = modbus_new_rtu (dName, baud, parity, data_bit, stop_bit);  // modbus_new_rtu (const char *device, int baud, char parity, int data_bit, int stop_bit)
-
-    if ( (strcmp(debug, "true") == 0) || (strcmp(debug, "TRUE") == 0) || (strcmp(debug, "1") == 0) )
-    {
-        modbus_set_debug(ctx, TRUE);  // set debug flag of the context
-        printf("Debud mode on\n");
-    
-        int getRTS = modbus_rtu_get_rts(ctx);
-        printf("Return of get_rts:      %d\n", getRTS);
-        printf("Return of RTU_RTS_NONE: %d\n", MODBUS_RTU_RTS_NONE);
-        printf("Return of RTU_RTS_UP:   %d\n", MODBUS_RTU_RTS_UP);
-        printf("Return of RTU_RTS_DOWN: %d\n", MODBUS_RTU_RTS_DOWN);
-        int getSerial = modbus_rtu_get_serial_mode(ctx);
-        if (getSerial == 0)
-        {
-            if (MODBUS_RTU_RS232 == 1)
-                printf("RTU is in RS232 mode\n");
-            if (MODBUS_RTU_RS485 == 1)
-                printf("RTU is in RS485 mode\n");
-        }
-        int getDelay = modbus_rtu_get_rts_delay(ctx);
-        if (getDelay != -1)
-            printf("RTS delay:     %d [μs]\n", getDelay);
-        int getHeader = modbus_get_header_length(ctx);
-        if (getHeader != -1)
-            printf("Header length: %d\n", getHeader);
-    }
-
-    if ( (strcmp(recovery, "true") == 0) || (strcmp(recovery, "TRUE") == 0) || (strcmp(recovery, "1") == 0) )
-    {
-        printf("Setting error recovery mode\n");
-        modbus_set_error_recovery(ctx, MODBUS_ERROR_RECOVERY_LINK | MODBUS_ERROR_RECOVERY_PROTOCOL);
-    }
-    return 0;
-}
-
-/* Encoder related */
-/* Establish a master-slave connection */
-int slaveComm(int slaveAddr, uint32_t resTimeSec, uint32_t resTimeuSec, const char* setTerm, const char* debug)
-{
-    #define VER_REG          41
-    #define SERIAL_NO_REG_HI 42
-    #define SERIAL_NO_REG_LO 43
-    #define TERMIN_REG       268
-    #define TERMIN_REG_EXE   269
-
-    struct   timeval response_timeout;
-    uint32_t tv_sec  = 0;
-    uint32_t tv_usec = 0;
-    response_timeout.tv_sec  = tv_sec;
-    response_timeout.tv_usec = tv_usec;
-    int rc;
-    int setTermInt   = 0;
-    uint16_t tab_regSN_lo[1];
-    uint16_t tab_regSN_hi[1];
-    uint16_t tab_regVer[1];
-    uint16_t tab_regTer[1];
-
-    /* Set slave number in the context */
-    rc = modbus_set_slave(ctx, slaveAddr);
-    printf("modbus_set_slave return: %d\n", rc);
-    if (rc != 0)
-    {
-        printf("modbus_set_slave: %s \n", modbus_strerror(errno));
-        closeMB ();
-        return -1;
-    }
-
-    if (modbus_connect(ctx) == -1)
-    {
-        fprintf(stderr, "Connection failed: %s\n", modbus_strerror(errno));
-        closeMB ();
-        return -1;
-    }
-    if (NULL == ctx)
-    {
-        printf("Unable to create modbus context\n");
-        closeMB ();
-        return -1;
-    }
-    printf("Created modbus context\n");
-
-    /* Get termination register */
-    printf("Trying to read termination register...\n");
-    int ter = modbus_read_registers (ctx, TERMIN_REG, 1, tab_regTer);
-    if (ter == -1)
-        printf("ERROR: %s\n", modbus_strerror(errno));
-    else
-        printf("Termination: %d\n", tab_regTer[0]);
-
-    /* Set termination register */
-    if ( (strcmp(setTerm, "0") == 0) || (strcmp(setTerm, "off") == 0) || (strcmp(setTerm, "OFF") == 0) || (strcmp(setTerm, "1") == 0) || (strcmp(setTerm, "on") == 0) || (strcmp(setTerm, "ON") == 0) )
-    {
-        if ( (strcmp(setTerm, "0") == 0)   || (strcmp(setTerm, "1") == 0) )
-            setTermInt = atoi(setTerm);
-        if ( (strcmp(setTerm, "off") == 0) || (strcmp(setTerm, "OFF") == 0) )
-            setTermInt = 0;
-        if ( (strcmp(setTerm, "on") == 0)  || (strcmp(setTerm, "ON") == 0) )
-            setTermInt = 1;
-        if (tab_regTer[0] != setTermInt)   // checking, if termination register is already set to the requested value
-        {
-            printf("Trying to set termination register to %d...\n", setTermInt);
-            int terWrite = modbus_write_register(ctx, TERMIN_REG, setTermInt);
-            if (terWrite == -1)
-            {
-                printf("ERROR: %s\n", modbus_strerror(errno));
-                closeMB ();
-                return -1;
-            }
-            int terWriteSet = modbus_write_register(ctx, TERMIN_REG_EXE, 1);   // execute the above
-            if (terWriteSet == -1)
-            {
-                printf("ERROR: %s\n", modbus_strerror(errno));
-                closeMB ();
-                return -1;
-            }
-            ter = modbus_read_registers (ctx, TERMIN_REG, 1, tab_regTer);     // veryfying
-            if (ter == -1)
-                printf("ERROR: %s\n", modbus_strerror(errno));
-            else
-                printf("Termination: %d\n", tab_regTer[0]);
-        }
-        else
-            printf("Termination register already set to this value, so not writing it again\n");
-    }
-
-    /* Get response timeout */
-    modbus_get_response_timeout(ctx, &tv_sec, &tv_usec); 
-    printf("Default response timeout: %ld sec %ld usec \n", response_timeout.tv_sec, response_timeout.tv_usec );
-
-    /* Set response timeout */
-    modbus_set_response_timeout(ctx, resTimeSec, resTimeuSec); 
-    modbus_get_response_timeout(ctx, &tv_sec, &tv_usec); 
-    printf("Set response timeout:     %d sec %d usec \n", tv_sec, tv_usec );
-
-    /* Read and print SN register */
-    printf("Trying to read SN...\n");
-    int SNhi = modbus_read_registers (ctx, SERIAL_NO_REG_HI, 1, tab_regSN_hi);
-    int SNlo = modbus_read_registers (ctx, SERIAL_NO_REG_LO, 1, tab_regSN_lo);
-    if ((SNhi == -1) || (SNlo == -1))
-        printf("ERROR: %s\n", modbus_strerror(errno));
-    else
-    {
-        uint32_t SN = tab_regSN_lo[0] | (tab_regSN_hi[0] << 16);
-        printf("SN: %d\n", SN);
-    }
-
-    /* Read and print version register */
-    printf("Trying to read version...\n");
-    int ver = modbus_read_registers (ctx, VER_REG, 1, tab_regVer);
-    if (ver == -1)
-        printf("ERROR: %s\n", modbus_strerror(errno));
-    else
-    {
-        printf("Version: %d\n", tab_regVer[0]);
-        if ( (tab_regVer[0] != 101) && ( (strcmp(debug, "true") == 0) || (strcmp(debug, "TRUE") == 0) || (strcmp(debug, "1") == 0) ) )
-            printf("We tested only version 101\n");
-    }
-    return 0;
-}
-
-/* Encoder related */
-/* Reading encoder position in 32bit */
-int readEncoder32(void)
-{
-    uint16_t tab_reg[2];   // The results of reading are stored here
-    uint32_t pos32bit = 0;
-    int read_val = modbus_read_registers (ctx, 1, 2, tab_reg);
-    if (read_val == -1)
-    {
-        printf("ERROR: %s\n", modbus_strerror(errno));
-        closeMB ();
-        return -1;
-    }
-    else
-    {
-        printf("Read %d registers: \n", read_val);
-        for(int i=0; i<2; i++)
-            printf("%d ", tab_reg[i]);
-        printf("\n");
-        double posRegister = tab_reg[1];
-        double posDeg = ( posRegister / 65536 ) * 360;
-        printf("In degrees: %f\n", posDeg);
-        pos32bit = tab_reg[0] | (tab_reg[1]<<16);
-    }
-    return pos32bit;
-}
-
-
-
-
-
-
 int main(int argc, char *argv[])
 {
-	/* Encoder related */
-	// This is so early to get en_az_now immediately. In the future add here some donditions when not to initiate encoders
-	initModbus ("/dev/ttyUSB0", 19200, 'E', 8, 1, "true", "true");
-	slaveComm  (127, 0, 40000, "false", "true");
-	d1.en_az_now = readEncoder32();
-
     GtkWidget *window;
     GtkWidget *button_clear, *button_azel, *button_freq, *button_offset;
     GtkWidget *button_help;
@@ -382,12 +163,6 @@ int main(int argc, char *argv[])
     if (!catfile())             // reads config from srt.cat via cat.c ? (AK)
         return 0;
     
-    /* Encoder related */
-    d1.en_az = d1.stowaz;
-    d1.en_el = d1.stowel;
-    d1.en_az_offset = 0;
-    d1.en_el_offset = 0;
-
     if (d1.lock)
     {
         if ((file1 = fopen("lock.txt", "r")) == NULL)
@@ -593,10 +368,6 @@ int main(int argc, char *argv[])
     for (i = 0; i < d1.nfreq; i++)
         bspec[i] = 1;
     d1.secs = readclock();
-
-	/* Encoder related */
-	d1.en_az = readEncoder32();
-	d1.en_az_offset = (d1.en_az - d1.en_az_now) * 65536 / 360.0;
 
     while (d1.run)   // here the main program loops seems to start
     {

@@ -55,13 +55,4 @@ typedef struct
   char statnam[32];
   char timsource[8];
   char recnote[256];
-  
-  // OA UJ
-  double en_az;
-  double en_el;
-  double en_az_now;
-  double en_el_now;
-  double en_az_offset;
-  double en_el_offset;
-
 } d1type;
