@@ -16,6 +16,9 @@
 #include "d1proto.h"
 #include "d1typ.h"
 
+/* -- Encoder related -- */
+#include "encoder.h"
+
 
 d1type d1;
 double ras[NSOU], decs[NSOU], epoc[NSOU];
@@ -53,6 +56,9 @@ int    midx, midy;
 
 int main(int argc, char *argv[])
 {
+    /* -- Encoder related -- */
+    EncoderInit ("/dev/ttyUSB0", 19200, 'E', 8, 1);
+
     GtkWidget *window;
     GtkWidget *button_clear, *button_azel, *button_freq, *button_offset;
     GtkWidget *button_help;
