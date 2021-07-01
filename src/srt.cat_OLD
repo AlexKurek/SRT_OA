@@ -29,7 +29,10 @@ SIMULATE RECEIVER
 *SPEED_UP -2     // negative value advances time hours 
 *MAINTENANCE
 DEBUG
-STATION 50.0535 -19.823 OAUJ
+*STATION 42.3 83.7 Ann_Arbor
+*STATION -26.7 -117 MWA
+STATION 42.5 71.5 Haysrt3
+*STATION 42.397 118.754 Oregon
 SOU 23 21 12  58 44 00 Cass
 SOU 00 00 00  00 00 00 Sun
 SOU 00 00 00  00 00 00 Moon
@@ -38,15 +41,15 @@ SOU 17 45 40 -29 00 28 SgrA
 *SOU 20 44 33.9 39 55 54 NMLcyg
 *SOU 18 34 52 -05 26 37 OH26.5
 *SOU 07 20 53 -25 40 24 VYCma
-*SOU 05 35 17 -05 23 28 Orion
+SOU 05 35 17 -05 23 28 Orion
 *SOU 19 20 38 14 14 34 Hcloud
-*SOU 00 42 44 41 16 09 Andr
-*SOU 01 33 50 30 39 37 Trigl
+SOU 00 42 44 41 16 09 Andr
+SOU 01 33 50 30 39 37 Trigl
 *SOU 5 44 50 -1 41 0 S8RA 1950
-*SOU 15 28 58 -2 15 0 S6 1950
+SOU 15 28 58 -2 15 0 S6 1950
 *SOU 03 53 28 11 24 23 IKTAU 2000
-*SOU 17 48 46 -34 25 0 S9 1950
-SOU 02 23 17 61 38 54 W3 1950    // strongest OH line 1665.4 MHz -44 km/s 
+SOU 17 48 46 -34 25 0 S9 1950
+*SOU 02 23 17 61 38 54 W3 1950    // strongest OH line 1665.4 MHz -44 km/s 
 GALACTIC 132 -1 S7     // hydrogen line calibration region
 GALACTIC 207 -15 S8    // hydrogen line calibration region
 *GALACTIC 117 -2.1 CASA
@@ -98,12 +101,17 @@ AZEL 120 7 cal   // defines a position looking the trees for calibration
 *NOCLEARINT      // prevents automatic clear of integration on source change
 NOPRINTOUT
 *NODISPLAY
-BEAMWIDTH 5       // FWHM beamwidth also used to set spacing for beam switch
+BEAMWIDTH 6       // FWHM beamwidth also used to set spacing for beam switch
 NBSW 10           // number of cycles in beam switch observation
-
-AZLIMITS 0.6 359.0 // limits of az motion
-ELLIMITS 7.6 80.0  // limits of el motion
-
+AZLIMITS 4 355    // current SRT
+*ELLIMITS 0 175   // test for old SRT
+ELLIMITS 0 89.0   // current SRT
+AZLIMITS 92 265   // test for old SRT
+*ELLIMITS 0 89
+*AZLIMITS 270 90  // for pointing North 
+*ELLIMITS 10 89.0
+*ELLIMITS -4 89.0
+*ELLIMITS 2 89.0
 *STOWPOS 17 10
 TSYS 171     // assumed system temperature
 *TCAL 100    // should equal ambient load
