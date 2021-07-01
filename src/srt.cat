@@ -13,7 +13,7 @@
 * BANDWIDTH is actual bandwith plotted it must be < 10 MHz for PCI card and 2.4 MHz for dongle
 * TSYS previously measured system temperature on cold sky
 * COMMAND galacticHsurvey.txt  // names command file to execute at startup 
-COMMAND cmdtest.txt            // names command file to execute at startup 
+* COMMAND cmdtest.txt            // names command file to execute at startup 
 *LOCKSRT    // use to generate lock.txt to prevent running the SRT if it is aleady running
 SIMULATE ANTENNA
 *BIGRAS     // 0.5 degree resolution rot2 protocol default is rot2 with 1 degree resolution
