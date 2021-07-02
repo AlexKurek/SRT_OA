@@ -1239,7 +1239,7 @@ int rtlsdr_open(rtlsdr_dev_t ** out_dev, uint32_t index)
         fprintf(stderr, "usb_open error %d\n", r);
         if (r == LIBUSB_ERROR_ACCESS)
             fprintf(stderr, "Please fix the device permissions, e.g. "
-                    "by installing the udev rules file rtl-sdr.rules\n");
+                    "by installing the udev rules file ../udevRules/rtl-sdr.rules\n");
         goto err;
     }
 
