@@ -1,5 +1,5 @@
 # SRT
- SRT fork
+[SRT](https://www.haystack.mit.edu/haystack-public-outreach/srt-the-small-radio-telescope-for-education/) fork
 
 ## Installation:
 Example installation commands:
