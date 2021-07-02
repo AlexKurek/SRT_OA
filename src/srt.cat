@@ -97,7 +97,7 @@ AZEL 120 7 cal   // defines a position looking the trees for calibration
 
 *NOCLEARINT      // prevents automatic clear of integration on source change
 NOPRINTOUT
-*NODISPLAY
+*NODISPLAY        // turns off the display (like d1.displ)
 BEAMWIDTH 5       // FWHM beamwidth also used to set spacing for beam switch
 NBSW 10           // number of cycles in beam switch observation
 

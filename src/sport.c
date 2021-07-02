@@ -554,7 +554,7 @@ int rot2(double *az, double *el, int cmd, char *resp)
 //   for (i=0;i<12;i++) printf ("irec=%d ch=%2x\n",i,resp[i]);
      if (!d1.rot2mode)
      {
-        azz = resp[1] * 100 + resp[2] * 10 + resp[3] - 360;
+        azz = resp[1] * 100 + resp[2] * 10 + resp[3] - 360;    // response from the motor (angle)
         ell = resp[6] * 100 + resp[7] * 10 + resp[8] - 360;
      }
       else
