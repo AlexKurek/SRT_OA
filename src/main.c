@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     d1.noclearint = 0;
     d1.nfreq = NSPEC;
     d1.plotsec = 1;
-    d1.displ = 1;
+    d1.displ = 1;               // turns off entire GUI
     d1.noisecal = 0;
 //    used for old SRT mount and controller
 //    d1.ptoler = 1;
@@ -431,13 +431,13 @@ int main(int argc, char *argv[])
 
         if (d1.displ)
             cleararea();
-        azel (d1.azcmd, d1.elcmd);   // allow time after cal 
+        azel (d1.azcmd, d1.elcmd);   // allow time after cal
         if (d1.comerr == -1)
             return 0;
         if (!d1.slew)
             pwr = 0.0;
         if (!d1.slew)
-            vspectra();
+            vspectra();              // call to the receiver
         d1.secs = readclock();
         if (!d1.slew)
         {

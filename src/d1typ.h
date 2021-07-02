@@ -38,7 +38,8 @@ typedef struct
   int freqchng;
   int track;
   int nsecstart;
-  int secstop, clearint, noclearint, fstatus, radiosim, azelsim, mainten, azcount, elcount, domap, xmark, map, mancal, south, ptoler, countperstep,
+  int azcount, elcount;   // celestial coordinates represented in hardware impulse system
+  int secstop, clearint, noclearint, fstatus, radiosim, azelsim, mainten, domap, xmark, map, mancal, south, ptoler, countperstep,
     azelport, drift, scan, stow, slew, sourn, bsw, nbsw, bswint, calon, calmode, docal, caldone, rod, stopproc, comerr, limiterr, 
     cmdfl, cmdfline, year, nblk, nsam, unitid, run, wid, whgt, vwid, vwhgt, numon, numoff, psw, entry1, entry2, entry3, entry5, entry6, entry8,
     helpwindow, vwindow, plot, obsn, nrfi, dongle, npoly, stowatlim, rot2slp, rot2mode, lock, ver;
