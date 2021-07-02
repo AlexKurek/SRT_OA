@@ -27,17 +27,17 @@ double cmdfile(void)
    */
 {
     double secs, secnow, lst, freq, bw;
-    int i, j, n, line, yr, day, hr, min, se, ss;
-    int da, mn, sc;
-    int ix, iy;
-    char str[256], txt[256];
-    char *p, *k;
-    FILE *file1;
+    int    i, j, n, line, yr, day, hr, min, se, ss;
+    int    da, mn, sc;
+    int    ix, iy;
+    char   str[256], txt[256];
+    char   *p, *k;
+    FILE   *file1;
     GdkColor color;
 
     if ((file1 = fopen(d1.cmdfnam, "r")) == NULL)
     {
-        printf(" Unable to open %s\n", d1.cmdfnam);
+        printf("Unable to open %s\n", d1.cmdfnam);
         return 0.0;
     }
     secs = secnow = d1.secs;
@@ -228,11 +228,9 @@ double cmdfile(void)
                 gdk_color_parse("green", &color);
 
                 gtk_widget_modify_fg(drawing_area, GTK_STATE_NORMAL, &color);
-                gdk_draw_rectangle(pixmap, drawing_area->style->white_gc, TRUE, ix,
-                                   iy - midy * 0.04, midx * 0.4, midy * 0.05);
+                gdk_draw_rectangle(pixmap, drawing_area->style->white_gc, TRUE, ix, iy - midy * 0.04, midx * 0.4, midy * 0.05);
                 sprintf(txt, "line %2d %s", line, str);
-                gdk_draw_text(pixmap, fixed_font, drawing_area->style->fg_gc[GTK_STATE_NORMAL], ix,
-                              iy, txt, strlen(txt) - 1);
+                gdk_draw_text(pixmap, fixed_font, drawing_area->style->fg_gc[GTK_STATE_NORMAL], ix, iy, txt, strlen(txt) - 1);
             }
             if (d1.printout)
             {
@@ -244,7 +242,8 @@ double cmdfile(void)
     }
     d1.cmdfline = line;
     fclose(file1);
-    if (k == 0) {
+    if (k == 0)
+	{
         if (d1.displ)
         {
             ix = midx * 1.05;
