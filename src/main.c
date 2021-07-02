@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     GdkWindowHints geo_mask;
 //    GdkRectangle update_rect;
     sprintf(d1.catnam, "srt.cat");
-    sprintf(d1.hlpnam, "srt.hlp");
+    sprintf(d1.hlpnam, "../doc/srt.hlp");
     for (i = 0; i < argc - 1; i++)
     {
         sscanf(argv[i], "%63s", buf);

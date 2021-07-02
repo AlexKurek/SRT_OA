@@ -13,7 +13,7 @@
 * BANDWIDTH is actual bandwith plotted it must be < 10 MHz for PCI card and 2.4 MHz for dongle
 * TSYS previously measured system temperature on cold sky
 * COMMAND galacticHsurvey.txt  // names command file to execute at startup 
-* COMMAND cmdtest.txt            // names command file to execute at startup 
+* COMMAND cmdtest.txt          // names command file to execute at startup 
 *LOCKSRT    // use to generate lock.txt to prevent running the SRT if it is aleady running
 SIMULATE ANTENNA
 *BIGRAS     // 0.5 degree resolution rot2 protocol default is rot2 with 1 degree resolution
@@ -26,7 +26,7 @@ SIMULATE RECEIVER
 *SPEED_UP 800  // speeds up time by factor for simulations 
 *START_DATE 2017:291:22:00:00  // date for simulation http://ssd.jpl.nasa.gov/horizons.cgi for check 
 *START_DATE 2017:258:02:00:00  // date for simulation http://ssd.jpl.nasa.gov/horizons.cgi for check 
-*SPEED_UP -2     // negative value advances time hours 
+*SPEED_UP -2                   // negative value advances time hours 
 *MAINTENANCE
 DEBUG
 STATION 50.0535 -19.823 OAUJ
@@ -122,7 +122,7 @@ FREQUENCY 1420.4
 RESTFREQ 1420.406  // hydrogen 21cm line
 *RESTFREQ 1667.0
 FREQCORR -0.05     // TV dongle correction
-NBLOCK 5   // number of blocks per update - can be reduced for Beagle board with slow display for PCI it is hardwired to 20
+NBLOCK 5     // number of blocks per update - can be reduced for Beagle board with slow display for PCI it is hardwired to 20
 *NUMPOLY 15  // number of terms in polynomial fit of bandpass - use default value of 25 for dongle
 
 * RFI
@@ -140,9 +140,9 @@ NBLOCK 5   // number of blocks per update - can be reduced for Beagle board with
 
 *RFISIGMA 20   // level for which channels with RFI will be flagged default is 6
 
-H180MOUNT    // old SRT controller
+H180MOUNT      // old SRT controller
 *COUNTPERSTEP 100 // to move with old SRT is steps 
-*ROT2SLP 3  // change rot2 sleep time to 3 seconds - default is 1 second 
+*ROT2SLP 3     // change rot2 sleep time to 3 seconds - default is 1 second 
 
 * old obselete keywords below some of which may be used
 * again in future updates
