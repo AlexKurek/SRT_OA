@@ -335,15 +335,15 @@ angle EncoderGetSTAngle(int slaveAddress)
 {
     _encoder[slaveAddress].PositionH = EncoderReadModbus(slaveAddress, encoderRegPositionH);
     _encoder[slaveAddress].PositionL = EncoderReadModbus(slaveAddress, encoderRegPositionL);
-    _encoder[slaveAddress].Position = (_encoder[slaveAddress].PositionH ) << 16 | _encoder[slaveAddress].PositionL;
+    _encoder[slaveAddress].Position  = (_encoder[slaveAddress].PositionH ) << 16 | _encoder[slaveAddress].PositionL;
 
     _encoder[slaveAddress].STResolutionH = EncoderReadModbus(slaveAddress, encoderRegSTResolutionH);
     _encoder[slaveAddress].STResolutionL = EncoderReadModbus(slaveAddress, encoderRegSTResolutionL);
-    _encoder[slaveAddress].STResolution = (_encoder[slaveAddress].STResolutionH) << 16 | _encoder[slaveAddress].STResolutionL;
+    _encoder[slaveAddress].STResolution  = (_encoder[slaveAddress].STResolutionH) << 16 | _encoder[slaveAddress].STResolutionL;
 
     _encoder[slaveAddress].TotResolutionH = EncoderReadModbus(slaveAddress, encoderRegTotResolutionH);
     _encoder[slaveAddress].TotResolutionL = EncoderReadModbus(slaveAddress, encoderRegTotResolutionL);
-    _encoder[slaveAddress].TotResolution = (_encoder[slaveAddress].TotResolutionH) << 16 | _encoder[slaveAddress].TotResolutionL;
+    _encoder[slaveAddress].TotResolution  = (_encoder[slaveAddress].TotResolutionH) << 16 | _encoder[slaveAddress].TotResolutionL;
 
     _encoder[slaveAddress].STAngle = (((double)(_encoder[slaveAddress].Position % _encoder[slaveAddress].STResolution) / _encoder[slaveAddress].STResolution))*360.0;
     angle angle;
