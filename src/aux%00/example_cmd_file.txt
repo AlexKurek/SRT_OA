@@ -1,5 +1,4 @@
-* cmd.txt - this is the default command file name which will run if cmdf is
-* clicked
+* cmd.txt - this is the default command file name which will run if cmdf is clicked
 * any command file defined by the COMMAND keyword in srt.cat will run
 * when program is started
 * yyyy:ddd:hh:mm:ss - waits for this time 
@@ -32,4 +31,3 @@
 :50
 : vplot 
 : stow
-
