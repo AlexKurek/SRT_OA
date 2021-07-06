@@ -20,17 +20,17 @@
 
 
 int ADC_Mode = ADC_DMA_CONVERSION;
-int Count = 1;
-int Board = 0;
+int Count   = 1;
+int Board   = 0;
 int Channel = 0;
-int dmamap = 0;
+int dmamap  = 0;
 int Status;
 int freq_A2D = 20000000;
 unsigned short *readBuff;
 
-int fdDAC0, fdDAC1;                        /* D/A file descriptors */
-int fdADC, fdADC0, fdADC1, fdADC2, fdADC3; /* A/D file descriptors */
-int fdDIOA, fdDIOB, fdDIOC;                /* DIO file descriptors */
+int fdDAC0, fdDAC1;                         /* D/A file descriptors */
+int fdADC,  fdADC0, fdADC1, fdADC2, fdADC3; /* A/D file descriptors */
+int fdDIOA, fdDIOB, fdDIOC;                 /* DIO file descriptors */
 
 
 static unsigned short buffer1[0x200000];
@@ -311,8 +311,8 @@ int get_pci(unsigned short value[], int count)
     {
         if (!dmamap)
         {
-            if ((readBuff = mmap(0, Count * 2, PROT_READ, MAP_PRIVATE, fdADC, 0 * getpagesize()))
-                == (unsigned short *) MAP_FAILED) {
+            if ( (readBuff = mmap(0, Count * 2, PROT_READ, MAP_PRIVATE, fdADC, 0 * getpagesize())) == (unsigned short *) MAP_FAILED )
+            {
                 printf("Test Failed: Mmap call failed %x \n", (int) readBuff);
                 printf(" %d\n", errno);
                 sleep(3);

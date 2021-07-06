@@ -15,12 +15,12 @@ int catfile(void)
     double rah, ram, rass, decd, decm, decss, glat, glon;
     int i;
     int yr, dy, hr, mn, sc;
-    d1.nsou = 0;
-    d1.track = 0;
+    d1.nsou   = 0;
+    d1.track  = 0;
     d1.newday = 1;
     d1.unitid = 0;
     d1.record_spec = 0;
-    d1.noisecal = 300.0;
+    d1.noisecal    = 300.0;
     if ((file1 = fopen(d1.catnam, "r")) == NULL)
     {
         printf(" Unable to open %s\n", d1.catnam);

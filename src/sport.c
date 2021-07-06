@@ -16,7 +16,7 @@
 #include "d1glob.h"
 
 /* -- Encoder related -- */
-#include "encoder.h"
+#include "encoder/encoder.h"
 
 
 void azel(double az, double el)   // command antenna movement
@@ -132,7 +132,7 @@ void azel(double az, double el)   // command antenna movement
         }
         else
         {
-            azz = (d1.azcmd + d1.azprev) * 0.5;
+            azz = (d1.azcmd + d1.azprev) * 0.5;  // this angle is calculated after move command was sent
             if (!d1.south)
             {
                if (d1.azcmd < d1.azlim2 -360.0)  azz += 180.0;   
@@ -140,7 +140,7 @@ void azel(double az, double el)   // command antenna movement
                if (azz >= 360.0) azz += -360.0;
                if (azz >= 360.0) azz += -360.0;
             }
-            ell = (d1.elcmd + d1.elprev) * 0.5;
+            ell = (d1.elcmd + d1.elprev) * 0.5;  // this angle is calculated after move command was sent
             if (fabs(d1.aznow - d1.azcmd) < 2)
                 azz = d1.azcmd;
             if (fabs(d1.elnow - d1.elcmd) < 2)
@@ -581,11 +581,31 @@ int rot2(double *az, double *el, int cmd, char *resp)
         return 0;
 }
 
-/* Executes motor movement */
+
+/**
+*  Executes motor movement
+* d1.azcount d1.elcount are stroing positions as an impuse count.
+* After command "move" is sent, angles azz and ell are computed and added to the
+* minimal angles d1.azlim1 and d1.ellim1. Results are stored in *az *el.
+* 
+* Next form given angles of antena movement - minimal angles d1.azlim1 and d1.ellim1
+* are subtracted. New angles azz and ell are computed and multiplied by the count of
+* impulses per degree for az and el d1.azcounts_per_deg d1.elcounts_per_deg. Next the
+* initial impulse count d1.azcount d1.elcount is subtracted and they are storred to
+* acount. Next, depending on rotation angle mm (o and 1 for one axis, 2 and 3 for the
+* other) are modified and sent to the driver as count.
+* 
+* Next the driver status is read. It contains impulse count that are alter added/subtracted
+* from initial values d1.azcount d1.elcount.
+* 
+* If stow is executed, initial counts are zeroed.
+*
+*/
 int h180(double *az, double *el, int cmd, char *resp)
 {
   int    usbDev;
-  int    status, rstatus, mm, count, axis, i, j, im, ccount;
+  int    mm    // direction of rotation
+  int    status, rstatus, count, axis, i, j, im, ccount;
   double azz, ell, acount;
   char   command[16], ch;
 
