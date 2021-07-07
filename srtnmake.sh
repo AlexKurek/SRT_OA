@@ -7,7 +7,9 @@ LIBS=`pkg-config gtk+-2.0 --libs`
 # vspectra_pci_fftw.c SDAS-4020 + fftW for intel
 # vspectra_four.c dongle + c-coded FFT (which is slower)
 
-Warning_FLAGS="-Wall -Wextra -Wpedantic -Wformat=2 -Wno-unused-parameter -Wshadow -Wwrite-strings -Wstrict-prototypes -Wold-style-definition -Wredundant-decls -Wnested-externs -Wmissing-include-dirs -Wjump-misses-init -Wlogical-op"
+#Warning_FLAGS="-Wall -Wextra -Wpedantic -Wformat=2 -Wno-unused-parameter -Wshadow -Wwrite-strings -Wstrict-prototypes -Wold-style-definition -Wredundant-decls -Wnested-externs -Wmissing-include-dirs -Wjump-misses-init -Wlogical-op"
+Warning_FLAGS="-Wall -Wextra"
+
 All_FLAGS="${Warning_FLAGS} -O3 -m64 -march=native $CFLAGS"
 
 # compile for dongle + amd FFT
@@ -20,7 +22,7 @@ All_FLAGS="${Warning_FLAGS} -O3 -m64 -march=native $CFLAGS"
 #gcc ${All_FLAGS} main.c vspectra_pci.c  disp.c plot.c cat.c geom.c time.c outfile.c sport.c map.c cmdfl.c cal.c srthelp.c velspec.c four.c amdfft.c $LIBS -lm -lacml /usr/lib/libgfortran.a -I/opt/libmodbus/include/modbus/ -L/opt/libmodbus/lib/ -l modbus
 
 # compile for dongle + intel FFT
-gcc ${All_FLAGS} main.c vspectra_fftw.c disp.c plot.c cat.c geom.c time.c outfile.c sport.c map.c cmdfl.c cal.c srthelp.c velspec.c four.c fftw2.c librtlsdr.c tuner_r820t.c encoder.c encoderRegisters.c $LIBS -lm -lfftw3f `pkg-config --libs --cflags libusb-1.0 gtk+-2.0` -I/opt/libmodbus/include/modbus/ -L/opt/libmodbus/lib/ -l modbus
+gcc ${All_FLAGS} main.c vspectra_fftw.c disp.c plot.c cat.c geom.c time.c outfile.c sport.c map.c cmdfl.c cal.c srthelp.c velspec.c four.c fftw2.c librtlsdr.c tuner_r820t.c encoder/encoder.c encoder/encoderRegisters.c $LIBS -lm -lfftw3f `pkg-config --libs --cflags libusb-1.0 gtk+-2.0` -I/opt/libmodbus/include/modbus/ -L/opt/libmodbus/lib/ -l modbus
 
 # compile for DAS-4020 + intel FFT
 #gcc ${All_FLAGS} main.c vspectra_pci_fftw.c  disp.c plot.c cat.c geom.c time.c outfile.c sport.c map.c cmdfl.c cal.c srthelp.c velspec.c four.c fftw2.c $LIBS -lm -lfftw3f -I/opt/libmodbus/include/modbus/ -L/opt/libmodbus/lib/ -l modbus

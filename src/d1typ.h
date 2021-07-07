@@ -13,8 +13,8 @@ typedef struct
   double vlsr;
   double start_time;
   double start_sec;
-  double azlim1, ellim1                       // minimal angles
-  double azcounts_per_deg, elcounts_per_deg   // how many impulses per degree
+  double azlim1, ellim1;                       // minimal angles
+  double azcounts_per_deg, elcounts_per_deg;   // how many impulses per degree
   double av, avc, glat, glon, intg, restfreq, bw, delay, azoff, eloff, scnazoff, scneloff, calcons, beamw, smax, rod1,rod2,rod3,rod4,rod5, azlim2, ellim2, tsys, secs, tant,tload, tspill, aznow, elnow, azcmd, elcmd, 
     pwroff, pwron, bswpwr, noisecal, avbsw, calpwr, yfac, f1, fc, f2, fbw, tcal, freqcorr, rfisigma, azprev, elprev, stowaz, stowel, rms;
   double rfi[25];

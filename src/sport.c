@@ -508,6 +508,9 @@ void azel(double az, double el)   // command antenna movement
 }
 
 
+/**
+*  Here the angles are sotred in the driver
+*/
 int rot2(double *az, double *el, int cmd, char *resp)
 {
     int    usbDev, status, rstatus;
@@ -584,6 +587,7 @@ int rot2(double *az, double *el, int cmd, char *resp)
 
 /**
 *  Executes motor movement
+*
 * d1.azcount d1.elcount are stroing positions as an impuse count.
 * After command "move" is sent, angles azz and ell are computed and added to the
 * minimal angles d1.azlim1 and d1.ellim1. Results are stored in *az *el.
@@ -604,7 +608,7 @@ int rot2(double *az, double *el, int cmd, char *resp)
 int h180(double *az, double *el, int cmd, char *resp)
 {
   int    usbDev;
-  int    mm    // direction of rotation
+  int    mm;    // direction of rotation
   int    status, rstatus, count, axis, i, j, im, ccount;
   double azz, ell, acount;
   char   command[16], ch;
