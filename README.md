@@ -1,8 +1,7 @@
-# SRT
 [SRT](https://www.haystack.mit.edu/haystack-public-outreach/srt-the-small-radio-telescope-for-education/) fork
 
 ## Installation:
-Prerequisites:
+### Prerequisites:
 
 GTK 2:
 ```
@@ -24,7 +23,7 @@ rm -rf ${INSTALLDIR}/libmodbus/build/
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${INSTALLDIR}/libmodbus/lib/
 ```
 
-Example installation commands:
+### Example installation commands:
 ```
 cd ~/C/srt/srtnver10/src/
 ../pswritermake.sh
