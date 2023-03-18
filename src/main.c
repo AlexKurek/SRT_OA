@@ -259,6 +259,7 @@ int main(int argc, char *argv[])
     if (!d1.radiosim)
         Init_Device(0);
 
+    /* -- Draws GUI -- */
     if (d1.displ)
     {
         gtk_init(&argc, &argv);
@@ -375,7 +376,8 @@ int main(int argc, char *argv[])
         bspec[i] = 1;
     d1.secs = readclock();
 
-    while (d1.run)   // here the main program loops seems to start
+    /* -- here the main program loop seems to start -- */
+    while (d1.run)
     {
         zerospectra(1);
         if (d1.clearint)
