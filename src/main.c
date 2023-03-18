@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
             sscanf(argv[i + 1], "%63s", d1.hlpnam);
     }
 //    d1.azelport = 0x3f8;        // com1 default for old SRT 
-    d1.ver = 6;                 // SRT software version
+    d1.ver = 10;                 // SRT software version
     d1.secs = readclock();
     d1.run = 1;
     d1.record = 0;
