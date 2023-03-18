@@ -195,7 +195,7 @@ gint Repaint(void)
 
     if (d1.azelsim)
     {
-        sprintf(txt, "antenna motion simulated");
+        sprintf(txt, "Antenna motion simulated");
         iy = midy * 0.45;
         gdk_draw_text(pixmap, fixed_font, drawing_area->style->black_gc, ix, iy, txt, strlen(txt));
     }

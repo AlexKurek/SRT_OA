@@ -260,7 +260,7 @@ int main(int argc, char *argv[])
     if (!d1.radiosim)
         Init_Device(0);
 
-    /* -- Draws GUI -- */
+    /* -- Initiate and draw GUI -- */
     if (d1.displ)
     {
         gtk_init(&argc, &argv);
@@ -377,7 +377,7 @@ int main(int argc, char *argv[])
         bspec[i] = 1;
     d1.secs = readclock();
 
-    /* -- here the main program loop seems to start -- */
+    /* -- MAIN LOOP -- */
     while (d1.run)
     {
         zerospectra(1);
@@ -402,6 +402,8 @@ int main(int argc, char *argv[])
             zerospectra(0);
             d1.freqchng = 0;
         }
+
+        /* -- calibration -- */
         if (d1.docal)
         {
             if (d1.docal == 1)
@@ -455,10 +457,12 @@ int main(int argc, char *argv[])
                 d1.clearint = 1;
             d1.integ2 = 0;
         }
+		
+		/* -- refresh GUI -- */
         if (d1.displ)
         {
             if (!d1.plot)
-                Repaint();
+                Repaint();    // this is in plot.c
             while (gtk_events_pending() || d1.stopproc == 1)
             {
                 gtk_main_iteration();
@@ -469,6 +473,7 @@ int main(int argc, char *argv[])
             scanplot();   // in map.c
     }
 
+	/* -- release already-running lock -- */
     if (d1.lock)
     {
         if ((lock_file = fopen("lock.txt", "w")) == NULL)
@@ -479,6 +484,7 @@ int main(int argc, char *argv[])
         fprintf(lock_file, "0");
         fclose(lock_file);
     }
+
     return 0;
 }
 
