@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     int i;
     int yr, da, hr, mn, sc;
     char buf[64];
-    FILE *file1;
+    FILE *lock_file;
     GdkGeometry geometry;
     GdkWindowHints geo_mask;
 //    GdkRectangle update_rect;
@@ -166,38 +166,39 @@ int main(int argc, char *argv[])
     sprintf(d1.cmdfnam, "cmd.txt");
     sprintf(d1.datadir, "./");  // default to current directory
 
-    if (!catfile())             // reads config from srt.cat via cat.c ? (AK)
+    if (!catfile())             // Check if the config function exists. It will then read srt.cat via cat.c
         return 0;
-    
+
+	/* -- Check if an instance of SRT is already running -- */
     if (d1.lock)
     {
-        if ((file1 = fopen("lock.txt", "r")) == NULL)
+        if ((lock_file = fopen("lock.txt", "r")) == NULL)
         {
-            printf("cannot open lock.txt\n");
+            printf("Cannot open lock.txt\n");
             return 0;
         }
-        if (fgets(buf, 256, file1)) {}; // if(){} to avoid warning
+        if (fgets(buf, 256, lock_file)) {}; // if(){} to avoid warning
         if (buf[0] == '1')
         {
-            printf("srt is running\n");
-            fclose(file1);
+            printf("SRT is running\n");
+            fclose(lock_file);
             return 0;
         }
-        if ((file1 = fopen("lock.txt", "w")) == NULL)
+        if ((lock_file = fopen("lock.txt", "w")) == NULL)
         {
-            printf("cannot open lock.txt\n");
+            printf("Cannot open lock.txt\n");
             return 0;
         }
-        fprintf(file1, "1");    // write 1 to indicate srt is running
-        fclose(file1);
+        fprintf(lock_file, "1");    // write 1 to indicate SRT is running
+        fclose(lock_file);
     }
 
-    d1.foutstatus = 0;
-// to get permission su root chown root srtn then chmod u+s srtn then exit 
+    d1.foutstatus = 0;  // what is this for?
+// to get permission do: su root chown root srtn, then: chmod u+s srtn, then: exit 
     if (!d1.azelsim)
     {
         if (d1.printout)
-            printf("initializing antenna controller\n");
+            printf("Initializing antenna controller\n");
         if (d1.rot2mode < 10)
         {
             i = rot2(&d1.aznow, &d1.elnow, -1, buf); // initialize
@@ -470,13 +471,13 @@ int main(int argc, char *argv[])
 
     if (d1.lock)
     {
-        if ((file1 = fopen("lock.txt", "w")) == NULL)
+        if ((lock_file = fopen("lock.txt", "w")) == NULL)
         {
             printf("Unable to write lock.txt");
             return 0;
         }
-        fprintf(file1, "0");
-        fclose(file1);
+        fprintf(lock_file, "0");
+        fclose(lock_file);
     }
     return 0;
 }
