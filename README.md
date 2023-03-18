@@ -2,13 +2,13 @@
 [SRT](https://www.haystack.mit.edu/haystack-public-outreach/srt-the-small-radio-telescope-for-education/) fork
 
 ## Installation:
-Example installation commands:
+Prerequisites:
+
+GTK 2:
 ```
-cd ~/C/srt/srtnver10/src/
-../pswritermake.sh
-../srtnmake.sh  2>&1 | tee srtnmake.log
+sudo apt-get install gtk2.0
 ```
-Installing libmodbus:
+Libmodbus:
 ```
 export INSTALLDIR=/opt/
 mkdir -p ${INSTALLDIR}/libmodbus/build/
@@ -22,6 +22,13 @@ sudo make install
 cd ../../
 rm -rf ${INSTALLDIR}/libmodbus/build/
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${INSTALLDIR}/libmodbus/lib/
+```
+
+Example installation commands:
+```
+cd ~/C/srt/srtnver10/src/
+../pswritermake.sh
+../srtnmake.sh  2>&1 | tee srtnmake.log
 ```
 ## Run:
 E.g.:
