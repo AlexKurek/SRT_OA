@@ -484,7 +484,6 @@ int main(int argc, char *argv[])
         fprintf(lock_file, "0");
         fclose(lock_file);
     }
-
     return 0;
 }
 
