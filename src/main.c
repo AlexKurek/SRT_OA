@@ -435,7 +435,7 @@ int main(int argc, char *argv[])
         }
 
         if (d1.displ)
-            cleararea();
+            cleararea();             // in disp.c. Clears the plot area
         azel (d1.azcmd, d1.elcmd);   // allow time after cal
         if (d1.comerr == -1)
             return 0;
@@ -462,18 +462,18 @@ int main(int argc, char *argv[])
         if (d1.displ)
         {
             if (!d1.plot)
-                Repaint();    // this is in plot.c
-            while (gtk_events_pending() || d1.stopproc == 1)
+                Repaint();   // this is in plot.c
+            while (gtk_events_pending() || d1.stopproc == 1)     // https://docs.gtk.org/gtk3/func.events_pending.html
             {
-                gtk_main_iteration();
+                gtk_main_iteration();                            // https://docs.gtk.org/gtk3/func.main_iteration.html
                 d1.plot = 0;
             }
         }
         if (!d1.displ && d1.domap)
-            scanplot();   // in map.c
+            scanplot();      // in map.c; what is it doing?
     }
 
-	/* -- release already-running lock -- */
+	/* -- release SRT-is-already-running lock -- */
     if (d1.lock)
     {
         if ((lock_file = fopen("lock.txt", "w")) == NULL)
