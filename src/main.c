@@ -17,7 +17,7 @@
 #include "d1typ.h"
 
 /* -- Encoder related -- */
-#include "encoder.h"
+#include "encoder/encoder.h"
 
 
 d1type d1;
