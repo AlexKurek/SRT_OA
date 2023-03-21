@@ -9,6 +9,10 @@ sudo apt-get install gtk2.0
 ```
 Libmodbus:
 ```
+sudo apt-get install -y libmodbus-dev
+```
+or manually:
+```
 export INSTALLDIR=/opt/
 mkdir -p ${INSTALLDIR}/libmodbus/build/
 cd ${INSTALLDIR}/libmodbus/build/
