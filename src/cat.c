@@ -1,3 +1,5 @@
+// cat.c: Parse configuration file srt.cat
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
@@ -5,7 +7,6 @@
 #include "d1proto.h"
 #include "d1typ.h"
 #include "d1glob.h"
-
 
 
 int catfile(void)

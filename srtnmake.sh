@@ -1,6 +1,8 @@
 #!/bin/bash
+
 CFLAGS=`pkg-config gtk+-2.0 --cflags`
 LIBS=`pkg-config gtk+-2.0 --libs`
+
 # vspectra.c dongle + amd FFT
 # vspectra_pci.c SDAS-4020 + amd FFT
 # vspectra_fftw.c dongle + fftW for intel

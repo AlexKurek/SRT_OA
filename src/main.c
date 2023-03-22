@@ -20,11 +20,11 @@
 #include "encoder/encoder.h"
 
 
-d1type d1;
-double ras[NSOU], decs[NSOU], epoc[NSOU];
-int    soutype[NSOU];
-char   sounam[NSOU][25];
-char   soutrack[25], souinfo[25];
+d1type      d1;
+double      ras[NSOU], decs[NSOU], epoc[NSOU];
+int         soutype[NSOU];
+char        sounam[NSOU][25];
+char        soutrack[25], souinfo[25];
 GdkPixmap   *pixmap  = NULL;
 GdkPixmap   *vpixmap = NULL;
 GdkFont     *fixed_font;
@@ -37,20 +37,20 @@ GtkWidget   *button_stow, *button_record, *button_cmdfl, *button_npoint, *button
 GtkWidget   *drawing_area;
 GtkWidget   *vdrawing_area;
 GtkTooltips *tooltips;
-float  avspec[NSPEC], aavspec[NSPEC];
-float  avspecon[NSPEC];
-float  avspecoff[NSPEC];
-float  bspec[NSPEC];
-float  bbspec[NSPEC];
-float  spec[NSPEC];
-float  fft1[NSPEC * 2];
-float  scanpwr[26];
-double pwr;
-double pwrst;
-double pwrprev;
-double pprev;
-double polyb[NPOLY];
-int    midx, midy;
+float       avspec[NSPEC], aavspec[NSPEC];
+float       avspecon[NSPEC];
+float       avspecoff[NSPEC];
+float       bspec[NSPEC];
+float       bbspec[NSPEC];
+float       spec[NSPEC];
+float       fft1[NSPEC * 2];
+float       scanpwr[26];
+double      pwr;
+double      pwrst;
+double      pwrprev;
+double      pprev;
+double      polyb[NPOLY];
+int         midx, midy;
 
 
 
@@ -281,71 +281,70 @@ int main(int argc, char *argv[])
 
         gtk_container_add(GTK_CONTAINER(window), table);
 
-        g_signal_connect(G_OBJECT(drawing_area), "expose_event", (GtkSignalFunc) expose_event, NULL);
-        g_signal_connect(G_OBJECT(drawing_area), "configure_event", (GtkSignalFunc) configure_event, NULL);
-
+        g_signal_connect(G_OBJECT(drawing_area), "expose_event",       (GtkSignalFunc) expose_event,       NULL);
+        g_signal_connect(G_OBJECT(drawing_area), "configure_event",    (GtkSignalFunc) configure_event,    NULL);
         g_signal_connect(G_OBJECT(drawing_area), "button_press_event", (GtkSignalFunc) button_press_event, NULL);
 
         gtk_widget_set_events(drawing_area, GDK_EXPOSURE_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK);
 
 
-        button_clear = gtk_button_new_with_label("clear");
-        button_stow = gtk_button_new_with_label("stow");
-        button_azel = gtk_button_new_with_label("azel");
+        button_clear  = gtk_button_new_with_label("clear");
+        button_stow   = gtk_button_new_with_label("stow");
+        button_azel   = gtk_button_new_with_label("azel");
         button_npoint = gtk_button_new_with_label("npoint");
-        button_bsw = gtk_button_new_with_label("beamsw");
-        button_freq = gtk_button_new_with_label("freq");
+        button_bsw    = gtk_button_new_with_label("beamsw");
+        button_freq   = gtk_button_new_with_label("freq");
         button_offset = gtk_button_new_with_label("offset");
         button_record = gtk_button_new_with_label("record");
-        button_cmdfl = gtk_button_new_with_label("cmdfl");
-        button_cal = gtk_button_new_with_label("cal");
-        button_help = gtk_button_new_with_label("help");
-        button_exit = gtk_button_new_with_label("exit");
+        button_cmdfl  = gtk_button_new_with_label("cmdfl");
+        button_cal    = gtk_button_new_with_label("cal");
+        button_help   = gtk_button_new_with_label("help");
+        button_exit   = gtk_button_new_with_label("exit");
 
-        g_signal_connect(G_OBJECT(button_clear), "clicked", G_CALLBACK(button_clear_clicked), NULL);
-        g_signal_connect(G_OBJECT(button_stow), "clicked", G_CALLBACK(button_stow_clicked), NULL);
-        g_signal_connect(G_OBJECT(button_azel), "clicked", G_CALLBACK(button_azel_clicked), NULL);
+        g_signal_connect(G_OBJECT(button_clear),  "clicked", G_CALLBACK(button_clear_clicked),  NULL);
+        g_signal_connect(G_OBJECT(button_stow),   "clicked", G_CALLBACK(button_stow_clicked),   NULL);
+        g_signal_connect(G_OBJECT(button_azel),   "clicked", G_CALLBACK(button_azel_clicked),   NULL);
         g_signal_connect(G_OBJECT(button_npoint), "clicked", G_CALLBACK(button_npoint_clicked), NULL);
-        g_signal_connect(G_OBJECT(button_bsw), "clicked", G_CALLBACK(button_bsw_clicked), NULL);
-        g_signal_connect(G_OBJECT(button_freq), "clicked", G_CALLBACK(button_freq_clicked), NULL);
+        g_signal_connect(G_OBJECT(button_bsw),    "clicked", G_CALLBACK(button_bsw_clicked),    NULL);
+        g_signal_connect(G_OBJECT(button_freq),   "clicked", G_CALLBACK(button_freq_clicked),   NULL);
         g_signal_connect(G_OBJECT(button_offset), "clicked", G_CALLBACK(button_offset_clicked), NULL);
         g_signal_connect(G_OBJECT(button_record), "clicked", G_CALLBACK(button_record_clicked), NULL);
-        g_signal_connect(G_OBJECT(button_cmdfl), "clicked", G_CALLBACK(button_cmdfl_clicked), NULL);
-        g_signal_connect(G_OBJECT(button_cal), "clicked", G_CALLBACK(button_cal_clicked), NULL);
-        g_signal_connect(G_OBJECT(button_help), "clicked", G_CALLBACK(button_help_clicked), NULL);
-        g_signal_connect(G_OBJECT(button_exit), "clicked", G_CALLBACK(button_exit_clicked), NULL);
+        g_signal_connect(G_OBJECT(button_cmdfl),  "clicked", G_CALLBACK(button_cmdfl_clicked),  NULL);
+        g_signal_connect(G_OBJECT(button_cal),    "clicked", G_CALLBACK(button_cal_clicked),    NULL);
+        g_signal_connect(G_OBJECT(button_help),   "clicked", G_CALLBACK(button_help_clicked),   NULL);
+        g_signal_connect(G_OBJECT(button_exit),   "clicked", G_CALLBACK(button_exit_clicked),   NULL);
 
         // test setting up tooltips instead of the "enter"/"leave" used below
         tooltips = gtk_tooltips_new();
-        gtk_tooltips_set_tip(tooltips, button_clear, "click to clear integration and reset time plot to 1/4-scale", NULL);
-        gtk_tooltips_set_tip(tooltips, button_stow, "click to stow antenna", NULL);
-        gtk_tooltips_set_tip(tooltips, button_azel, "click to enter az el coordinates", NULL);
-        gtk_tooltips_set_tip(tooltips, button_npoint, "click to start npoint scan", NULL);
-        gtk_tooltips_set_tip(tooltips, button_bsw, "click to start beam switch", NULL);
-        gtk_tooltips_set_tip(tooltips, button_freq, "click to enter new frequency in MHz [bandwidth] [nfreq]", NULL);
-        gtk_tooltips_set_tip(tooltips, button_offset, "click to enter offsets", NULL);
+        gtk_tooltips_set_tip(tooltips, button_clear,  "click to clear integration and reset time plot to 1/4-scale", NULL);
+        gtk_tooltips_set_tip(tooltips, button_stow,   "click to stow antenna",                                       NULL);
+        gtk_tooltips_set_tip(tooltips, button_azel,   "click to enter az el coordinates",                            NULL);
+        gtk_tooltips_set_tip(tooltips, button_npoint, "click to start npoint scan",                                  NULL);
+        gtk_tooltips_set_tip(tooltips, button_bsw,    "click to start beam switch",                                  NULL);
+        gtk_tooltips_set_tip(tooltips, button_freq,   "click to enter new frequency in MHz [bandwidth] [nfreq]",     NULL);
+        gtk_tooltips_set_tip(tooltips, button_offset, "click to enter offsets",                                      NULL);
         if (!d1.cmdfl)
             gtk_tooltips_set_tip(tooltips, button_cmdfl, "click to start cmd file", NULL);
         else
-            gtk_tooltips_set_tip(tooltips, button_cmdfl, "click to stop cmd file", NULL);
+            gtk_tooltips_set_tip(tooltips, button_cmdfl, "click to stop cmd file",  NULL);
 
-        gtk_tooltips_set_tip(tooltips, button_cal, "click to start calibration", NULL);
-        gtk_tooltips_set_tip(tooltips, button_help, "click to open help window", NULL);
+        gtk_tooltips_set_tip(tooltips, button_cal,  "click to start calibration", NULL);
+        gtk_tooltips_set_tip(tooltips, button_help, "click to open help window",  NULL);
         record_tooltip();
 
 
-        gtk_table_attach(GTK_TABLE(table), button_clear, 0, 1, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_stow, 1, 2, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_azel, 2, 3, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_npoint, 3, 4, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_bsw, 4, 5, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_freq, 5, 6, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_offset, 6, 7, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_record, 7, 8, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_cmdfl, 8, 9, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_cal, 9, 10, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_help, 10, 11, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_exit, 11, 12, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_clear,  0, 1,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_stow,   1, 2,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_azel,   2, 3,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_npoint, 3, 4,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_bsw,    4, 5,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_freq,   5, 6,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_offset, 6, 7,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_record, 7, 8,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_cmdfl,  8, 9,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_cal,    9, 10, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_help,  10, 11, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_exit,  11, 12, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
 
 
 

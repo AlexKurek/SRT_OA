@@ -1,5 +1,6 @@
 * sample d1.cat file
 * first word is key word
+
 * STATION: latitude longitude west in degrees
 * SOU: source ra, dec, name, epoch  - default eopoch is j2000
 * CALMODE 0 for calcheck, 2 for bandpass only, 20 for manual vane cal
