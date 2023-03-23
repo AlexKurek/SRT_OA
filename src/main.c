@@ -334,15 +334,15 @@ int main(int argc, char *argv[])
         record_tooltip();
 
 
-        gtk_table_attach(GTK_TABLE(table), button_clear,  0, 1,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_stow,   1, 2,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_azel,   2, 3,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_npoint, 3, 4,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_bsw,    4, 5,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_freq,   5, 6,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_offset, 6, 7,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_record, 7, 8,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
-        gtk_table_attach(GTK_TABLE(table), button_cmdfl,  8, 9,  0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_clear,  0,  1, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_stow,   1,  2, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_azel,   2,  3, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_npoint, 3,  4, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_bsw,    4,  5, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_freq,   5,  6, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_offset, 6,  7, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_record, 7,  8, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
+        gtk_table_attach(GTK_TABLE(table), button_cmdfl,  8,  9, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
         gtk_table_attach(GTK_TABLE(table), button_cal,    9, 10, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
         gtk_table_attach(GTK_TABLE(table), button_help,  10, 11, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
         gtk_table_attach(GTK_TABLE(table), button_exit,  11, 12, 0, 2, GTK_FILL, GTK_FILL, 0, 0);
