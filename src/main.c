@@ -20,37 +20,37 @@
 #include "encoder/encoder.h"
 
 
-d1type      d1;
-double      ras[NSOU], decs[NSOU], epoc[NSOU];
-int         soutype[NSOU];
-char        sounam[NSOU][25];
-char        soutrack[25], souinfo[25];
-GdkPixmap   *pixmap  = NULL;
-GdkPixmap   *vpixmap = NULL;
-GdkFont     *fixed_font;
-GdkFont     *vfixed_font;
-GtkWidget   *entry1, *entry2, *entry3, *entry5, *entry6, *entry8;
-GtkWidget   *table;
-GtkWidget   *vtable;
-GtkWidget   *vwindow = NULL;
-GtkWidget   *button_stow, *button_record, *button_cmdfl, *button_npoint, *button_bsw, *button_exit, *button_cal;
-GtkWidget   *drawing_area;
-GtkWidget   *vdrawing_area;
-GtkTooltips *tooltips;
-float       avspec[NSPEC], aavspec[NSPEC];
-float       avspecon[NSPEC];
-float       avspecoff[NSPEC];
-float       bspec[NSPEC];
-float       bbspec[NSPEC];
-float       spec[NSPEC];
-float       fft1[NSPEC * 2];
-float       scanpwr[26];
-double      pwr;
-double      pwrst;
-double      pwrprev;
-double      pprev;
-double      polyb[NPOLY];
-int         midx, midy;
+d1type      d1                                                                                                  ;
+double      ras[NSOU], decs[NSOU], epoc[NSOU]                                                                   ;
+int         soutype[NSOU]                                                                                       ;
+char        sounam[NSOU][25]                                                                                    ;
+char        soutrack[25], souinfo[25]                                                                           ;
+GdkPixmap   *pixmap  = NULL                                                                                     ;
+GdkPixmap   *vpixmap = NULL                                                                                     ;
+GdkFont     *fixed_font                                                                                         ;
+GdkFont     *vfixed_font                                                                                        ;
+GtkWidget   *entry1, *entry2, *entry3, *entry5, *entry6, *entry8                                                ;
+GtkWidget   *table                                                                                              ;
+GtkWidget   *vtable                                                                                             ;
+GtkWidget   *vwindow = NULL                                                                                     ;
+GtkWidget   *button_stow, *button_record, *button_cmdfl, *button_npoint, *button_bsw, *button_exit, *button_cal ;
+GtkWidget   *drawing_area                                                                                       ;
+GtkWidget   *vdrawing_area                                                                                      ;
+GtkTooltips *tooltips                                                                                           ;
+float       avspec[NSPEC], aavspec[NSPEC]                                                                       ;
+float       avspecon[NSPEC]                                                                                     ;
+float       avspecoff[NSPEC]                                                                                    ;
+float       bspec[NSPEC]                                                                                        ;
+float       bbspec[NSPEC]                                                                                       ;
+float       spec[NSPEC]                                                                                         ;
+float       fft1[NSPEC * 2]                                                                                     ;
+float       scanpwr[26]                                                                                         ;
+double      pwr                                                                                                 ;
+double      pwrst                                                                                               ;
+double      pwrprev                                                                                             ;
+double      pprev                                                                                               ;
+double      polyb[NPOLY]                                                                                        ;
+int         midx, midy                                                                                          ;
 
 
 
@@ -80,43 +80,43 @@ int main(int argc, char *argv[])
             sscanf(argv[i + 1], "%63s", d1.hlpnam);
     }
 //    d1.azelport = 0x3f8;        // com1 default for old SRT 
-    d1.ver = 10;                 // SRT software version
-    d1.secs = readclock();
-    d1.run = 1;
-    d1.record = 0;
-    d1.entry1 = d1.entry2 = d1.entry3 = d1.entry5 = d1.entry6 = d1.entry8 = d1.helpwindow = d1.vwindow = 0;
-    d1.plot = 0;
-    d1.start_time = 0.0;
-    d1.start_sec = 0.0;
-    d1.speed_up = 0;
-    d1.ppos = 0;
-    d1.printout = 1;
-    d1.debug = 0;
-    d1.freq = 1420.4;           // default
-    d1.bw = 0;                  // set to 2.4 for TV dongle 10 MHz for ADC card in init
-    d1.fbw = 0;                 // set in init or srt.cat
-    d1.nblk = 5;                // number of blocks in vspectra
-    d1.record_int_sec = 0;
-    d1.freqcorr = 0;            // frequency correction for L.O. may be needed for TV dongle
-    d1.freqchng = 0;
-    d1.clearint = 0;
+    d1.ver             = 10;      // SRT software version
+    d1.secs            = readclock();
+    d1.run             = 1;
+    d1.record          = 0;
+    d1.entry1          = d1.entry2 = d1.entry3 = d1.entry5 = d1.entry6 = d1.entry8 = d1.helpwindow = d1.vwindow = 0;
+    d1.plot            = 0;
+    d1.start_time      = 0.0;
+    d1.start_sec       = 0.0;
+    d1.speed_up        = 0;
+    d1.ppos            = 0;
+    d1.printout        = 1;
+    d1.debug           = 0;
+    d1.freq            = 1420.4;   // default
+    d1.bw              = 0;        // set to 2.4 for TV dongle 10 MHz for ADC card in init
+    d1.fbw             = 0;        // set in init or srt.cat
+    d1.nblk            = 5;        // number of blocks in vspectra
+    d1.record_int_sec  = 0;
+    d1.freqcorr        = 0;        // frequency correction for L.O. may be needed for TV dongle
+    d1.freqchng        = 0;
+    d1.clearint        = 0;
     d1.record_clearint = 0;
-    d1.noclearint = 0;
-    d1.nfreq = NSPEC;
-    d1.plotsec = 1;
-    d1.displ = 1;               // turns off entire GUI
-    d1.noisecal = 0;
+    d1.noclearint      = 0;
+    d1.nfreq           = NSPEC;
+    d1.plotsec         = 1;
+    d1.displ           = 1;        // turns off entire GUI
+    d1.noisecal        = 0;
 //    used for old SRT mount and controller
-//    d1.ptoler = 1;
-//    d1.countperstep = 10000;    // default large number for no stepping 
-//    d1.elcounts_per_deg = (52.0 * 27.0 / 120.0); // default for H-180
+//    d1.ptoler           = 1;
+//    d1.countperstep     = 10000;                             // default large number for no stepping 
+//    d1.elcounts_per_deg = (52.0 * 27.0 / 120.0);             // default for H-180
 //    d1.azcounts_per_deg = 8.0 * 32.0 * 60.0 / (360.0 * 9.0); // default for CASSIMOUNT
-//    d1.rod = 1;                 // default to rod as on CASSIMOUNT
-//    d1.rod1 = 14.25;            // rigid arm length
-//    d1.rod2 = 16.5;             // distance from pushrod upper joint to el axis
-//    d1.rod3 = 2.0;              // pushrod collar offset
-//    d1.rod4 = 110.0;            // angle at horizon
-//    d1.rod5 = 30.0;             // pushrod counts per inch
+//    d1.rod              = 1;                                 // default to rod as on CASSIMOUNT
+//    d1.rod1             = 14.25;                             // rigid arm length
+//    d1.rod2             = 16.5;                              // distance from pushrod upper joint to el axis
+//    d1.rod3             = 2.0;                               // pushrod collar offset
+//    d1.rod4             = 110.0;                             // angle at horizon
+//    d1.rod5             = 30.0;                              // pushrod counts per inch
     d1.azelsim = d1.radiosim = d1.fftsim = 0;
     d1.mainten = 0;
     d1.stowatlim = 1;
@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
     {
         gtk_init(&argc, &argv);
         window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        geometry.min_width = 500;
+        geometry.min_width  = 500;
         geometry.min_height = 300;
         geo_mask = GDK_HINT_MIN_SIZE;
         gtk_window_set_geometry_hints(GTK_WINDOW(window), window, &geometry, geo_mask);
