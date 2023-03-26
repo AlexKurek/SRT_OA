@@ -103,14 +103,14 @@ int EncoderInit(const char *device, int baud, char parity, int data_bit, int sto
     if (modbus_connect(ctx) == -1)
     {
         fprintf(stderr, "Connection failed: %s\n", modbus_strerror(errno));
-        modbus_close(ctx);
+        // modbus_close(ctx);  // modbus_free already does that
         modbus_free(ctx);
         return -1;
     }
     if (NULL == ctx)
     {
         printf("Unable to create modbus context\n");
-        modbus_close(ctx);
+        // modbus_close(ctx);  // modbus_free already does that
         modbus_free(ctx);
         return -1;
     }
