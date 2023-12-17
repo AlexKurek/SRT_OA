@@ -33,6 +33,7 @@ cd ~/C/srt/srtnver10/src/
 ../pswritermake.sh
 ../srtnmake.sh  2>&1 | tee srtnmake.log
 ```
+If you will get: `fatal error: bits/libc-header-start.h: No such file or directory` try installing `gcc-multilib`.
 ## Run:
 E.g.:
 ```
