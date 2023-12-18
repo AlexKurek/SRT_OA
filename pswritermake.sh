@@ -4,6 +4,7 @@
 Warning_FLAGS="-Wall -Wextra"
 
 gcc -O3 -m64 -march=native ${Warning_FLAGS} pswriter.c -lm
+# gcc -O3 -m32 -march=native ${Warning_FLAGS} pswriter.c -lm # to było w oryginale
 
 if [ -e a.out ]
 then
