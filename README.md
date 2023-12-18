@@ -3,15 +3,14 @@
 ## Installation:
 ### Prerequisites:
 
-GTK 2:
 ```
-sudo apt-get install gtk2.0
+sudo apt-get install gtk2.0 libusb-1.0-0-dev
 ```
 Libmodbus:
 ```
 sudo apt-get install -y libmodbus-dev
 ```
-or manually:
+or Libmodbus manually:
 ```
 export INSTALLDIR=/opt/
 mkdir -p ${INSTALLDIR}/libmodbus/build/
