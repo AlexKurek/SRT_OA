@@ -10,7 +10,7 @@ Libmodbus:
 ```
 sudo apt-get install -y libmodbus-dev
 ```
-or Libmodbus manually:
+or [Libmodbus](https://libmodbus.org/) manually:
 ```
 export INSTALLDIR=/opt/
 mkdir -p ${INSTALLDIR}/libmodbus/build/
