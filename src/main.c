@@ -51,13 +51,16 @@ double      pwrprev                                                             
 double      pprev                                                                                               ;
 double      polyb[NPOLY]                                                                                        ;
 int         midx, midy                                                                                          ;
+int         encoderStatus                                                                                       ;
 
 
 
 int main(int argc, char *argv[])
 {
     /* -- Encoder related -- */
-    EncoderInit ("/dev/ttyUSB0", 19200, 'E', 8, 1);
+    encoderStatus = EncoderInit ("/dev/ttyUSB0", 19200, 'E', 8, 1);
+	if (encoderStatus = -1)
+		return -1;
 
     GtkWidget *window;
     GtkWidget *button_clear, *button_azel, *button_freq, *button_offset;
