@@ -164,7 +164,7 @@ int EncoderWriteModbus(int slaveAddress, int regAddress, uint16_t value)
 
 void EncoderClose(void)
 {
-    modbus_close(ctx);
+    // modbus_close(ctx);  // modbus_free already does that
     modbus_free(ctx);
 }
 void EncoderPrintRegisters(int slaveAddress)
@@ -271,7 +271,7 @@ void EncoderPrintRegisters(int slaveAddress)
 		case 9: printf("115200"); break;
 		case 10: printf("128000"); break;
 		case 11: printf("256000"); break;
-		default: printf("error read");
+		default: printf("Error reading baudrate\n");
 	}
 	printf(" bps\n");
 
@@ -281,7 +281,7 @@ void EncoderPrintRegisters(int slaveAddress)
 		case 0: printf("6\n"); break;
 		case 1: printf("7\n"); break;
 		case 2: printf("8\n"); break;
-		default: printf("error\n");
+		default: printf("Error reading number data bits\n");
 	}
 	printf("Parity: ");
 	switch(EncoderParity(slaveAddress))
@@ -289,7 +289,7 @@ void EncoderPrintRegisters(int slaveAddress)
 		case 0: printf("No\n"); break;
 		case 1: printf("Odd\n"); break;
 		case 2: printf("Even\n"); break;
-		default: printf("error\n");
+		default: printf("Error reading parity\n");
 	}
 
 	printf("Stop bits: %u\n",EncoderGetStopbits(slaveAddress));
