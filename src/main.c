@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 {
     /* -- Encoder related -- */
     encoderStatus = EncoderInit ("/dev/ttyUSB0", 19200, 'E', 8, 1);
-	if (encoderStatus = -1)
+	if (encoderStatus == -1)
 		return -1;
 
     GtkWidget *window;
