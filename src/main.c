@@ -71,11 +71,11 @@ int main(int argc, char *argv[])
     /* -- Encoder related -- */
 
     // default connection parameters if not entered from cmd line
-    devFileName = "/dev/ttyUSB0"
-    baud        = 19200
-    parity      = 'E'
-    data_bit    = 8
-    stop_bit    = 1
+    devFileName = "/dev/ttyUSB0";
+    baud        = 19200;
+    parity      = 'E';
+    data_bit    = 8;
+    stop_bit    = 1;
 
     encoderStatus = EncoderInit (devFileName, baud, parity, data_bit, stop_bit);
     if (encoderStatus == -1)
