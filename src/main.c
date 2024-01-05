@@ -51,14 +51,26 @@ double      pwrprev                                                             
 double      pprev                                                                                               ;
 double      polyb[NPOLY]                                                                                        ;
 int         midx, midy                                                                                          ;
+
+/* -- Encoder related -- */
 int         encoderStatus                                                                                       ;
+char        devFileName                                                                                         ;
+int         baud                                                                                                ;
+char        parity                                                                                              ;
+int         data_bit                                                                                            ;
+int         stop_bit                                                                                            ;
 
 
 
 int main(int argc, char *argv[])
 {
     /* -- Encoder related -- */
-    encoderStatus = EncoderInit ("/dev/ttyUSB0", 19200, 'E', 8, 1);
+	devFileName = "/dev/ttyUSB0"
+	baud        = 19200
+	parity      = 'E'
+	data_bit    = 8
+	stop_bit    = 1
+    encoderStatus = EncoderInit (devFileName, baud, parity, data_bit, stop_bit);
 	if (encoderStatus == -1)
 		return -1;
 
