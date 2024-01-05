@@ -18,6 +18,7 @@
 
 /* -- Encoder related -- */
 #include "encoder/encoder.h"
+// #include <getopt.h>      // getopt API
 
 
 d1type      d1                                                                                                  ;
@@ -52,8 +53,11 @@ double      pprev                                                               
 double      polyb[NPOLY]                                                                                        ;
 int         midx, midy                                                                                          ;
 
+
 /* -- Encoder related -- */
 int         encoderStatus                                                                                       ;
+
+// cmd line args
 char        devFileName                                                                                         ;
 int         baud                                                                                                ;
 char        parity                                                                                              ;
@@ -65,14 +69,18 @@ int         stop_bit                                                            
 int main(int argc, char *argv[])
 {
     /* -- Encoder related -- */
+
+	// default connection parameters if not entered from cmd line
 	devFileName = "/dev/ttyUSB0"
 	baud        = 19200
 	parity      = 'E'
 	data_bit    = 8
 	stop_bit    = 1
+
     encoderStatus = EncoderInit (devFileName, baud, parity, data_bit, stop_bit);
 	if (encoderStatus == -1)
 		return -1;
+
 
     GtkWidget *window;
     GtkWidget *button_clear, *button_azel, *button_freq, *button_offset;
