@@ -51,6 +51,8 @@ double      pwrprev                                                             
 double      pprev                                                                                               ;
 double      polyb[NPOLY]                                                                                        ;
 int         midx, midy                                                                                          ;
+
+/* -- Encoder related -- */
 int         encoderStatus                                                                                       ;
 
 
