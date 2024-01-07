@@ -28,7 +28,9 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${INSTALLDIR}/libmodbus/lib/
 
 ### Example installation commands:
 ```
-cd ~/C/srt/srtnver10/src/
+cd ~/C/srt/srtnver10/
+chmod +x pswritermake.sh srtnmake.sh
+cd src/
 ../pswritermake.sh
 ../srtnmake.sh  2>&1 | tee srtnmake.log
 ```
