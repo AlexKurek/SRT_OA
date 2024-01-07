@@ -71,6 +71,12 @@ int main(int argc, char *argv[])
     /* -- Encoder related -- */
 
     // default connection parameters if not entered from cmd line
+    printf("No command line options entered. Using default values: \n");
+    printf("Encoder device driver file name =  /dev/ttyUSB0 \n");
+    printf("Baud                            =  19200 \n");
+    printf("Parity                          =  E \n");
+    printf("Data bit                        =  8 \n");
+    printf("Stop bit                        =  1 \n");
     devFileName = "/dev/ttyUSB0";
     baud        = 19200;
     parity      = 'E';
@@ -193,7 +199,7 @@ int main(int argc, char *argv[])
     if (!catfile())             // Check if the config function exists. It will then read srt.cat via cat.c
         return 0;
 
-	/* -- Check if an instance of SRT is already running -- */
+    /* -- Check if an instance of SRT is already running -- */
     if (d1.lock)
     {
         if ((lock_file = fopen("lock.txt", "r")) == NULL)
@@ -480,8 +486,8 @@ int main(int argc, char *argv[])
                 d1.clearint = 1;
             d1.integ2 = 0;
         }
-		
-		/* -- refresh GUI -- */
+        
+        /* -- refresh GUI -- */
         if (d1.displ)
         {
             if (!d1.plot)
@@ -496,7 +502,7 @@ int main(int argc, char *argv[])
             scanplot();      // in map.c; what is it doing?
     }
 
-	/* -- release SRT-is-already-running lock -- */
+    /* -- release SRT-is-already-running lock -- */
     if (d1.lock)
     {
         if ((lock_file = fopen("lock.txt", "w")) == NULL)
