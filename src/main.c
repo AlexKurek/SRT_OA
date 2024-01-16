@@ -60,13 +60,19 @@ int         encoderStatus                                                       
 int main(int argc, char *argv[])
 {
     /* -- Encoder related -- */
+	// defaults
+    char devFileName[12] = "/dev/ttyUSB0";
+    int  baud            = 19200;
+    char parity          = 'E';
+    int  data_bit        = 8;
+    int  stop_bit        = 1;
     printf("Using default values for encoders: \n");
-    printf("Encoder device driver file name =  /dev/ttyUSB0 \n");
-    printf("Baud                            =  19200 \n");
-    printf("Parity                          =  E \n");
-    printf("Data bit                        =  8 \n");
-    printf("Stop bit                        =  1 \n");
-    encoderStatus = EncoderInit ("/dev/ttyUSB0", 19200, 'E', 8, 1);
+    printf("Encoder device driver file name =  %s\n", devFileName);
+    printf("Baud                            =  %d\n", baud);
+    printf("Parity                          =  %c\n", parity);
+    printf("Data bit                        =  %d\n", data_bit);
+    printf("Stop bit                        =  %d\n", stop_bit);
+    encoderStatus = EncoderInit (devFileName, baud, parity, data_bit, stop_bit);
     if (encoderStatus == -1)
         return -1;
 
