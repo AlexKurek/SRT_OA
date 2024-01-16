@@ -60,7 +60,7 @@ int         encoderStatus                                                       
 int main(int argc, char *argv[])
 {
     /* -- Encoder related -- */
-	// defaults
+    // defaults
     char devFileName[12] = "/dev/ttyUSB0";
     int  baud            = 19200;
     char parity          = 'E';
