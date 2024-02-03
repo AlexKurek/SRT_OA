@@ -11,6 +11,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <errno.h>
+#include <limits.h>
 
 #include "d1cons.h"
 #include "d1proto.h"
@@ -60,13 +61,34 @@ int         encoderStatus                                                       
 int main(int argc, char *argv[])
 {
     /* -- Encoder related -- */
+	char parset_fname[] = "encoder.parset";
+	
+	char cwd[PATH_MAX]; // https://stackoverflow.com/a/298518/6764984
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Program directory: %s\n", cwd);
+    } else {
+        perror("getcwd() error");
+        return 1;
+    }
+	if (access(parset_fname, F_OK) == 0) {
+        printf("Encoder parset file \'%s\' found in program directory, parsing values \n", parset_fname);
+		FILE* file = fopen(parset_fname, "r");
+        if (file == NULL) {
+            perror("Error opening file, going back to default values.");
+            return 1;
+        }
+		// TU POWINNO BYĆ PARSOWANIE
+		printf("Values imported from parset file: \n");
+    } else {
+    printf("Encoder parset file \'%s\' not found in program directory, using default values \n", parset_fname);
+    }
     // defaults
-    char devFileName[12] = "/dev/ttyUSB0";
+    char devFileName[] = "/dev/ttyUSB0";
     int  baud            = 19200;
     char parity          = 'E';
     int  data_bit        = 8;
     int  stop_bit        = 1;
-    printf("Using default values for encoders: \n");
+    printf("Default values for encoders: \n");
     printf("Encoder device driver file name =  %s\n", devFileName);
     printf("Baud                            =  %d\n", baud);
     printf("Parity                          =  %c\n", parity);
