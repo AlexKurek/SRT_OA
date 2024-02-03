@@ -60,12 +60,17 @@ int         encoderStatus                                                       
 
 int main(int argc, char *argv[])
 {
+    printf("===============================================================================\n");
+    printf("                        SRT: The Small Radio Telescope\n");
+    printf("===============================================================================\n");
+    printf("\n");
+
     /* -- Encoder related -- */
 	char parset_fname[] = "encoder.parset";
 	
 	char cwd[PATH_MAX]; // https://stackoverflow.com/a/298518/6764984
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        printf("Program directory: %s\n", cwd);
+        printf("Program directory: %s/\n", cwd);
     } else {
         perror("getcwd() error");
         return 1;
