@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
             perror("Error opening file, going back to default values");
             return 1;
         }
-		// TU POWINNO BYĆ PARSOWANIE
+		// TU POWINNO BYĆ PARSOWANIE: https://chat.openai.com/c/97c6f3db-7baf-4258-801a-8468f7dfa27a
 		printf("Values imported from parset file: \n");
     } else {
     printf("Encoder parset file \'%s\' not found in program directory, using default values \n", parset_fname);
