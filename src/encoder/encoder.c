@@ -100,7 +100,7 @@ int EncoderInit(const char *device, int baud, char parity, int data_bit, int sto
     printf("\n");
     printf("Trying to connect... \n");
     ctx = modbus_new_rtu(device, baud, parity, data_bit, stop_bit);
-	printf("Looking for device:  %s \n", device );
+	printf("Looking for device file:  %s \n", device );
     if (modbus_connect(ctx) == -1)
     {
         fprintf(stderr, "Connection failed: %s\n", modbus_strerror(errno));
