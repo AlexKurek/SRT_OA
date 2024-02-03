@@ -79,10 +79,10 @@ int main(int argc, char *argv[])
     strcpy( cwd_for_log, cwd );
 	strcat( cwd_for_log, "/log" );
     if (stat(cwd_for_log, &st) == -1) {
-		printf("\'log\' directory not found in \'%s\', creating it. \n", cwd);
+		printf("\'log\' directory not found in %s/, creating it \n", cwd);
         mkdir(cwd_for_log, 0700);
     } else {
-		printf("\'log\' directory found in \'%s\'. \n", cwd);
+		printf("\'log\' directory found in %s/ \n", cwd);
 	}
 	// DODAĆ LOGOWANIE WG. https://stackoverflow.com/a/6509569/6764984 ALE W WERSJI Z FPRINTF (https://cpp0x.pl/dokumentacja/standard-C/fprintf/455)
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
         printf("Encoder parset file \'%s\' found in program directory, parsing values \n", parset_fname);
 		FILE* file = fopen(parset_fname, "r");
         if (file == NULL) {
-            perror("Error opening file, going back to default values.");
+            perror("Error opening file, going back to default values");
             return 1;
         }
 		// TU POWINNO BYĆ PARSOWANIE
