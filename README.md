@@ -26,7 +26,7 @@ rm -rf ${INSTALLDIR}/libmodbus/build/
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${INSTALLDIR}/libmodbus/lib/
 ```
 
-### Example installation commands:
+### Example compilation commands:
 ```
 cd ~/C/srt/srtnver10/
 chmod +x pswritermake.sh srtnmake.sh
