@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
         printf("Encoder parset file \'%s\' found in program directory, parsing values \n", parset_fname);
 		FILE* file = fopen(parset_fname, "r");
         if (file == NULL) {
-            perror("Error opening file, going back to default values");
+            printf("Error opening encoder parset file \'%s\' in program directory. Both filename and path are currently hardcoded and cannot be changed. Using default values \n", parset_fname);
             return 1;
         }
 		// TU POWINNO BYĆ PARSOWANIE: https://chat.openai.com/c/97c6f3db-7baf-4258-801a-8468f7dfa27a
