@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
     printf("Encoder parset file \'%s\' not found in program directory, using default values \n", parset_fname);
     }
     // defaults
-    char devFileName[] = "/dev/ttyUSB0";
+    char devFileName[] = "/dev/ttyUSB0"; // działa na lof5. Na lof8 działało char devFileName[12]
     int  baud            = 19200;
     char parity          = 'E';
     int  data_bit        = 8;
