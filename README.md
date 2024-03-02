@@ -4,7 +4,7 @@
 ### Prerequisites:
 
 ```
-sudo apt-get install gtk2.0 libusb-1.0-0-dev
+sudo apt-get install gtk2.0 libusb-1.0-0-dev libfftw3-dev
 ```
 Libmodbus:
 ```
